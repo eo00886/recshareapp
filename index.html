@@ -181,11 +181,26 @@
             text-align: center;
             font-size: 0.85rem;
             border-left: 3px solid var(--primary-blue);
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .toast-success { border-left-color: var(--success-green); }
         .toast-error { border-left-color: var(--error-red); }
         .toast-warning { border-left-color: var(--warning-orange); }
+
+        .toast-undo-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 0.25rem 0.75rem;
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateX(-50%) translateY(20px); }
@@ -487,6 +502,7 @@
         .btn-unverify { flex: 1; background: rgba(239, 68, 68, 0.15); border: 0.5px solid var(--error-red); padding: 0.75rem; border-radius: 30px; color: var(--error-red); font-weight: 500; cursor: pointer; }
         .btn-undo { flex: 1; background: rgba(107, 114, 128, 0.2); border: 0.5px solid var(--gray-light); padding: 0.75rem; border-radius: 30px; color: var(--gray-light); font-weight: 500; cursor: pointer; }
         .btn-challenge { flex: 1; background: rgba(239, 68, 68, 0.15); border: 0.5px solid var(--error-red); padding: 0.75rem; border-radius: 30px; color: var(--error-red); font-weight: 500; cursor: pointer; }
+        .btn-unchallenge { flex: 1; background: rgba(16, 185, 129, 0.15); border: 0.5px solid var(--success-green); padding: 0.75rem; border-radius: 30px; color: var(--success-green); font-weight: 500; cursor: pointer; }
 
         .comparison-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1rem 0; }
         .comparison-card { background: rgba(0, 0, 0, 0.3); border-radius: 16px; padding: 1rem; text-align: center; }
@@ -520,7 +536,6 @@
         .rule-negative { color: var(--error-red); }
 
         .footer { margin-top: 2rem; padding-top: 1rem; border-top: 0.5px solid var(--glass-border); text-align: center; font-size: 0.7rem; color: var(--gray-light); }
-        .footer a { color: var(--primary-blue); text-decoration: none; cursor: pointer; }
 
         @media (min-width: 768px) {
             .bottom-nav { display: none; }
@@ -567,13 +582,11 @@
     <button class="nav-item" data-page="submit"><span class="nav-icon">📤</span><span>Verify</span></button>
     <button class="nav-item" data-page="scout"><span class="nav-icon">🎯</span><span>Scout</span></button>
     <button class="nav-item" data-page="leaderboard"><span class="nav-icon">⭐</span><span>Leaderboard</span></button>
-    <button class="nav-item" data-page="howitworks"><span class="nav-icon">❓</span><span>How It Works</span></button>
     <button class="nav-item" data-page="pricing"><span class="nav-icon">💰</span><span>Pricing</span></button>
     <button class="nav-item" id="loginBtn"><span class="nav-icon">👤</span><span>Profile</span></button>
 </div>
 
 <div class="container" id="app">
-    <!-- DISCOVER PAGE -->
     <div id="discoverPage" class="page active">
         <div class="page-header"><h1>Verified Athletes</h1><p>AI-measured vertical leap · Community verified</p></div>
         <div class="stats-grid">
@@ -598,7 +611,6 @@
         <div class="athlete-grid" id="athleteGrid"></div>
     </div>
 
-    <!-- SUBMIT PAGE -->
     <div id="submitPage" class="page">
         <div class="page-header"><h1>Get Verified</h1><p>Submit your Instagram video for AI analysis</p></div>
         <div class="card">
@@ -612,7 +624,6 @@
         </div>
     </div>
 
-    <!-- SCOUT PORTAL PAGE -->
     <div id="scoutPage" class="page">
         <div class="page-header"><h1>Scout Portal</h1><p>Advanced tools for talent evaluation</p></div>
         <div class="mode-toggle">
@@ -633,48 +644,34 @@
         </div>
     </div>
 
-    <!-- LEADERBOARD PAGE -->
     <div id="leaderboardPage" class="page">
         <div class="page-header"><h1>Trust Leaderboard</h1><p>Top verifiers earn scout access</p></div>
         <div class="card" id="leaderboardList"></div>
         <div class="card"><h3>Your Stats</h3><div>Confirmations: <strong id="userConfirmCount">0</strong></div><div>Current streak: <strong id="userStreak">0</strong> days</div><div>Trust score: <strong id="userTrustDisplay">85</strong></div><div class="progress-container"><div class="progress-bar" id="trustProgress" style="width:85%"></div></div></div>
     </div>
 
-    <!-- HOW IT WORKS PAGE -->
     <div id="howitworksPage" class="page">
         <div class="page-header"><h1>How It Works</h1><p>The VANTAGE trust engine</p></div>
         <div class="card">
             <h3>🔍 The Verification Process</h3>
             <div class="step-container">
-                <div class="step"><div class="step-number">1</div><div class="step-content"><h4>AI Measurement</h4><p>Our AI analyzes your Instagram video frame-by-frame, detecting takeoff, peak height, and using the basketball rim (10ft) as a reference to calculate your exact vertical leap.</p><p style="margin-top:0.5rem; font-size:0.75rem; color:var(--primary-purple);">AI Confidence Score: 0-100% based on video quality, rim visibility, and camera angle.</p></div></div>
-                <div class="step"><div class="step-number">2</div><div class="step-content"><h4>Community Confirmation</h4><p>Other users watch your video and review the AI's measurement. If they agree it's accurate, they click "Confirm." Metrics need 3 confirmations to become verified.</p><p style="margin-top:0.5rem; font-size:0.75rem; color:var(--primary-purple);">High confidence (85%+) needs 2 confirmations. Low confidence needs 3-4 confirmations.</p></div></div>
-                <div class="step"><div class="step-number">3</div><div class="step-content"><h4>Verified Badge</h4><p>Once enough community members confirm your metrics, you receive a green "Verified" badge. Verified status can be challenged or will expire after 90 days without new confirmations.</p></div></div>
+                <div class="step"><div class="step-number">1</div><div class="step-content"><h4>AI Measurement</h4><p>Our AI analyzes your Instagram video frame-by-frame, detecting takeoff, peak height, and using the basketball rim (10ft) as a reference to calculate your exact vertical leap.</p></div></div>
+                <div class="step"><div class="step-number">2</div><div class="step-content"><h4>Community Confirmation</h4><p>Other users watch your video and review the AI's measurement. Metrics need 3 confirmations to become verified.</p></div></div>
+                <div class="step"><div class="step-number">3</div><div class="step-content"><h4>Verified Badge</h4><p>Once enough community members confirm your metrics, you receive a green "Verified" badge.</p></div></div>
             </div>
         </div>
         <div class="card">
             <h3>⭐ Trust Score System</h3>
-            <p style="margin-bottom:1rem;">Your trust score reflects your reliability as a verifier.</p>
             <div class="trust-rules">
                 <div class="rule-card"><span class="rule-positive">+2 points</span><br>Confirming an accurate metric</div>
                 <div class="rule-card"><span class="rule-positive">+1 point</span><br>Correctly challenging an inaccurate metric</div>
-                <div class="rule-card"><span class="rule-negative">-5 points</span><br>Falsely confirming an inaccurate metric</div>
-                <div class="rule-card"><span class="rule-negative">-3 points</span><br>Falsely challenging an accurate metric</div>
-                <div class="rule-card"><span class="rule-positive">+10 points</span><br>Successfully unverifying a falsely verified athlete</div>
-            </div>
-            <div style="margin-top:1rem; text-align:center; font-size:0.8rem; color:var(--gray-light);">✨ 7+ day verification streak → Bonus points<br>🏆 Top verifiers earn free Scout Pro access</div>
-        </div>
-        <div class="card">
-            <h3>❓ Frequently Asked Questions</h3>
-            <div style="margin-top:1rem;">
-                <div class="faq-item" style="margin-bottom:1rem;"><div class="faq-question" style="font-weight:600; cursor:pointer; padding:0.5rem 0; display:flex; justify-content:space-between;" onclick="toggleFaq(this)">What makes VANTAGE different? <span>▼</span></div><div class="faq-answer" style="display:none; font-size:0.85rem; color:var(--gray-light); padding:0.5rem 0;">Unlike Hudl or recruiting platforms that rely on self-reported stats, VANTAGE uses AI + community verification to ensure every metric is accurate. Scouts can trust what they see.</div></div>
-                <div class="faq-item" style="margin-bottom:1rem;"><div class="faq-question" style="font-weight:600; cursor:pointer; padding:0.5rem 0; display:flex; justify-content:space-between;" onclick="toggleFaq(this)">Can I challenge a verification? <span>▼</span></div><div class="faq-answer" style="display:none; font-size:0.85rem; color:var(--gray-light); padding:0.5rem 0;">Yes. Click "Challenge" on any athlete's profile. If your challenge is correct, you earn trust points and the athlete's status is reviewed.</div></div>
-                <div class="faq-item" style="margin-bottom:1rem;"><div class="faq-question" style="font-weight:600; cursor:pointer; padding:0.5rem 0; display:flex; justify-content:space-between;" onclick="toggleFaq(this)">How do I unverify a verified athlete? <span>▼</span></div><div class="faq-answer" style="display:none; font-size:0.85rem; color:var(--gray-light); padding:0.5rem 0;">High-trust users (90+) can click "Unverify" on any athlete's profile. This removes their verified status and triggers a review.</div></div>
-                <div class="faq-item" style="margin-bottom:1rem;"><div class="faq-question" style="font-weight:600; cursor:pointer; padding:0.5rem 0; display:flex; justify-content:space-between;" onclick="toggleFaq(this)">Is VANTAGE really free for athletes? <span>▼</span></div><div class="faq-answer" style="display:none; font-size:0.85rem; color:var(--gray-light); padding:0.5rem 0;">Yes. Athletes never pay. Scouts pay $500/year for full database access, advanced filters, and export tools.</div></div>
+                <div class="rule-card"><span class="rule-negative">-5 points</span><br>Falsely confirming</div>
+                <div class="rule-card"><span class="rule-negative">-3 points</span><br>Falsely challenging</div>
+                <div class="rule-card"><span class="rule-positive">+10 points</span><br>Successfully unverifying a false athlete</div>
             </div>
         </div>
         <div class="card" style="text-align:center;">
             <h3>Ready to get started?</h3>
-            <p style="margin:0.5rem 0;">Join thousands of athletes getting verified.</p>
             <div style="display:flex; gap:1rem; justify-content:center; margin-top:1rem;">
                 <button class="btn-primary" style="width:auto; padding:0.5rem 1.5rem;" onclick="showPage('submit')">Get Verified</button>
                 <button class="btn-secondary" style="width:auto; padding:0.5rem 1.5rem;" onclick="showPage('discover')">Browse Athletes</button>
@@ -682,7 +679,6 @@
         </div>
     </div>
 
-    <!-- PRICING PAGE -->
     <div id="pricingPage" class="page">
         <div class="page-header"><h1>Simple Pricing</h1><p>Free for athletes · $500/year for scouts</p></div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
@@ -694,13 +690,20 @@
 
 <div id="loginModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('loginModal')">&times;</span><h2>Sign In</h2><div class="form-group"><label>Email</label><input type="email" class="form-input" id="loginEmail" placeholder="coach@example.com"></div><div class="form-group"><label>Password</label><input type="password" class="form-input" id="loginPassword" placeholder="••••••••"></div><button class="btn-primary" id="doLoginBtn">Sign In</button><p style="text-align:center; margin-top:1rem; font-size:0.75rem; color:var(--gray-light);">Demo: Any email works</p></div></div>
 
-<div id="detailModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('detailModal')">&times;</span><div id="detailContent"></div><div class="button-group" id="actionButtons"><button class="btn-confirm" id="confirmBtn">✓ Confirm</button><button class="btn-unverify" id="unverifyBtn" style="display:none;">⚠ Unverify</button><button class="btn-undo" id="undoConfirmBtn" style="display:none;">↩️ Undo</button><button class="btn-challenge" id="challengeBtn">⚠ Challenge</button></div><div class="button-group"><button class="btn-secondary" id="watchlistDetailBtn">⭐ Save to Watchlist</button></div></div></div>
+<div id="detailModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('detailModal')">&times;</span><div id="detailContent"></div><div class="button-group" id="actionButtons">
+    <button class="btn-confirm" id="confirmBtn">✓ Confirm</button>
+    <button class="btn-unverify" id="unverifyBtn" style="display:none;">⚠ Unverify</button>
+    <button class="btn-undo" id="undoConfirmBtn" style="display:none;">↩️ Undo Confirm</button>
+    <button class="btn-challenge" id="challengeBtn">⚠ Challenge</button>
+    <button class="btn-unchallenge" id="unchallengeBtn" style="display:none;">↩️ Unchallenge</button>
+</div>
+<div class="button-group"><button class="btn-secondary" id="watchlistDetailBtn">⭐ Save to Watchlist</button></div></div></div>
 
 <div id="embedModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('embedModal')">&times;</span><h3>Share Your Verified Badge</h3><p style="margin:1rem 0;">Copy this code to your Instagram bio:</p><div style="background:#1a1a1a; padding:0.75rem; border-radius:12px; font-family:monospace; font-size:0.7rem; word-break:break-all;" id="embedCode"></div><button class="btn-primary" style="margin-top:1rem;" onclick="copyEmbedCode()">Copy Code</button></div></div>
 
 <script>
     let athletes = [];
-    let currentUser = { name: "Demo User", trustScore: 85, email: null, confirmationsMade: 0, streak: 3, watchlist: [], confirmedAthleteIds: [] };
+    let currentUser = { name: "Demo User", trustScore: 85, email: null, confirmationsMade: 0, streak: 3, watchlist: [], confirmedAthleteIds: [], challengedAthleteIds: [] };
     let currentFilter = "all";
     let currentSort = "default";
     let currentSearch = "";
@@ -708,36 +711,31 @@
     let compareSelectedIds = [];
 
     const defaultAthletes = [
-        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5, verifiedAt: new Date().toISOString() }, sprint: null }, trustScore: 94, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson"], views: 342, verificationHistory: [] },
-        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4, verifiedAt: new Date().toISOString() }, sprint: null }, trustScore: 91, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson"], views: 189, verificationHistory: [] },
-        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, metrics: { vertical: { value: 44, status: "verified", confidence: 98, verifications: 7, verifiedAt: new Date().toISOString() }, sprint: null }, trustScore: 96, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson","Mike Ross","Lisa Wong"], views: 567, verificationHistory: [] },
-        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, metrics: { vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, sprint: null }, trustScore: 0, confirmations: ["Coach Miller"], views: 45, verificationHistory: [] },
-        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, metrics: { vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, sprint: null }, trustScore: 0, confirmations: [], views: 34, verificationHistory: [] },
-        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: null }, trustScore: 0, confirmations: [], views: 28, verificationHistory: [] }
+        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5, verifiedAt: new Date().toISOString() }, sprint: null }, trustScore: 94, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson"], views: 342, verificationHistory: [], challenges: [] },
+        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4, verifiedAt: new Date().toISOString() }, sprint: null }, trustScore: 91, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson"], views: 189, verificationHistory: [], challenges: [] },
+        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, metrics: { vertical: { value: 44, status: "verified", confidence: 98, verifications: 7, verifiedAt: new Date().toISOString() }, sprint: null }, trustScore: 96, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson","Mike Ross","Lisa Wong"], views: 567, verificationHistory: [], challenges: [] },
+        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, metrics: { vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, sprint: null }, trustScore: 0, confirmations: ["Coach Miller"], views: 45, verificationHistory: [], challenges: [] },
+        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, metrics: { vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, sprint: null }, trustScore: 0, confirmations: [], views: 34, verificationHistory: [], challenges: [] },
+        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: null }, trustScore: 0, confirmations: [], views: 28, verificationHistory: [], challenges: [] }
     ];
 
-    function showToast(message, type = 'info') {
+    function showToast(message, type = 'info', undoCallback = null, undoLabel = 'Undo') {
         const existing = document.querySelector('.toast');
         if (existing) existing.remove();
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
-        toast.innerHTML = message;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
-    }
-
-    function toggleFaq(element) {
-        const answer = element.nextElementSibling;
-        const arrow = element.querySelector('span');
-        if (answer && answer.style) {
-            if (answer.style.display === 'block') {
-                answer.style.display = 'none';
-                if (arrow) arrow.innerHTML = '▼';
-            } else {
-                answer.style.display = 'block';
-                if (arrow) arrow.innerHTML = '▲';
-            }
+        toast.innerHTML = `<span>${message}</span>`;
+        if (undoCallback) {
+            const undoBtn = document.createElement('button');
+            undoBtn.className = 'toast-undo-btn';
+            undoBtn.innerText = undoLabel;
+            undoBtn.onclick = () => { undoCallback(); toast.remove(); };
+            toast.appendChild(undoBtn);
+            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 5000);
+        } else {
+            setTimeout(() => toast.remove(), 3000);
         }
+        document.body.appendChild(toast);
     }
 
     function loadData() {
@@ -746,6 +744,7 @@
         const savedUser = localStorage.getItem('vantage_user');
         if (savedUser) Object.assign(currentUser, JSON.parse(savedUser));
         if (!currentUser.confirmedAthleteIds) currentUser.confirmedAthleteIds = [];
+        if (!currentUser.challengedAthleteIds) currentUser.challengedAthleteIds = [];
         if (!currentUser.watchlist) currentUser.watchlist = [];
         const savedCompare = localStorage.getItem('vantage_compare');
         if (savedCompare) compareSelectedIds = JSON.parse(savedCompare);
@@ -792,20 +791,22 @@
     function toggleWatchlist(athleteId, event) {
         if (event) event.stopPropagation();
         const idx = currentUser.watchlist.indexOf(athleteId);
+        const wasInWatchlist = idx !== -1;
         if (idx === -1) {
             currentUser.watchlist.push(athleteId);
-            showToast('⭐ Added to watchlist', 'success');
+            showToast('⭐ Added to watchlist', 'success', 
+                () => { currentUser.watchlist = currentUser.watchlist.filter(id => id !== athleteId); showToast('Undid watchlist add', 'info'); renderAthleteGrid(); renderWatchlist(); updateStats(); if (currentDetailAthlete && currentDetailAthlete.id === athleteId) document.getElementById('watchlistDetailBtn').innerText = '⭐ Save to Watchlist'; }, 'Undo');
         } else {
             currentUser.watchlist.splice(idx, 1);
-            showToast('☆ Removed from watchlist', 'info');
+            showToast('☆ Removed from watchlist', 'info', 
+                () => { currentUser.watchlist.push(athleteId); showToast('Undid watchlist removal', 'success'); renderAthleteGrid(); renderWatchlist(); updateStats(); if (currentDetailAthlete && currentDetailAthlete.id === athleteId) document.getElementById('watchlistDetailBtn').innerText = '⭐ Remove from Watchlist'; }, 'Undo');
         }
         saveData();
         renderAthleteGrid();
         renderWatchlist();
         updateStats();
         if (currentDetailAthlete && currentDetailAthlete.id === athleteId) {
-            const btn = document.getElementById('watchlistDetailBtn');
-            if (btn) btn.innerText = currentUser.watchlist.includes(athleteId) ? '⭐ Remove from Watchlist' : '⭐ Save to Watchlist';
+            document.getElementById('watchlistDetailBtn').innerText = currentUser.watchlist.includes(athleteId) ? '⭐ Remove from Watchlist' : '⭐ Save to Watchlist';
         }
     }
 
@@ -815,13 +816,15 @@
         if (idx === -1) {
             if (compareSelectedIds.length < 4) {
                 compareSelectedIds.push(athleteId);
-                showToast(`✓ Added to compare (${compareSelectedIds.length}/4)`, 'success');
+                showToast(`✓ Added to compare (${compareSelectedIds.length}/4)`, 'success',
+                    () => { compareSelectedIds = compareSelectedIds.filter(id => id !== athleteId); showToast('Undid compare add', 'info'); renderAthleteGrid(); renderComparison(); }, 'Undo');
             } else {
                 showToast('You can compare up to 4 athletes at a time', 'error');
             }
         } else {
             compareSelectedIds.splice(idx, 1);
-            showToast('Removed from compare', 'info');
+            showToast('Removed from compare', 'info',
+                () => { if (compareSelectedIds.length < 4) { compareSelectedIds.push(athleteId); showToast('Undid compare removal', 'success'); renderAthleteGrid(); renderComparison(); } }, 'Undo');
         }
         saveData();
         renderAthleteGrid();
@@ -928,12 +931,9 @@
             showToast('This athlete is not verified', 'error');
             return;
         }
-        if (!currentDetailAthlete.verificationHistory) currentDetailAthlete.verificationHistory = [];
-        currentDetailAthlete.verificationHistory.push({ action: 'unverified', by: currentUser.name, at: new Date().toISOString() });
         currentDetailAthlete.metrics.vertical.status = 'pending';
         currentDetailAthlete.metrics.vertical.verifications = Math.max(0, (currentDetailAthlete.metrics.vertical.verifications || 0) - 2);
         currentDetailAthlete.trustScore = 0;
-        currentDetailAthlete.confirmations = [];
         const confirmIdx = currentUser.confirmedAthleteIds.indexOf(currentDetailAthlete.id);
         if (confirmIdx !== -1) currentUser.confirmedAthleteIds.splice(confirmIdx, 1);
         currentUser.trustScore = Math.min(100, currentUser.trustScore + 10);
@@ -951,6 +951,7 @@
         athlete.views = (athlete.views || 0) + 1;
         const isVerified = athlete.metrics.vertical?.status === 'verified';
         const hasConfirmed = currentUser.confirmedAthleteIds.includes(athlete.id);
+        const hasChallenged = currentUser.challengedAthleteIds?.includes(athlete.id);
         const inWatchlist = currentUser.watchlist.includes(athlete.id);
         const needConfirmations = athlete.metrics.vertical?.status === 'pending' ? (3 - (athlete.metrics.vertical.verifications || 0)) : 0;
         const canUnverify = currentUser.trustScore >= 90 && isVerified;
@@ -963,19 +964,13 @@
             <div style="margin:1rem 0;"><div class="verification-count">🔒 Verified by ${athlete.confirmations.length} community members</div><div class="trust-score">⭐ Trust Score: ${athlete.trustScore || 'Pending'}</div>${!isVerified && needConfirmations > 0 ? `<div class="progress-container"><div class="progress-bar" style="width: ${((3 - needConfirmations) / 3) * 100}%;"></div></div><div class="verification-count">Needs ${needConfirmations} more confirmation${needConfirmations !== 1 ? 's' : ''} (3 total required)</div>` : ''}</div>
             <button class="btn-outline" id="shareBadgeBtn" style="width:100%;">🏅 Share Verified Badge</button>`;
         
-        const confirmBtn = document.getElementById('confirmBtn');
-        const unverifyBtn = document.getElementById('unverifyBtn');
-        const undoBtn = document.getElementById('undoConfirmBtn');
-        const challengeBtn = document.getElementById('challengeBtn');
+        document.getElementById('confirmBtn').style.display = (!hasConfirmed && !isVerified) ? 'block' : 'none';
+        document.getElementById('unverifyBtn').style.display = canUnverify ? 'block' : 'none';
+        document.getElementById('undoConfirmBtn').style.display = hasConfirmed ? 'block' : 'none';
+        document.getElementById('challengeBtn').style.display = (!hasChallenged && !isVerified) ? 'block' : 'none';
+        document.getElementById('unchallengeBtn').style.display = hasChallenged ? 'block' : 'none';
         
-        if (confirmBtn) confirmBtn.style.display = (!hasConfirmed && !isVerified) ? 'block' : 'none';
-        if (unverifyBtn) unverifyBtn.style.display = canUnverify ? 'block' : 'none';
-        if (undoBtn) undoBtn.style.display = hasConfirmed ? 'block' : 'none';
-        if (challengeBtn) challengeBtn.style.display = (!hasConfirmed && !isVerified) ? 'block' : 'none';
-        
-        const watchlistDetailBtn = document.getElementById('watchlistDetailBtn');
-        if (watchlistDetailBtn) watchlistDetailBtn.innerText = inWatchlist ? '⭐ Remove from Watchlist' : '⭐ Save to Watchlist';
-        
+        document.getElementById('watchlistDetailBtn').innerText = inWatchlist ? '⭐ Remove from Watchlist' : '⭐ Save to Watchlist';
         document.getElementById('shareBadgeBtn')?.addEventListener('click', () => showEmbedModal(athlete));
         document.getElementById('unverifyBtn')?.addEventListener('click', unverifyAthlete);
         
@@ -997,7 +992,6 @@
             currentDetailAthlete.metrics.vertical.verifications = (currentDetailAthlete.metrics.vertical.verifications || 0) + 1;
             if (currentDetailAthlete.metrics.vertical.verifications >= 3) {
                 currentDetailAthlete.metrics.vertical.status = 'verified';
-                currentDetailAthlete.metrics.vertical.verifiedAt = new Date().toISOString();
                 currentDetailAthlete.trustScore = Math.floor(Math.random() * 30) + 70;
             }
         }
@@ -1007,7 +1001,8 @@
         renderAthleteGrid();
         updateStats();
         if (currentDetailAthlete) showAthleteDetail(currentDetailAthlete.id);
-        showToast(`✓ Verified! +2 trust points. Streak: ${currentUser.streak} days`, 'success');
+        showToast(`✓ Verified! +2 trust points. Streak: ${currentUser.streak} days`, 'success',
+            () => { undoConfirmation(); }, 'Undo');
     }
 
     function undoConfirmation() {
@@ -1035,14 +1030,38 @@
 
     function challengeVerification() {
         if (!currentDetailAthlete) return;
-        showToast(`⚠ Challenge submitted for ${currentDetailAthlete.name}. Our team will review within 24 hours.`, 'warning');
+        if (currentUser.challengedAthleteIds?.includes(currentDetailAthlete.id)) {
+            showToast('You already challenged this athlete', 'error');
+            return;
+        }
+        if (!currentUser.challengedAthleteIds) currentUser.challengedAthleteIds = [];
+        currentUser.challengedAthleteIds.push(currentDetailAthlete.id);
+        if (!currentDetailAthlete.challenges) currentDetailAthlete.challenges = [];
+        currentDetailAthlete.challenges.push({ by: currentUser.name, at: new Date().toISOString() });
+        saveData();
+        showToast(`⚠ Challenge submitted for ${currentDetailAthlete.name}. Review pending.`, 'warning',
+            () => { unchallengeVerification(); }, 'Undo');
+    }
+
+    function unchallengeVerification() {
+        if (!currentDetailAthlete) return;
+        const idx = currentUser.challengedAthleteIds?.indexOf(currentDetailAthlete.id);
+        if (idx !== -1 && idx !== undefined) {
+            currentUser.challengedAthleteIds.splice(idx, 1);
+            const challengeIdx = currentDetailAthlete.challenges?.findIndex(c => c.by === currentUser.name);
+            if (challengeIdx !== -1 && challengeIdx !== undefined) currentDetailAthlete.challenges.splice(challengeIdx, 1);
+            saveData();
+            showToast(`↩️ Challenge withdrawn for ${currentDetailAthlete.name}`, 'info');
+            if (currentDetailAthlete) showAthleteDetail(currentDetailAthlete.id);
+        } else {
+            showToast('No challenge to undo', 'error');
+        }
     }
 
     function toggleWatchlistFromDetail() {
         if (!currentDetailAthlete) return;
         toggleWatchlist(currentDetailAthlete.id);
-        const btn = document.getElementById('watchlistDetailBtn');
-        if (btn) btn.innerText = currentUser.watchlist.includes(currentDetailAthlete.id) ? '⭐ Remove from Watchlist' : '⭐ Save to Watchlist';
+        document.getElementById('watchlistDetailBtn').innerText = currentUser.watchlist.includes(currentDetailAthlete.id) ? '⭐ Remove from Watchlist' : '⭐ Save to Watchlist';
     }
 
     function showEmbedModal(athlete) {
@@ -1084,7 +1103,7 @@
                 id: newId, name, school: school || "Not specified", position, avatarBg: bgClasses[Math.floor(Math.random() * bgClasses.length)],
                 jerseyNum: Math.floor(Math.random() * 99).toString(), classYear: 2026,
                 metrics: { vertical: { value: Math.round(measured * 10) / 10, status: 'pending', confidence, verifications: 0 }, sprint: null },
-                trustScore: 0, confirmations: [], views: 0, verificationHistory: []
+                trustScore: 0, confirmations: [], views: 0, verificationHistory: [], challenges: []
             });
             resultDiv.innerHTML = `<div class="alert-success">✅ AI Analysis Complete!<br>Vertical: ${Math.round(measured * 10) / 10}" (${confidence}% confidence)<br>Status: Pending (needs ${needs} confirmations)</div>`;
             document.getElementById('videoUrl').value = '';
@@ -1113,9 +1132,6 @@
         if (pageId === 'discover') renderAthleteGrid();
         if (pageId === 'scout') { renderWatchlist(); renderComparison(); }
         if (pageId === 'leaderboard') updateStats();
-        if (pageId === 'howitworks') {
-            document.querySelectorAll('.faq-answer').forEach(el => el.style.display = 'none');
-        }
     }
 
     function applyFilter(filter) {
@@ -1168,6 +1184,7 @@
     document.getElementById('confirmBtn')?.addEventListener('click', confirmVerification);
     document.getElementById('undoConfirmBtn')?.addEventListener('click', undoConfirmation);
     document.getElementById('challengeBtn')?.addEventListener('click', challengeVerification);
+    document.getElementById('unchallengeBtn')?.addEventListener('click', unchallengeVerification);
     document.getElementById('watchlistDetailBtn')?.addEventListener('click', toggleWatchlistFromDetail);
     document.getElementById('exportCsvBtn')?.addEventListener('click', exportToCSV);
     document.getElementById('refreshCompareBtn')?.addEventListener('click', refreshComparison);
