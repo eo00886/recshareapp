@@ -629,7 +629,6 @@
 </div>
 
 <div class="container" id="app">
-    <!-- DISCOVER PAGE -->
     <div id="discoverPage" class="page active">
         <div class="page-header"><h1>Verified Basketball Athletes</h1><p>AI-measured vertical leap + 40-yard sprint · Community verified</p></div>
         <div class="stats-grid">
@@ -654,7 +653,6 @@
         <div class="athlete-grid" id="athleteGrid"></div>
     </div>
 
-    <!-- SUBMIT PAGE -->
     <div id="submitPage" class="page">
         <div class="page-header"><h1>Get Verified</h1><p>Submit your basketball Instagram video for AI analysis</p></div>
         <div class="card">
@@ -670,7 +668,6 @@
         </div>
     </div>
 
-    <!-- SCOUT PORTAL PAGE -->
     <div id="scoutPage" class="page">
         <div class="page-header"><h1>Scout Portal</h1><p>Advanced tools for basketball talent evaluation</p></div>
         <div class="mode-toggle">
@@ -691,14 +688,12 @@
         </div>
     </div>
 
-    <!-- LEADERBOARD PAGE -->
     <div id="leaderboardPage" class="page">
         <div class="page-header"><h1>Trust Leaderboard</h1><p>Top verifiers earn scout access</p></div>
         <div class="card" id="leaderboardList"></div>
         <div class="card"><h3>Your Stats</h3><div>Confirmations: <strong id="userConfirmCount">0</strong></div><div>Current streak: <strong id="userStreak">0</strong> days</div><div>Trust score: <strong id="userTrustDisplay">85</strong></div><div class="progress-container"><div class="progress-bar" id="trustProgress" style="width:85%"></div></div></div>
     </div>
 
-    <!-- HOW IT WORKS PAGE -->
     <div id="howitworksPage" class="page">
         <div class="page-header"><h1>How VANTAGE Works</h1><p>Basketball athletic intelligence</p></div>
         <div class="card">
@@ -737,7 +732,6 @@
         </div>
     </div>
 
-    <!-- PRICING PAGE -->
     <div id="pricingPage" class="page">
         <div class="page-header"><h1>Simple Pricing</h1><p>Free for athletes · $500/year for scouts</p></div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
@@ -762,10 +756,11 @@
 
 <script>
     // ============================================
-    // VANTAGE - BASKETBALL ONLY - COMPLETE
+    // VANTAGE - BASKETBALL ONLY - PRODUCTION READY
+    // BACKEND URL: https://vantage-backend-production-5621.up.railway.app
     // ============================================
 
-    const BACKEND_URL = 'https://vantage-backend.up.railway.app';
+    const BACKEND_URL = 'https://vantage-backend-production-5621.up.railway.app';
 
     let athletes = [];
     let currentUser = { name: "Demo User", trustScore: 85, email: null, confirmationsMade: 0, streak: 3, watchlist: [], confirmedAthleteIds: [], challengedAthleteIds: [] };
