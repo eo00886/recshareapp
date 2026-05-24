@@ -536,6 +536,72 @@
             transform: scale(1.05);
         }
 
+        .video-input-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(30,30,38,0.8);
+            border: 0.5px solid rgba(59,130,246,0.2);
+            border-radius: 30px;
+            color: var(--gray-light);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .supported-platforms {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+            font-size: 0.7rem;
+            color: var(--gray-light);
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(59,130,246,0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-blue);
+            background: rgba(59,130,246,0.05);
+        }
+
+        .upload-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-subtitle {
+            font-size: 0.7rem;
+            color: var(--gray-light);
+            margin-top: 0.25rem;
+        }
+
+        .camera-container {
+            text-align: center;
+        }
+
+        .camera-container video {
+            width: 100%;
+            border-radius: 12px;
+            background: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
         .form-group { margin-bottom: 1rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--gray-light); }
         .form-input, .form-select {
@@ -741,9 +807,52 @@
     </div>
 
     <div id="submitPage" class="page">
-        <div class="page-header"><h1>Get Verified</h1><p>Submit your Instagram video for AI analysis</p></div>
+        <div class="page-header"><h1>Get Verified</h1><p>Upload or paste video from any platform</p></div>
         <div class="card">
-            <div class="form-group"><label>Instagram URL</label><input type="url" class="form-input" id="videoUrl" placeholder="https://www.instagram.com/p/..."></div>
+            <div class="video-input-tabs">
+                <button class="tab-btn active" data-tab="url">URL</button>
+                <button class="tab-btn" data-tab="upload">Upload</button>
+                <button class="tab-btn" data-tab="camera">Camera</button>
+            </div>
+            
+            <!-- URL Tab -->
+            <div id="urlTab" class="tab-content active">
+                <div class="form-group">
+                    <label>Video URL</label>
+                    <input type="url" class="form-input" id="videoUrl" placeholder="Paste link from Instagram, YouTube, TikTok, etc.">
+                    <div class="supported-platforms">
+                        <span>📷 Instagram</span>
+                        <span>▶️ YouTube</span>
+                        <span>🎵 TikTok</span>
+                        <span>🐦 Twitter/X</span>
+                        <span>🔗 Direct URL</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Upload Tab -->
+            <div id="uploadTab" class="tab-content" style="display:none;">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📤</div>
+                    <p>Drag & drop video file</p>
+                    <p class="upload-subtitle">or click to browse</p>
+                    <input type="file" id="videoFile" accept="video/mp4,video/quicktime,video/x-msvideo" style="display:none;">
+                    <div id="uploadProgress" style="display:none; margin-top:1rem;">
+                        <div class="progress-bar" style="width:50%; height:4px; background:var(--primary-blue);"></div>
+                        <span>Uploading...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Camera Tab -->
+            <div id="cameraTab" class="tab-content" style="display:none;">
+                <div class="camera-container">
+                    <video id="cameraPreview" autoplay playsinline style="width:100%; border-radius:12px;"></video>
+                    <button type="button" class="btn-secondary" id="captureBtn" style="margin-bottom:0.5rem;">📸 Record 5 Seconds</button>
+                    <div id="recordedVideoPreview" style="display:none;"></div>
+                </div>
+            </div>
+            
             <div class="form-group"><label>Full Name</label><input type="text" class="form-input" id="athleteName" placeholder="Marcus Thompson"></div>
             <div class="form-group"><label>School/Team</label><input type="text" class="form-input" id="athleteSchool" placeholder="Westlake High"></div>
             <div class="form-group"><label>Position</label><select class="form-select" id="athletePosition"><option value="PG">PG</option><option value="SG">SG</option><option value="SF">SF</option><option value="PF">PF</option><option value="C">C</option></select></div>
@@ -782,12 +891,12 @@
     </div>
 
     <div id="howitworksPage" class="page">
-        <div class="page-header"><h1>How VANTAGE Works</h1><p>AI-powered athletic verification</p></div>
+        <div class="page-header"><h1>How VANTAGE Works</h1><p>AI-powered athletic verification from any video source</p></div>
         <div class="card">
             <h3>🔍 The Verification Process</h3>
             <div class="step-container">
-                <div class="step"><div class="step-number">1</div><div class="step-content"><h4>Upload Video</h4><p>Share your Instagram video showing athletic performance.</p></div></div>
-                <div class="step"><div class="step-number">2</div><div class="step-content"><h4>AI Analysis</h4><p>Our AI analyzes frame-by-frame to measure vertical leap, sprint speed, and other metrics.</p></div></div>
+                <div class="step"><div class="step-number">1</div><div class="step-content"><h4>Submit Video</h4><p>Paste a link from Instagram, YouTube, TikTok, or upload directly. Even record from your camera!</p></div></div>
+                <div class="step"><div class="step-number">2</div><div class="step-content"><h4>AI Analysis</h4><p>Our AI downloads and analyzes frame-by-frame to measure vertical leap and sprint speed.</p></div></div>
                 <div class="step"><div class="step-number">3</div><div class="step-content"><h4>Community Verification</h4><p>Other users confirm your measurements. After 3 confirmations, you earn the Verified badge.</p></div></div>
             </div>
         </div>
@@ -804,7 +913,7 @@
         <div class="card" style="text-align:center;">
             <h3>Ready to get started?</h3>
             <div style="display:flex; gap:1rem; justify-content:center; margin-top:1rem;">
-                <button class="btn-primary" style="width:auto; padding:0.5rem 1.5rem;" onclick="showPage('submit')">Get Verified</button>
+                <button class="btn-primary" style="width:auto; padding:0.5rem 1.5rem;" onclick="showPage('submit')">Submit Video</button>
                 <button class="btn-secondary" style="width:auto; padding:0.5rem 1.5rem;" onclick="showPage('discover')">Browse Athletes</button>
             </div>
         </div>
@@ -833,7 +942,6 @@
 
 <div id="embedModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('embedModal')">&times;</span><h3>Share Your Verified Badge</h3><p style="margin:1rem 0;">Copy this code to your Instagram bio:</p><div style="background:#1a1a1a; padding:0.75rem; border-radius:12px; font-family:monospace; font-size:0.7rem; word-break:break-all;" id="embedCode"></div><button class="btn-primary" style="margin-top:1rem;" onclick="copyEmbedCode()">Copy Code</button></div></div>
 
-<!-- Video Player Modal -->
 <div id="videoPlayerModal" class="modal">
     <div class="modal-content video-modal">
         <span class="close-modal" onclick="closeVideoPlayer()">&times;</span>
@@ -849,7 +957,7 @@
 
 <script>
     // ============================================
-    // VANTAGE - COMPLETE WITH VIDEO PLAYBACK
+    // VANTAGE - UNIVERSAL VIDEO INTAKE
     // BACKEND URL: https://vantage-backend-production-5621.up.railway.app
     // ============================================
 
@@ -862,6 +970,9 @@
     let currentSearch = "";
     let currentDetailAthlete = null;
     let compareSelectedIds = [];
+    let mediaStream = null;
+    let mediaRecorder = null;
+    let recordedChunks = [];
 
     const defaultAthletes = [
         { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: { value: 4.38, status: "verified", confidence: 94, verifications: 4 } }, trustScore: 94, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson"], views: 342 },
@@ -872,6 +983,10 @@
         { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, flagged: false, hasClip: false, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: { value: 4.35, status: "pending", confidence: 74, verifications: 0 } }, trustScore: 0, confirmations: [], views: 28 }
     ];
 
+    // ============================================
+    // UI HELPERS
+    // ============================================
+    
     function showToast(message, type = 'info', undoCallback = null, undoLabel = 'Undo') {
         const existing = document.querySelector('.toast');
         if (existing) existing.remove();
@@ -943,7 +1058,6 @@
         const video = document.getElementById('highlightVideo');
         const source = document.getElementById('videoSource');
         
-        // Mock clip URL - in production, this would be a real endpoint
         source.src = `${BACKEND_URL}/static/clips/athlete_${athleteId}/${metricType}.mp4`;
         video.load();
         
@@ -966,6 +1080,143 @@
         closeModal('videoPlayerModal');
     }
 
+    // ============================================
+    // TAB SWITCHING & CAMERA
+    // ============================================
+    
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            document.getElementById('urlTab').style.display = 'none';
+            document.getElementById('uploadTab').style.display = 'none';
+            document.getElementById('cameraTab').style.display = 'none';
+            
+            const tab = btn.dataset.tab;
+            document.getElementById(`${tab}Tab`).style.display = 'block';
+            
+            if (tab === 'camera') {
+                initCamera();
+            } else if (tab !== 'camera' && mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+            }
+        });
+    });
+
+    function initCamera() {
+        if (mediaStream) {
+            mediaStream.getTracks().forEach(track => track.stop());
+        }
+        
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                mediaStream = stream;
+                const video = document.getElementById('cameraPreview');
+                if (video) video.srcObject = stream;
+            })
+            .catch(err => {
+                showToast('Camera access denied. Please check permissions.', 'error');
+            });
+    }
+
+    document.getElementById('captureBtn')?.addEventListener('click', () => {
+        if (!mediaStream) {
+            showToast('Camera not initialized', 'error');
+            return;
+        }
+        
+        recordedChunks = [];
+        mediaRecorder = new MediaRecorder(mediaStream);
+        
+        mediaRecorder.ondataavailable = (e) => {
+            if (e.data.size > 0) recordedChunks.push(e.data);
+        };
+        
+        mediaRecorder.onstop = () => {
+            const blob = new Blob(recordedChunks, { type: 'video/mp4' });
+            const file = new File([blob], 'camera_capture.mp4', { type: 'video/mp4' });
+            handleVideoUpload(file);
+        };
+        
+        mediaRecorder.start();
+        showToast('Recording... (5 seconds)', 'info');
+        setTimeout(() => {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+            }
+        }, 5000);
+    });
+
+    // ============================================
+    // UPLOAD HANDLING
+    // ============================================
+    
+    const uploadArea = document.getElementById('uploadArea');
+    const videoFile = document.getElementById('videoFile');
+
+    if (uploadArea) {
+        uploadArea.addEventListener('click', () => videoFile.click());
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = 'var(--primary-blue)';
+        });
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = 'rgba(59,130,246,0.3)';
+        });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('video/')) {
+                handleVideoUpload(file);
+            }
+        });
+    }
+
+    if (videoFile) {
+        videoFile.addEventListener('change', (e) => {
+            if (e.target.files[0]) {
+                handleVideoUpload(e.target.files[0]);
+            }
+        });
+    }
+
+    async function handleVideoUpload(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        const progressDiv = document.getElementById('uploadProgress');
+        if (progressDiv) progressDiv.style.display = 'block';
+        
+        try {
+            const response = await fetch(`${BACKEND_URL}/upload-video`, {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            
+            if (progressDiv) progressDiv.style.display = 'none';
+            
+            if (data.video_url) {
+                const videoUrlInput = document.getElementById('videoUrl');
+                if (videoUrlInput) {
+                    videoUrlInput.value = data.video_url;
+                    showToast('Video uploaded successfully!', 'success');
+                }
+            } else {
+                showToast('Upload failed: ' + (data.error || 'Unknown error'), 'error');
+            }
+        } catch (error) {
+            if (progressDiv) progressDiv.style.display = 'none';
+            showToast('Upload failed', 'error');
+        }
+    }
+
+    // ============================================
+    // DATA MANAGEMENT
+    // ============================================
+    
     function loadData() {
         const saved = localStorage.getItem('vantage_athletes');
         athletes = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(defaultAthletes));
@@ -1022,6 +1273,10 @@
         return filtered;
     }
 
+    // ============================================
+    // CORE ACTIONS
+    // ============================================
+    
     function flagAthlete() {
         if (!currentDetailAthlete) return;
         if (currentDetailAthlete.flagged) {
@@ -1099,6 +1354,10 @@
         renderComparison();
     }
 
+    // ============================================
+    // RENDER FUNCTIONS
+    // ============================================
+    
     function renderAthleteGrid() {
         const grid = document.getElementById('athleteGrid');
         if (!grid) return;
@@ -1114,7 +1373,6 @@
             const isFlagged = a.flagged === true;
             const hasClip = a.hasClip === true;
             
-            // Generate avatar
             let avatarHtml = '';
             if (hasClip && a.thumbnailUrl) {
                 avatarHtml = `<img src="${a.thumbnailUrl}" class="athlete-video-thumbnail" style="width:100%; height:100%; object-fit:cover;">`;
@@ -1281,13 +1539,17 @@
         showToast('CSV downloaded', 'success');
     }
 
-    async function callBackendAPI(url, athleteId, athleteName, athleteSchool, athletePosition, claimedVertical, claimedSprint) {
+    // ============================================
+    // BACKEND API CALLS
+    // ============================================
+    
+    async function callBackendAPI(videoSource, athleteId, athleteName, athleteSchool, athletePosition, claimedVertical, claimedSprint) {
         try {
-            const response = await fetch(`${BACKEND_URL}/verify-both`, {
+            const response = await fetch(`${BACKEND_URL}/verify`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    instagram_url: url,
+                    video_source: videoSource,
                     athlete_id: athleteId,
                     athlete_name: athleteName,
                     athlete_school: athleteSchool,
@@ -1300,14 +1562,14 @@
             return await response.json();
         } catch (error) {
             console.warn('Backend unreachable, using mock simulation:', error);
-            return simulateMockAnalysis(url, claimedVertical, claimedSprint);
+            return simulateMockAnalysis(videoSource, claimedVertical, claimedSprint);
         }
     }
 
-    function simulateMockAnalysis(url, claimedVertical, claimedSprint) {
+    function simulateMockAnalysis(videoSource, claimedVertical, claimedSprint) {
         let quality = 0.7;
-        if (url.includes('/reel/')) quality += 0.1;
-        if (url.includes('instagram.com')) quality += 0.05;
+        if (videoSource.includes('/reel/')) quality += 0.1;
+        if (videoSource.includes('instagram.com') || videoSource.includes('youtube')) quality += 0.05;
         
         let measuredVert = claimedVertical || 36;
         let vertConfidence = Math.min(98, Math.max(55, Math.round(85 + (quality * 10) + (Math.random() - 0.5) * 15)));
@@ -1318,13 +1580,22 @@
         if (claimedSprint && Math.abs(sprintMeasured - claimedSprint) > 0.3) sprintConfidence = Math.max(55, sprintConfidence - 15);
         
         return {
-            vertical: { success: true, vertical_inches: Math.round(measuredVert * 10) / 10, confidence: vertConfidence, error: null, clip_url: null, thumbnail_url: null, needs_confirmations: vertConfidence >= 90 ? 0 : (vertConfidence >= 70 ? 2 : 3) },
-            sprint: { success: true, sprint_seconds: Math.round(sprintMeasured * 100) / 100, confidence: sprintConfidence, error: null, clip_url: null, needs_confirmations: sprintConfidence >= 90 ? 0 : (sprintConfidence >= 70 ? 2 : 3) }
+            success: true,
+            vertical_inches: Math.round(measuredVert * 10) / 10,
+            sprint_seconds: Math.round(sprintMeasured * 100) / 100,
+            vertical_confidence: vertConfidence,
+            sprint_confidence: sprintConfidence,
+            vertical_needs_confirmations: vertConfidence >= 90 ? 0 : (vertConfidence >= 70 ? 2 : 3),
+            sprint_needs_confirmations: sprintConfidence >= 90 ? 0 : (sprintConfidence >= 70 ? 2 : 3),
+            vertical_clip_url: null,
+            sprint_clip_url: null,
+            thumbnail_url: null,
+            error: null
         };
     }
 
     async function submitVideo() {
-        const url = document.getElementById('videoUrl')?.value.trim();
+        let videoSource = document.getElementById('videoUrl')?.value.trim();
         const name = document.getElementById('athleteName')?.value.trim();
         const school = document.getElementById('athleteSchool')?.value.trim();
         const position = document.getElementById('athletePosition')?.value;
@@ -1333,7 +1604,7 @@
         const resultDiv = document.getElementById('submitResult');
         const btn = document.getElementById('submitBtn');
 
-        if (!url) { resultDiv.innerHTML = '<div class="alert-error">Please enter an Instagram URL</div>'; return; }
+        if (!videoSource) { resultDiv.innerHTML = '<div class="alert-error">Please enter a video URL or upload a file</div>'; return; }
         if (!name) { resultDiv.innerHTML = '<div class="alert-error">Please enter your name</div>'; return; }
 
         btn.disabled = true;
@@ -1341,9 +1612,7 @@
 
         try {
             const newId = Math.max(...athletes.map(a => a.id), 0) + 1;
-            const apiResult = await callBackendAPI(url, newId, name, school, position, claimedVertical, claimedSprint);
-            const v = apiResult.vertical;
-            const s = apiResult.sprint;
+            const apiResult = await callBackendAPI(videoSource, newId, name, school, position, claimedVertical, claimedSprint);
             
             const bgClasses = ['avatar-bg-1', 'avatar-bg-2', 'avatar-bg-3', 'avatar-bg-4', 'avatar-bg-5', 'avatar-bg-6'];
             
@@ -1353,21 +1622,21 @@
                 jerseyNum: Math.floor(Math.random() * 99).toString(),
                 classYear: 2026,
                 flagged: false,
-                hasClip: !!(v.clip_url || s.clip_url),
-                thumbnailUrl: v.thumbnail_url,
+                hasClip: !!(apiResult.vertical_clip_url || apiResult.sprint_clip_url),
+                thumbnailUrl: apiResult.thumbnail_url,
                 metrics: {
-                    vertical: { value: v.vertical_inches, status: v.needs_confirmations === 0 ? 'verified' : 'pending', confidence: v.confidence, verifications: 0 },
-                    sprint: { value: s.sprint_seconds, status: s.needs_confirmations === 0 ? 'verified' : 'pending', confidence: s.confidence, verifications: 0 }
+                    vertical: { value: apiResult.vertical_inches, status: apiResult.vertical_needs_confirmations === 0 ? 'verified' : 'pending', confidence: apiResult.vertical_confidence, verifications: 0 },
+                    sprint: { value: apiResult.sprint_seconds, status: apiResult.sprint_needs_confirmations === 0 ? 'verified' : 'pending', confidence: apiResult.sprint_confidence, verifications: 0 }
                 },
-                trustScore: (v.needs_confirmations === 0 && s.needs_confirmations === 0) ? Math.floor(Math.random() * 30) + 70 : 0,
+                trustScore: (apiResult.vertical_needs_confirmations === 0 && apiResult.sprint_needs_confirmations === 0) ? Math.floor(Math.random() * 30) + 70 : 0,
                 confirmations: [],
                 views: 0
             };
             athletes.push(newAthlete);
             
-            const vStatus = v.needs_confirmations === 0 ? 'VERIFIED!' : `Pending (needs ${v.needs_confirmations} confirmations)`;
-            const sStatus = s.needs_confirmations === 0 ? 'VERIFIED!' : `Pending (needs ${s.needs_confirmations} confirmations)`;
-            resultDiv.innerHTML = `<div class="alert-success">✅ AI Analysis Complete!<br>🏀 Vertical: ${v.vertical_inches}" (${v.confidence}% confidence) - ${vStatus}<br>🏃 40-Yard Sprint: ${s.sprint_seconds}s (${s.confidence}% confidence) - ${sStatus}<br><br>📹 For best accuracy, ensure rim is visible for vertical and court lines are visible for sprint.</div>`;
+            const vStatus = apiResult.vertical_needs_confirmations === 0 ? 'VERIFIED!' : `Pending (needs ${apiResult.vertical_needs_confirmations} confirmations)`;
+            const sStatus = apiResult.sprint_needs_confirmations === 0 ? 'VERIFIED!' : `Pending (needs ${apiResult.sprint_needs_confirmations} confirmations)`;
+            resultDiv.innerHTML = `<div class="alert-success">✅ AI Analysis Complete!<br>🏀 Vertical: ${apiResult.vertical_inches}" (${apiResult.vertical_confidence}% confidence) - ${vStatus}<br>🏃 40-Yard Sprint: ${apiResult.sprint_seconds}s (${apiResult.sprint_confidence}% confidence) - ${sStatus}<br><br>📹 For best accuracy, ensure rim is visible for vertical and court lines are visible for sprint.</div>`;
             
             document.getElementById('videoUrl').value = '';
             document.getElementById('athleteName').value = '';
@@ -1389,6 +1658,10 @@
         }
     }
 
+    // ============================================
+    // VERIFICATION ACTIONS
+    // ============================================
+    
     function unverifyAthlete() {
         if (!currentDetailAthlete) return;
         if (currentUser.trustScore < 90) { showToast('Only high-trust users (90+) can unverify athletes', 'error'); return; }
@@ -1621,6 +1894,10 @@
         });
     }
 
+    // ============================================
+    // EVENT LISTENERS & INIT
+    // ============================================
+    
     document.querySelectorAll('.filter-chip').forEach(c => c.addEventListener('click', function() { applyFilter(this.dataset.filter); }));
     document.querySelectorAll('.nav-item').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
     document.querySelectorAll('.desktop-nav a').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
