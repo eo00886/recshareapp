@@ -17,12 +17,13 @@
             --purple-glow: rgba(139,92,246,0.2);
             --success: #10B981;
             --warning: #F59E0B;
+            --error: #EF4444;
             --gray: #6B7280;
             --gray-light: #9CA3AF;
         }
         
         .navbar { background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); border-bottom: 0.5px solid var(--blue-glow); position: sticky; top: 0; z-index: 100; padding: 0.75rem 1.25rem; }
-        .navbar-content { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .navbar-content { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
         
         .logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
         .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--blue), var(--purple)); border-radius: 10px; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: 0 0 15px var(--blue-glow); }
@@ -34,12 +35,12 @@
         .desktop-nav a { color: var(--gray-light); text-decoration: none; font-size: 0.9rem; cursor: pointer; transition: color 0.2s; }
         .desktop-nav a:hover { color: var(--blue); }
         
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,10,0.95); backdrop-filter: blur(20px); border-top: 0.5px solid var(--blue-glow); display: flex; justify-content: space-around; padding: 0.5rem 1rem 0.75rem; z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; background: none; border: none; color: var(--gray); font-size: 0.7rem; cursor: pointer; padding: 0.25rem 0.75rem; border-radius: 30px; transition: all 0.2s; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,10,0.95); backdrop-filter: blur(20px); border-top: 0.5px solid var(--blue-glow); display: flex; justify-content: space-around; padding: 0.5rem 1rem 0.75rem; z-index: 100; overflow-x: auto; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; background: none; border: none; color: var(--gray); font-size: 0.7rem; cursor: pointer; padding: 0.25rem 0.75rem; border-radius: 30px; transition: all 0.2s; white-space: nowrap; }
         .nav-item.active { color: var(--blue); background: rgba(59,130,246,0.1); }
         .nav-icon { font-size: 1.5rem; }
         
-        .mode-toggle { background: rgba(30,30,38,0.8); border-radius: 40px; padding: 0.25rem; display: inline-flex; gap: 0.25rem; margin-bottom: 1rem; }
+        .mode-toggle { background: rgba(30,30,38,0.8); border-radius: 40px; padding: 0.25rem; display: inline-flex; gap: 0.25rem; margin-bottom: 1rem; flex-wrap: wrap; }
         .mode-btn { padding: 0.5rem 1.25rem; border-radius: 30px; border: none; background: transparent; color: var(--gray); cursor: pointer; font-weight: 500; transition: all 0.2s; }
         .mode-btn.active { background: var(--blue); color: white; }
         
@@ -103,6 +104,7 @@
         .btn-primary:active { transform: scale(0.97); opacity: 0.9; }
         .btn-secondary { background: rgba(59,130,246,0.2); border: 0.5px solid rgba(59,130,246,0.5); padding: 0.75rem; border-radius: 30px; color: var(--blue); font-weight: 500; cursor: pointer; width: 100%; transition: all 0.2s; }
         .btn-secondary:active { transform: scale(0.97); }
+        .btn-outline { background: transparent; border: 0.5px solid var(--blue); padding: 0.5rem 1rem; border-radius: 30px; color: var(--blue); cursor: pointer; transition: all 0.2s; }
         
         .button-group { display: flex; gap: 0.75rem; margin-top: 1.5rem; flex-wrap: wrap; }
         .btn-confirm { flex: 1; background: var(--success); border: none; padding: 0.75rem; border-radius: 30px; color: white; font-weight: 500; cursor: pointer; }
@@ -128,8 +130,25 @@
         
         .athlete-detail-avatar { width: 100%; aspect-ratio: 1/1; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; position: relative; }
         .metrics-detail { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 1rem; margin: 1rem 0; }
-        .metric-detail-item { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 0.5px solid rgba(59,130,246,0.2); }
+        .metric-detail-item { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 0.5px solid rgba(59,130,246,0.2); flex-wrap: wrap; gap: 0.5rem; }
         .metric-detail-item:last-child { border-bottom: none; }
+        
+        .step-container { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+        .step { display: flex; gap: 1rem; align-items: flex-start; }
+        .step-number { width: 32px; height: 32px; background: var(--blue); border-radius: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+        .step-content h4 { margin-bottom: 0.25rem; }
+        .step-content p { font-size: 0.85rem; color: var(--gray-light); }
+        
+        .trust-rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .rule-card { background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.75rem; text-align: center; }
+        .rule-positive { color: var(--success); }
+        .rule-negative { color: var(--error); }
+        
+        .help-icon { cursor: pointer; color: var(--gray-light); transition: color 0.2s; }
+        .help-icon:hover { color: var(--blue); }
+        
+        .footer { margin-top: 2rem; padding-top: 1rem; border-top: 0.5px solid rgba(59,130,246,0.15); text-align: center; font-size: 0.7rem; color: var(--gray-light); }
+        .footer a { color: var(--blue); text-decoration: none; cursor: pointer; }
         
         @media (min-width: 768px) {
             .bottom-nav { display: none; }
@@ -164,6 +183,7 @@
             <a data-page="submit">Get Verified</a>
             <a data-page="scout">Scout Portal</a>
             <a data-page="leaderboard">Leaderboard</a>
+            <a data-page="howitworks">How It Works</a>
             <a data-page="pricing">Pricing</a>
         </div>
     </div>
@@ -174,13 +194,15 @@
     <button class="nav-item" data-page="submit"><span class="nav-icon">📤</span><span>Verify</span></button>
     <button class="nav-item" data-page="scout"><span class="nav-icon">🎯</span><span>Scout</span></button>
     <button class="nav-item" data-page="leaderboard"><span class="nav-icon">⭐</span><span>Leaderboard</span></button>
+    <button class="nav-item" data-page="howitworks"><span class="nav-icon">❓</span><span>How It Works</span></button>
     <button class="nav-item" data-page="pricing"><span class="nav-icon">💰</span><span>Pricing</span></button>
     <button class="nav-item" id="loginBtn"><span class="nav-icon">👤</span><span>Profile</span></button>
 </div>
 
 <div class="container" id="app">
+    <!-- DISCOVER PAGE -->
     <div id="discoverPage" class="page active">
-        <div class="page-header"><h1>Verified Athletes</h1><p>AI-measured vertical leap + 40-yard sprint · <span class="tooltip-icon" title="Each verification confirmed by community members with trust scores">Community verified</span></p></div>
+        <div class="page-header"><h1>Verified Athletes</h1><p>AI-measured vertical leap + 40-yard sprint · <span class="tooltip-icon" title="Each verification confirmed by community members with trust scores" onclick="showPage('howitworks')">Community verified</span> <span class="help-icon" onclick="showPage('howitworks')">ⓘ</span></p></div>
         <div class="stats-grid">
             <div class="stat-card" onclick="applyFilter('all')"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Athletes</div></div>
             <div class="stat-card" onclick="applyFilter('verified')"><div class="stat-value" id="statVerified">0</div><div class="stat-label">Verified</div></div>
@@ -197,6 +219,7 @@
         <div class="card" style="margin-top:1rem;"><div style="display:flex; justify-content:space-between;"><span>🏆 Trending This Week</span><span style="color:#F59E0B;">+2,847 views</span></div><div style="font-size:0.8rem; color:#9ca3af; margin-top:0.5rem;">Elijah Williams · 44" vertical · 4.28s sprint</div><div style="font-size:0.8rem; color:#9ca3af;">Marcus Thompson · 42" vertical · Scouted by 3 colleges</div></div>
     </div>
 
+    <!-- SUBMIT PAGE -->
     <div id="submitPage" class="page">
         <div class="page-header"><h1>Get Verified</h1><p>Submit your Instagram video for AI analysis</p></div>
         <div class="card">
@@ -208,9 +231,10 @@
             <button class="btn-primary" id="submitBtn">Submit for AI Analysis</button>
             <div id="submitResult"></div>
         </div>
-        <div class="card"><h3>How VANTAGE Measures Your Vertical</h3><div style="font-size:0.8rem; color:#9ca3af;">Our AI analyzes frame-by-frame: takeoff position → peak jump height → rim reference (10ft) → calculates exact inches. Higher confidence when rim and feet are clearly visible.</div></div>
+        <div class="card"><h3>How VANTAGE Measures Your Vertical</h3><div style="font-size:0.8rem; color:#9ca3af;">Our AI analyzes frame-by-frame: takeoff position → peak jump height → rim reference (10ft) → calculates exact inches. Higher confidence when rim and feet are clearly visible.</div><button class="btn-outline" style="margin-top:1rem;" onclick="showPage('howitworks')">Learn more about verification →</button></div>
     </div>
 
+    <!-- SCOUT PORTAL PAGE -->
     <div id="scoutPage" class="page">
         <div class="page-header"><h1>Scout Portal</h1><p>Advanced tools for talent evaluation</p></div>
         <div class="mode-toggle">
@@ -231,28 +255,97 @@
             </div>
         </div>
         <div id="recruitingMode" style="display:none;"><div class="card"><div class="form-group"><label>Recruiting Class Year</label><select class="form-select" id="classYear"><option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option></select></div><div id="recruitingBoardList" class="athlete-grid"></div></div></div>
+        <div class="footer"><a onclick="showPage('howitworks')">How does verification work?</a> · <a onclick="showPage('pricing')">Scout pricing</a></div>
     </div>
 
+    <!-- LEADERBOARD PAGE -->
     <div id="leaderboardPage" class="page">
         <div class="page-header"><h1>Trust Leaderboard</h1><p>Top verifiers earn scout access</p></div>
         <div class="card" id="leaderboardList"></div>
-        <div class="card"><h3>Your Stats</h3><div>Confirmations: <strong id="userConfirmCount">0</strong></div><div>Current streak: <strong id="userStreak">0</strong> days</div><div>Trust score: <strong id="userTrustDisplay">85</strong></div><div class="progress-container" style="margin-top:0.5rem;"><div class="progress-bar" id="trustProgress" style="width:85%"></div></div><div class="verification-count">Next level: 90 trust score → Silver Verifier</div></div>
+        <div class="card"><h3>Your Stats</h3><div>Confirmations: <strong id="userConfirmCount">0</strong></div><div>Current streak: <strong id="userStreak">0</strong> days</div><div>Trust score: <strong id="userTrustDisplay">85</strong></div><div class="progress-container" style="margin-top:0.5rem;"><div class="progress-bar" id="trustProgress" style="width:85%"></div></div><div class="verification-count">Next level: 90 trust score → Silver Verifier</div><button class="btn-outline" style="margin-top:1rem;" onclick="showPage('howitworks')">How trust scores work →</button></div>
     </div>
 
+    <!-- HOW IT WORKS PAGE -->
+    <div id="howitworksPage" class="page">
+        <div class="page-header"><h1>How Verification Works</h1><p>The VANTAGE trust engine</p></div>
+        
+        <div class="card">
+            <h3>🔍 The Two-Step Verification Process</h3>
+            <div class="step-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>AI Measurement</h4>
+                        <p>Our AI analyzes your Instagram video frame-by-frame. It detects takeoff position, peak jump height, and uses the basketball rim (10ft) as a reference to calculate your exact vertical leap. Sprint times are measured using frame timing and known court distances.</p>
+                        <p style="margin-top:0.5rem; font-size:0.75rem; color:var(--purple);">AI Confidence Score: 0-100% based on video quality, rim visibility, and camera angle.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Community Confirmation</h4>
+                        <p>Other users watch your video and review the AI's measurement. If they agree it's accurate, they click "Confirm." Each metric needs 2-3 confirmations (depending on AI confidence) to become fully verified.</p>
+                        <p style="margin-top:0.5rem; font-size:0.75rem; color:var(--purple);">High confidence (90%+) = auto-verified. Medium (70-89%) = needs 2 confirmations. Low (below 70%) = needs 3 confirmations.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Verified Badge</h4>
+                        <p>Once enough community members confirm your metrics, you receive a green "Verified" badge. Your verified profile becomes searchable and visible to scouts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>⭐ Trust Score System</h3>
+            <p style="margin-bottom:1rem;">Your trust score reflects your reliability as a verifier. Higher trust scores give your confirmations more weight.</p>
+            <div class="trust-rules">
+                <div class="rule-card"><span class="rule-positive">+2 points</span><br>Confirming an accurate metric</div>
+                <div class="rule-card"><span class="rule-positive">+1 point</span><br>Correctly challenging an inaccurate metric</div>
+                <div class="rule-card"><span class="rule-negative">-5 points</span><br>Falsely confirming an inaccurate metric</div>
+                <div class="rule-card"><span class="rule-negative">-3 points</span><br>Falsely challenging an accurate metric</div>
+            </div>
+            <div style="margin-top:1rem; text-align:center; font-size:0.8rem; color:var(--gray-light);">✨ 7+ day verification streak → Bonus points<br>🏆 Top verifiers earn free Scout Pro access</div>
+        </div>
+
+        <div class="card">
+            <h3>❓ Frequently Asked Questions</h3>
+            <div style="margin-top:1rem;">
+                <details style="margin-bottom:1rem;"><summary style="font-weight:600; cursor:pointer;">What makes VANTAGE different from other platforms?</summary><p style="margin-top:0.5rem; font-size:0.85rem; color:var(--gray-light);">Unlike Hudl or recruiting platforms that rely on self-reported stats, VANTAGE uses AI + community verification to ensure every metric is accurate. Scouts can trust what they see.</p></details>
+                <details style="margin-bottom:1rem;"><summary style="font-weight:600; cursor:pointer;">Can I challenge a verification I think is wrong?</summary><p style="margin-top:0.5rem; font-size:0.85rem; color:var(--gray-light);">Yes. Click "Challenge" on any athlete's profile. The metric will be re-reviewed by our team and the community.</p></details>
+                <details style="margin-bottom:1rem;"><summary style="font-weight:600; cursor:pointer;">How do I earn a higher trust score?</summary><p style="margin-top:0.5rem; font-size:0.85rem; color:var(--gray-light);">Consistently confirm accurate metrics and maintain a daily verification streak. Higher trust scores make you a "Trusted Verifier" - your confirmations carry more weight.</p></details>
+                <details><summary style="font-weight:600; cursor:pointer;">Is VANTAGE really free for athletes?</summary><p style="margin-top:0.5rem; font-size:0.85rem; color:var(--gray-light);">Yes. Athletes never pay. Scouts pay $500/year for full database access, advanced filters, and export tools.</p></details>
+            </div>
+        </div>
+
+        <div class="card" style="text-align:center;">
+            <h3>Ready to get started?</h3>
+            <p style="margin:0.5rem 0;">Join thousands of athletes getting verified.</p>
+            <div style="display:flex; gap:1rem; justify-content:center; margin-top:1rem;">
+                <button class="btn-primary" style="width:auto; padding:0.5rem 1.5rem;" onclick="showPage('submit')">Get Verified</button>
+                <button class="btn-secondary" style="width:auto; padding:0.5rem 1.5rem;" onclick="showPage('discover')">Browse Athletes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRICING PAGE -->
     <div id="pricingPage" class="page">
         <div class="page-header"><h1>Simple Pricing</h1><p>Free for athletes · $500/year for scouts</p></div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
             <div class="card" style="text-align:center;"><h3>Athlete</h3><p style="font-size:2.5rem; font-weight:700;">$0</p><p style="color:#9ca3af;">Forever free</p><div style="margin-top:1rem; text-align:left;"><div>✓ Unlimited verifications</div><div>✓ Public verified profile</div><div>✓ Instagram embed badge</div><div>✓ Shareable scout link</div></div><button class="btn-primary" style="margin-top:1rem; background:linear-gradient(135deg,#10b981,#059669);" onclick="showPage('submit')">Get Started</button></div>
             <div class="card" style="text-align:center; border-color:#3b82f6;"><div style="background:#3b82f6; display:inline-block; padding:0.2rem 0.75rem; border-radius:20px; font-size:0.7rem; margin-bottom:0.5rem;">MOST POPULAR</div><h3>Scout Pro</h3><p style="font-size:2.5rem; font-weight:700;">$500</p><p style="color:#9ca3af;">Per year</p><div style="margin-top:1rem; text-align:left;"><div>✓ Full athlete database</div><div>✓ Advanced filters</div><div>✓ Save & compare athletes</div><div>✓ Export to CSV</div><div>✓ Email alerts</div></div><button class="btn-primary" style="margin-top:1rem;" onclick="alert('Demo: Stripe integration would open here')">Subscribe</button></div>
         </div>
+        <div class="footer"><a onclick="showPage('howitworks')">Learn how verification builds trust →</a></div>
     </div>
 </div>
 
-<div id="loginModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('loginModal')">&times;</span><h2>Sign In</h2><div class="form-group"><label>Email</label><input type="email" class="form-input" id="loginEmail" placeholder="coach@example.com"></div><div class="form-group"><label>Password</label><input type="password" class="form-input" id="loginPassword" placeholder="••••••••"></div><button class="btn-primary" id="doLoginBtn">Sign In</button><p style="text-align:center; margin-top:1rem; font-size:0.75rem; color:#6b7280;">Demo: Any email works</p></div></div>
+<div id="loginModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('loginModal')">&times;</span><h2>Sign In</h2><div class="form-group"><label>Email</label><input type="email" class="form-input" id="loginEmail" placeholder="coach@example.com"></div><div class="form-group"><label>Password</label><input type="password" class="form-input" id="loginPassword" placeholder="••••••••"></div><button class="btn-primary" id="doLoginBtn">Sign In</button><p style="text-align:center; margin-top:1rem; font-size:0.75rem; color:#6b7280;">Demo: Any email works</p><div class="footer" style="margin-top:1rem;"><a onclick="showPage('howitworks'); closeModal('loginModal')">How does verification work?</a></div></div></div>
 
-<div id="detailModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('detailModal')">&times;</span><div id="detailContent"></div><div class="button-group" id="actionButtons"><button class="btn-confirm" id="confirmBtn">✓ Confirm - Accurate</button><button class="btn-challenge" id="challengeBtn">⚠ Challenge - Inaccurate</button><button class="btn-watchlist" id="watchlistBtn">⭐ Save to Watchlist</button></div><div class="button-group" id="scoutButtons"><button class="btn-secondary" id="requestReportBtn">📋 Request Full Scouting Report</button></div></div></div>
+<div id="detailModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('detailModal')">&times;</span><div id="detailContent"></div><div class="button-group" id="actionButtons"><button class="btn-confirm" id="confirmBtn">✓ Confirm - Accurate</button><button class="btn-challenge" id="challengeBtn">⚠ Challenge - Inaccurate</button><button class="btn-watchlist" id="watchlistBtn">⭐ Save to Watchlist</button></div><div class="button-group" id="scoutButtons"><button class="btn-secondary" id="requestReportBtn">📋 Request Full Scouting Report</button></div><div class="footer" style="margin-top:1rem;"><a onclick="showPage('howitworks'); closeModal('detailModal')">How does verification work?</a></div></div></div>
 
-<div id="embedModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('embedModal')">&times;</span><h3>Share Your Verified Badge</h3><p style="margin:1rem 0;">Copy this code to your Instagram bio:</p><div style="background:#1a1a1a; padding:0.75rem; border-radius:12px; font-family:monospace; font-size:0.7rem; word-break:break-all;" id="embedCode"></div><button class="btn-primary" style="margin-top:1rem;" onclick="copyEmbedCode()">Copy Code</button></div></div>
+<div id="embedModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('embedModal')">&times;</span><h3>Share Your Verified Badge</h3><p style="margin:1rem 0;">Copy this code to your Instagram bio:</p><div style="background:#1a1a1a; padding:0.75rem; border-radius:12px; font-family:monospace; font-size:0.7rem; word-break:break-all;" id="embedCode"></div><button class="btn-primary" style="margin-top:1rem;" onclick="copyEmbedCode()">Copy Code</button><div class="footer" style="margin-top:1rem;"><a onclick="showPage('howitworks'); closeModal('embedModal')">How verification works →</a></div></div></div>
 
 <script>
     // ============================================
@@ -386,14 +479,11 @@
     function renderComparison() {
         const compareList = document.getElementById('compareList');
         if (!compareList) return;
-        
         const compareAthletes = athletes.filter(a => compareSelectedIds.includes(a.id));
-        
         if (compareAthletes.length === 0) {
             compareList.innerHTML = '<div class="empty-state">Select athletes to compare using checkboxes on Discover page</div>';
             return;
         }
-        
         compareList.innerHTML = compareAthletes.map(a => `
             <div class="comparison-card">
                 <div class="athlete-name" style="font-weight:700; margin-bottom:0.5rem;">${a.name}</div>
@@ -410,36 +500,23 @@
     }
     
     function refreshComparison() {
-        // Clear all selected athlete IDs
         compareSelectedIds = [];
-        
-        // Uncheck all compare checkboxes in the UI
         document.querySelectorAll('.compare-checkbox').forEach(checkbox => {
             checkbox.classList.remove('selected');
             const span = checkbox.querySelector('span');
             if (span) span.innerText = '';
         });
-        
-        // Clear the comparison grid
         const compareList = document.getElementById('compareList');
         if (compareList) {
             compareList.innerHTML = '<div class="empty-state">Select athletes to compare using checkboxes on Discover page</div>';
         }
-        
-        // Save to localStorage
         saveData();
-        
-        // Re-render athlete grid to update checkbox states
         renderAthleteGrid();
-        
-        // Visual feedback
         const refreshBtn = document.getElementById('refreshCompareBtn');
         if (refreshBtn) {
             const originalText = refreshBtn.innerText;
             refreshBtn.innerText = '✓ Reset!';
-            setTimeout(() => {
-                refreshBtn.innerText = originalText;
-            }, 1500);
+            setTimeout(() => { refreshBtn.innerText = originalText; }, 1500);
         }
     }
     
@@ -579,7 +656,7 @@
     }
     
     function showPage(pageId) {
-        const pages = ['discover', 'submit', 'scout', 'leaderboard', 'pricing'];
+        const pages = ['discover', 'submit', 'scout', 'leaderboard', 'howitworks', 'pricing'];
         pages.forEach(id => { const page = document.getElementById(id + 'Page'); if (page) page.classList.remove('active'); });
         const activePage = document.getElementById(pageId + 'Page');
         if (activePage) activePage.classList.add('active');
@@ -588,6 +665,7 @@
         if (activeNav) activeNav.classList.add('active');
         if (pageId === 'discover') renderAthleteGrid();
         if (pageId === 'scout') { renderWatchlist(); renderComparison(); }
+        saveData();
     }
     
     function showModal(id) { const modal = document.getElementById(id); if (modal) modal.style.display = 'flex'; }
