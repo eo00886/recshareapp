@@ -948,6 +948,10 @@
 </div>
 
 <script>
+    // ============================================
+    // VANTAGE - WORKING VERSION WITH VIDEO CLIPS
+    // ============================================
+
     const BACKEND_URL = 'https://vantage-backend-production-5621.up.railway.app';
     
     let athletes = [];
@@ -961,11 +965,21 @@
     let mediaRecorder = null;
     let recordedChunks = [];
     
-    // Store generated video blobs in memory
-    let videoBlobs = {};
+    // Store generated video URLs
+    let videoUrls = {};
 
-    // Generate a simple animated demo video using Canvas
-    function generateDemoVideo(athleteName, vertical, sprint, callback) {
+    // Default athletes data
+    const defaultAthletesData = [
+        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, vertical: 42, sprint: 4.38, trustScore: 94, verified: true, views: 342, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"] },
+        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, vertical: 38, sprint: 4.45, trustScore: 91, verified: true, views: 189, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"] },
+        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, vertical: 44, sprint: 4.28, trustScore: 96, verified: true, views: 567, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson", "Mike Ross", "Lisa Wong"] },
+        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, vertical: 35, sprint: null, trustScore: 0, verified: false, views: 45, confirmations: ["Coach Miller"] },
+        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, vertical: 40, sprint: 4.42, trustScore: 0, verified: false, views: 34, confirmations: [] },
+        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, vertical: 37, sprint: 4.35, trustScore: 0, verified: false, views: 28, confirmations: [] }
+    ];
+
+    // Generate a simple animated demo video
+    function generateDemoVideo(athleteId, athleteName, vertical, sprint, callback) {
         const canvas = document.createElement('canvas');
         canvas.width = 640;
         canvas.height = 480;
@@ -982,13 +996,14 @@
         recorder.onstop = () => {
             const blob = new Blob(chunks, { type: 'video/webm' });
             const url = URL.createObjectURL(blob);
-            callback(url, blob);
+            videoUrls[athleteId] = url;
+            if (callback) callback(url);
         };
         
         recorder.start();
         
         let frame = 0;
-        const duration = 5; // 5 seconds
+        const duration = 4;
         const fps = 30;
         const totalFrames = duration * fps;
         
@@ -1007,7 +1022,7 @@
             ctx.lineWidth = 2;
             ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
             
-            // Rim (circle)
+            // Rim
             ctx.beginPath();
             ctx.arc(canvas.width - 100, 100, 30, 0, Math.PI * 2);
             ctx.strokeStyle = 'orange';
@@ -1055,50 +1070,43 @@
         requestAnimationFrame(drawFrame);
     }
 
-    // Initialize demo videos for default athletes
-    function initDemoVideos() {
-        const defaultAthletesData = [
-            { id: 1, name: "Marcus Thompson", vertical: 42, sprint: 4.38, pos: "SG", school: "Westlake High", jersey: "23", avatarBg: "avatar-bg-1", classYear: 2025, trustScore: 94, verified: true, views: 342 },
-            { id: 2, name: "Jaylen Carter", vertical: 38, sprint: 4.45, pos: "PG", school: "Mater Dei", jersey: "11", avatarBg: "avatar-bg-2", classYear: 2025, trustScore: 91, verified: true, views: 189 },
-            { id: 3, name: "Elijah Williams", vertical: 44, sprint: 4.28, pos: "SF", school: "IMG Academy", jersey: "7", avatarBg: "avatar-bg-3", classYear: 2026, trustScore: 96, verified: true, views: 567 },
-            { id: 4, name: "Tyler Brooks", vertical: 35, sprint: null, pos: "PF", school: "Montverde Academy", jersey: "34", avatarBg: "avatar-bg-4", classYear: 2026, trustScore: 0, verified: false, views: 45 },
-            { id: 5, name: "Jordan Lee", vertical: 40, sprint: 4.42, pos: "SG", school: "Sierra Canyon", jersey: "5", avatarBg: "avatar-bg-5", classYear: 2025, trustScore: 0, verified: false, views: 34 },
-            { id: 6, name: "Malik Henderson", vertical: 37, sprint: 4.35, pos: "PG", school: "Oak Hill Academy", jersey: "1", avatarBg: "avatar-bg-6", classYear: 2026, trustScore: 0, verified: false, views: 28 }
-        ];
-        
+    // Initialize athletes
+    function initAthletes() {
         athletes = [];
         
         defaultAthletesData.forEach(a => {
             const hasClip = a.trustScore > 0;
-            
-            // Generate video for athletes with trust score > 0
-            if (hasClip) {
-                generateDemoVideo(a.name, a.vertical, a.sprint || 4.5, (url, blob) => {
-                    videoBlobs[a.id] = { url, blob };
-                    // Refresh UI after video is generated
-                    renderAthleteGrid();
-                });
-            }
+            const vertStatus = a.verified ? 'verified' : (a.trustScore > 0 ? 'verified' : 'pending');
+            const sprintStatus = a.sprint ? (a.verified ? 'verified' : 'pending') : null;
             
             athletes.push({
                 id: a.id,
                 name: a.name,
                 school: a.school,
-                position: a.pos,
+                position: a.position,
                 avatarBg: a.avatarBg,
-                jerseyNum: a.jersey,
+                jerseyNum: a.jerseyNum,
                 classYear: a.classYear,
                 flagged: false,
                 hasClip: hasClip,
                 thumbnailUrl: null,
                 metrics: {
-                    vertical: { value: a.vertical, status: a.verified ? 'verified' : 'pending', confidence: a.trustScore > 0 ? a.trustScore : 70, verifications: a.trustScore > 0 ? 3 : 1 },
-                    sprint: { value: a.sprint, status: a.verified ? 'verified' : (a.sprint ? 'pending' : null), confidence: a.trustScore > 0 ? a.trustScore - 3 : 65, verifications: a.trustScore > 0 ? 3 : 0 }
+                    vertical: { value: a.vertical, status: vertStatus, confidence: a.trustScore || 70, verifications: a.trustScore > 0 ? 3 : 1 },
+                    sprint: { value: a.sprint, status: sprintStatus, confidence: a.trustScore ? a.trustScore - 3 : 65, verifications: a.trustScore > 0 ? 3 : 0 }
                 },
                 trustScore: a.trustScore,
-                confirmations: a.trustScore > 0 ? ["Coach Miller", "Sarah Chen", "David Kim"] : [],
+                confirmations: a.confirmations || [],
                 views: a.views
             });
+            
+            // Generate video for athletes with clips
+            if (hasClip) {
+                generateDemoVideo(a.id, a.name, a.vertical, a.sprint || 4.5, () => {
+                    renderAthleteGrid();
+                    renderWatchlist();
+                    renderRecruitingBoard();
+                });
+            }
         });
         
         renderAthleteGrid();
@@ -1167,19 +1175,19 @@
     function playHighlight(athleteId, event) {
         if (event) event.stopPropagation();
         
-        const blob = videoBlobs[athleteId];
-        if (!blob) {
-            showToast('Video clip not ready yet', 'warning');
+        const videoUrl = videoUrls[athleteId];
+        if (!videoUrl) {
+            showToast('Video clip generating... Please wait', 'warning');
             return;
         }
         
+        const athlete = athletes.find(a => a.id === athleteId);
+        if (!athlete) return;
+        
         const video = document.getElementById('highlightVideo');
         const source = document.getElementById('videoSource');
-        const url = URL.createObjectURL(blob.blob);
-        source.src = url;
+        source.src = videoUrl;
         video.load();
-        
-        const athlete = athletes.find(a => a.id === athleteId);
         
         showModal('videoPlayerModal');
         video.oncanplay = () => {
@@ -1326,7 +1334,6 @@
         if (!currentDetailAthlete) return;
         if (currentDetailAthlete.flagged) { showToast('Already flagged', 'error'); return; }
         currentDetailAthlete.flagged = true;
-        currentDetailAthlete.flaggedReason = 'Low quality';
         const wIdx = currentUser.watchlist.indexOf(currentDetailAthlete.id);
         if (wIdx !== -1) currentUser.watchlist.splice(wIdx, 1);
         const cIdx = compareSelectedIds.indexOf(currentDetailAthlete.id);
@@ -1388,7 +1395,7 @@
             const inWatchlist = currentUser.watchlist.includes(a.id);
             const inCompare = compareSelectedIds.includes(a.id);
             const isFlagged = a.flagged;
-            const hasClip = a.hasClip && videoBlobs[a.id];
+            const hasClip = a.hasClip && videoUrls[a.id];
             const stockAvatar = generateStockAvatar(a.name, a.position);
             
             return `<div class="athlete-card ${isFlagged ? 'flagged' : ''}" data-id="${a.id}">
@@ -1442,7 +1449,7 @@
         const wl = athletes.filter(a => currentUser.watchlist.includes(a.id) && !a.flagged);
         if (!wl.length) { grid.innerHTML = '<div class="empty-state">Watchlist empty<br>⭐ Tap star on any athlete</div>'; return; }
         grid.innerHTML = wl.map(a => {
-            const hasClip = a.hasClip && videoBlobs[a.id];
+            const hasClip = a.hasClip && videoUrls[a.id];
             const stockAvatar = generateStockAvatar(a.name, a.position);
             return `<div class="athlete-card" data-id="${a.id}">
                 <div class="athlete-avatar ${a.avatarBg}" style="position:relative;">
@@ -1492,7 +1499,7 @@
         if (!grid) return;
         if (!filtered.length) { grid.innerHTML = '<div class="empty-state">No athletes in this class</div>'; return; }
         grid.innerHTML = filtered.map(a => {
-            const hasClip = a.hasClip && videoBlobs[a.id];
+            const hasClip = a.hasClip && videoUrls[a.id];
             const stockAvatar = generateStockAvatar(a.name, a.position);
             return `<div class="athlete-card" data-id="${a.id}">
                 <div class="athlete-avatar ${a.avatarBg}" style="position:relative;">
@@ -1578,12 +1585,13 @@
             athletes.push(newAthlete);
             
             // Generate demo video for new athlete
-            generateDemoVideo(name, vertValue, sprintValue, (url, blob) => {
-                videoBlobs[newId] = { url, blob };
+            generateDemoVideo(newId, name, vertValue, sprintValue, () => {
                 renderAthleteGrid();
+                renderWatchlist();
+                renderRecruitingBoard();
             });
             
-            resultDiv.innerHTML = `<div class="alert-success">✅ AI Analysis Complete!<br>🏀 Vertical: ${vertValue}" (${vertConf}% confidence)<br>🏃 Sprint: ${sprintValue}s (${sprintConf}% confidence)<br>📹 Highlight clip generated!</div>`;
+            resultDiv.innerHTML = `<div class="alert-success">✅ AI Analysis Complete!<br>🏀 Vertical: ${vertValue}" (${vertConf}% confidence)<br>🏃 Sprint: ${sprintValue}s (${sprintConf}% confidence)<br>📹 Highlight clip generating...</div>`;
             
             document.getElementById('videoUrl').value = '';
             document.getElementById('athleteName').value = '';
@@ -1731,7 +1739,7 @@
         const needVert = athlete.metrics.vertical?.status === 'pending' ? (3 - (athlete.metrics.vertical.verifications || 0)) : 0;
         const needSprint = athlete.metrics.sprint?.status === 'pending' ? (3 - (athlete.metrics.sprint.verifications || 0)) : 0;
         const canUnverify = currentUser.trustScore >= 90 && isVerified;
-        const hasClip = athlete.hasClip && videoBlobs[athlete.id];
+        const hasClip = athlete.hasClip && videoUrls[athlete.id];
         
         const stockAvatar = generateStockAvatar(athlete.name, athlete.position);
         
@@ -1766,6 +1774,7 @@
         document.getElementById('flagBtn')?.addEventListener('click', flagAthlete);
         showModal('detailModal');
         saveData();
+        updateStats();
     }
 
     function toggleWatchlistFromDetail() {
@@ -1822,15 +1831,17 @@
     }
 
     function initScoutModes() {
-        const modes = { watchlist: document.getElementById('watchlistMode'), compare: document.getElementById('compareMode'), recruiting: document.getElementById('recruitingMode') };
+        const watchlistMode = document.getElementById('watchlistMode');
+        const compareMode = document.getElementById('compareMode');
+        const recruitingMode = document.getElementById('recruitingMode');
         document.querySelectorAll('.mode-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 const mode = btn.dataset.mode;
-                if (modes.watchlist) modes.watchlist.style.display = mode === 'watchlist' ? 'block' : 'none';
-                if (modes.compare) modes.compare.style.display = mode === 'compare' ? 'block' : 'none';
-                if (modes.recruiting) modes.recruiting.style.display = mode === 'recruiting' ? 'block' : 'none';
+                if (watchlistMode) watchlistMode.style.display = mode === 'watchlist' ? 'block' : 'none';
+                if (compareMode) compareMode.style.display = mode === 'compare' ? 'block' : 'none';
+                if (recruitingMode) recruitingMode.style.display = mode === 'recruiting' ? 'block' : 'none';
                 if (mode === 'compare') renderComparison();
                 if (mode === 'recruiting') renderRecruitingBoard();
             });
@@ -1855,7 +1866,7 @@
     document.getElementById('classYear')?.addEventListener('change', renderRecruitingBoard);
     window.onclick = (e) => { if (e.target.classList?.contains('modal')) closeModal(e.target.id); };
 
-    initDemoVideos();
+    initAthletes();
     initScoutModes();
     renderAthleteGrid();
     renderWatchlist();
