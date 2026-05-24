@@ -284,6 +284,17 @@
         }
         .filter-chip.active { background: var(--primary-blue); color: white; }
 
+        /* Flagged badge */
+        .flagged-badge {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--error-red);
+            font-size: 0.6rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
         .athlete-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -298,6 +309,10 @@
             cursor: pointer;
             border: 0.5px solid rgba(59, 130, 246, 0.1);
             position: relative;
+        }
+        .athlete-card.flagged {
+            opacity: 0.6;
+            border-color: var(--error-red);
         }
         .athlete-card:active { transform: scale(0.98); }
 
@@ -509,6 +524,17 @@
             cursor: pointer;
         }
 
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            border: 0.5px solid var(--error-red);
+            padding: 0.75rem;
+            border-radius: 30px;
+            color: var(--error-red);
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+        }
+
         .button-group {
             display: flex;
             gap: 0.75rem;
@@ -520,6 +546,7 @@
         .btn-undo { flex: 1; background: rgba(107, 114, 128, 0.2); border: 0.5px solid var(--gray-light); padding: 0.75rem; border-radius: 30px; color: var(--gray-light); font-weight: 500; cursor: pointer; }
         .btn-challenge { flex: 1; background: rgba(239, 68, 68, 0.15); border: 0.5px solid var(--error-red); padding: 0.75rem; border-radius: 30px; color: var(--error-red); font-weight: 500; cursor: pointer; }
         .btn-unchallenge { flex: 1; background: rgba(16, 185, 129, 0.15); border: 0.5px solid var(--success-green); padding: 0.75rem; border-radius: 30px; color: var(--success-green); font-weight: 500; cursor: pointer; }
+        .btn-flag { flex: 1; background: rgba(239, 68, 68, 0.15); border: 0.5px solid var(--error-red); padding: 0.75rem; border-radius: 30px; color: var(--error-red); font-weight: 500; cursor: pointer; }
 
         .comparison-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1rem 0; }
         .comparison-card { background: rgba(0, 0, 0, 0.3); border-radius: 16px; padding: 1rem; text-align: center; }
@@ -620,10 +647,11 @@
 </div>
 
 <div class="bottom-nav">
-    <button class="nav-item" data-page="discover"><span class="nav-icon">🏀</span><span>Discover</span></button>
+    <button class="nav-item" data-page="discover"><span class="nav-icon">🔍</span><span>Discover</span></button>
     <button class="nav-item" data-page="submit"><span class="nav-icon">📤</span><span>Verify</span></button>
     <button class="nav-item" data-page="scout"><span class="nav-icon">🎯</span><span>Scout</span></button>
     <button class="nav-item" data-page="leaderboard"><span class="nav-icon">⭐</span><span>Leaderboard</span></button>
+    <button class="nav-item" data-page="howitworks"><span class="nav-icon">❓</span><span>How It Works</span></button>
     <button class="nav-item" data-page="pricing"><span class="nav-icon">💰</span><span>Pricing</span></button>
     <button class="nav-item" id="loginBtn"><span class="nav-icon">👤</span><span>Profile</span></button>
 </div>
@@ -649,6 +677,7 @@
             <div class="filter-chip" data-filter="verified">Verified</div>
             <div class="filter-chip" data-filter="pending">Pending</div>
             <div class="filter-chip" data-filter="trending">🔥 Trending</div>
+            <div class="filter-chip" data-filter="flagged">🚩 Flagged</div>
         </div>
         <div class="athlete-grid" id="athleteGrid"></div>
     </div>
@@ -740,6 +769,7 @@
     <button class="btn-undo" id="undoConfirmBtn" style="display:none;">↩️ Undo Confirm</button>
     <button class="btn-challenge" id="challengeBtn">⚠ Challenge</button>
     <button class="btn-unchallenge" id="unchallengeBtn" style="display:none;">↩️ Unchallenge</button>
+    <button class="btn-flag" id="flagBtn">🚩 Flag Low Quality</button>
 </div>
 <div class="button-group"><button class="btn-secondary" id="watchlistDetailBtn">⭐ Save to Watchlist</button></div></div></div>
 
@@ -747,7 +777,7 @@
 
 <script>
     // ============================================
-    // VANTAGE - VERIFIED ATHLETIC INTELLIGENCE
+    // VANTAGE - WITH FLAG/UNSEARCH FUNCTIONALITY
     // BACKEND URL: https://vantage-backend-production-5621.up.railway.app
     // ============================================
 
@@ -762,12 +792,12 @@
     let compareSelectedIds = [];
 
     const defaultAthletes = [
-        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: { value: 4.38, status: "verified", confidence: 94, verifications: 4 } }, trustScore: 94, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson"], views: 342 },
-        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, sprint: { value: 4.45, status: "pending", confidence: 72, verifications: 1 } }, trustScore: 91, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson"], views: 189 },
-        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, metrics: { vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, sprint: { value: 4.28, status: "verified", confidence: 96, verifications: 6 } }, trustScore: 96, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson","Mike Ross","Lisa Wong"], views: 567 },
-        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, metrics: { vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, sprint: { value: null, status: null } }, trustScore: 0, confirmations: ["Coach Miller"], views: 45 },
-        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, metrics: { vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, sprint: { value: 4.42, status: "pending", confidence: 68, verifications: 0 } }, trustScore: 0, confirmations: [], views: 34 },
-        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: { value: 4.35, status: "pending", confidence: 74, verifications: 0 } }, trustScore: 0, confirmations: [], views: 28 }
+        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, flagged: false, flaggedReason: null, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: { value: 4.38, status: "verified", confidence: 94, verifications: 4 } }, trustScore: 94, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson"], views: 342 },
+        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, flagged: false, flaggedReason: null, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, sprint: { value: 4.45, status: "pending", confidence: 72, verifications: 1 } }, trustScore: 91, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson"], views: 189 },
+        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, flagged: false, flaggedReason: null, metrics: { vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, sprint: { value: 4.28, status: "verified", confidence: 96, verifications: 6 } }, trustScore: 96, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson","Mike Ross","Lisa Wong"], views: 567 },
+        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, flagged: false, flaggedReason: null, metrics: { vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, sprint: { value: null, status: null } }, trustScore: 0, confirmations: ["Coach Miller"], views: 45 },
+        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, flagged: false, flaggedReason: null, metrics: { vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, sprint: { value: 4.42, status: "pending", confidence: 68, verifications: 0 } }, trustScore: 0, confirmations: [], views: 34 },
+        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, flagged: false, flaggedReason: null, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: { value: 4.35, status: "pending", confidence: 74, verifications: 0 } }, trustScore: 0, confirmations: [], views: 28 }
     ];
 
     function showToast(message, type = 'info', undoCallback = null, undoLabel = 'Undo') {
@@ -808,12 +838,13 @@
     }
 
     function updateStats() {
-        document.getElementById('statTotal').innerText = athletes.length;
-        const fullyVerified = athletes.filter(a => a.metrics.vertical?.status === 'verified' && (!a.metrics.sprint || a.metrics.sprint.status === 'verified')).length;
+        const activeAthletes = athletes.filter(a => !a.flagged).length;
+        document.getElementById('statTotal').innerText = activeAthletes;
+        const fullyVerified = athletes.filter(a => !a.flagged && a.metrics.vertical?.status === 'verified' && (!a.metrics.sprint || a.metrics.sprint.status === 'verified')).length;
         document.getElementById('statVerified').innerText = fullyVerified;
-        document.getElementById('statPending').innerText = athletes.length - fullyVerified;
+        document.getElementById('statPending').innerText = activeAthletes - fullyVerified;
         let sumVert = 0, cnt = 0;
-        athletes.forEach(a => { if (a.metrics.vertical?.value) { sumVert += a.metrics.vertical.value; cnt++; } });
+        athletes.forEach(a => { if (!a.flagged && a.metrics.vertical?.value) { sumVert += a.metrics.vertical.value; cnt++; } });
         document.getElementById('statAvgVert').innerText = cnt ? Math.round(sumVert / cnt) : 0;
         document.getElementById('watchlistCount').innerText = currentUser.watchlist.length;
         document.getElementById('userConfirmCount').innerText = currentUser.confirmationsMade;
@@ -827,9 +858,13 @@
 
     function getFilteredAthletes() {
         let filtered = [...athletes];
-        if (currentFilter === 'verified') filtered = filtered.filter(a => a.metrics.vertical?.status === 'verified');
-        else if (currentFilter === 'pending') filtered = filtered.filter(a => a.metrics.vertical?.status === 'pending');
-        else if (currentFilter === 'trending') filtered = [...athletes].sort((a, b) => b.views - a.views).slice(0, 3);
+        
+        if (currentFilter === 'verified') filtered = filtered.filter(a => !a.flagged && a.metrics.vertical?.status === 'verified');
+        else if (currentFilter === 'pending') filtered = filtered.filter(a => !a.flagged && a.metrics.vertical?.status === 'pending');
+        else if (currentFilter === 'trending') filtered = [...athletes].filter(a => !a.flagged).sort((a, b) => b.views - a.views).slice(0, 3);
+        else if (currentFilter === 'flagged') filtered = filtered.filter(a => a.flagged === true);
+        else filtered = filtered.filter(a => !a.flagged);
+        
         if (currentSearch) {
             const s = currentSearch.toLowerCase();
             filtered = filtered.filter(a => a.name.toLowerCase().includes(s) || a.school.toLowerCase().includes(s));
@@ -840,8 +875,40 @@
         return filtered;
     }
 
+    function flagAthlete() {
+        if (!currentDetailAthlete) return;
+        if (currentDetailAthlete.flagged) {
+            showToast('Athlete already flagged', 'error');
+            return;
+        }
+        
+        currentDetailAthlete.flagged = true;
+        currentDetailAthlete.flaggedReason = 'Low quality video - needs resubmission';
+        
+        // Remove from watchlist if present
+        const watchlistIdx = currentUser.watchlist.indexOf(currentDetailAthlete.id);
+        if (watchlistIdx !== -1) currentUser.watchlist.splice(watchlistIdx, 1);
+        
+        // Remove from compare if present
+        const compareIdx = compareSelectedIds.indexOf(currentDetailAthlete.id);
+        if (compareIdx !== -1) compareSelectedIds.splice(compareIdx, 1);
+        
+        saveData();
+        renderAthleteGrid();
+        renderWatchlist();
+        renderComparison();
+        updateStats();
+        closeModal('detailModal');
+        showToast(`🚩 ${currentDetailAthlete.name} has been flagged as low quality. They can resubmit with better video.`, 'warning');
+    }
+
     function toggleWatchlist(athleteId, event) {
         if (event) event.stopPropagation();
+        const athlete = athletes.find(a => a.id === athleteId);
+        if (athlete && athlete.flagged) {
+            showToast('Cannot add flagged athlete to watchlist', 'error');
+            return;
+        }
         const idx = currentUser.watchlist.indexOf(athleteId);
         if (idx === -1) {
             currentUser.watchlist.push(athleteId);
@@ -863,6 +930,11 @@
 
     function toggleCompare(athleteId, event) {
         if (event) event.stopPropagation();
+        const athlete = athletes.find(a => a.id === athleteId);
+        if (athlete && athlete.flagged) {
+            showToast('Cannot compare flagged athlete', 'error');
+            return;
+        }
         const idx = compareSelectedIds.indexOf(athleteId);
         if (idx === -1) {
             if (compareSelectedIds.length < 4) {
@@ -894,7 +966,8 @@
             const verticalValue = a.metrics.vertical?.value || '?';
             const sprintValue = a.metrics.sprint?.value || '?';
             const sprintStatus = a.metrics.sprint?.status;
-            return `<div class="athlete-card" data-id="${a.id}">
+            const isFlagged = a.flagged === true;
+            return `<div class="athlete-card ${isFlagged ? 'flagged' : ''}" data-id="${a.id}">
                 <div class="card-actions">
                     <div class="action-icon ${inWatchlist ? 'watchlist-active' : ''}" data-watchlist="${a.id}">${inWatchlist ? '⭐' : '☆'}</div>
                 </div>
@@ -907,7 +980,7 @@
                         <div class="metric-item"><div class="metric-value">${verticalValue}"</div><div class="metric-label">Vert ${isVerified ? '✓' : '⏳'}</div></div>
                         <div class="metric-item"><div class="metric-value">${sprintValue !== '?' ? sprintValue + 's' : '—'}</div><div class="metric-label">Sprint ${sprintStatus === 'verified' ? '✓' : (sprintStatus === 'pending' ? '⏳' : '')}</div></div>
                     </div>
-                    ${isVerified && sprintStatus === 'verified' ? '<span class="verified-badge">✓ Verified</span>' : '<span class="pending-badge">⏳ Pending</span>'}
+                    ${isFlagged ? '<span class="flagged-badge">🚩 Flagged (Low Quality)</span>' : (isVerified && sprintStatus === 'verified' ? '<span class="verified-badge">✓ Verified</span>' : '<span class="pending-badge">⏳ Pending</span>')}
                     <div class="verification-count">👁️ ${a.views} views</div>
                     ${a.trustScore > 0 ? `<div class="trust-score">⭐ Trust: ${a.trustScore}</div>` : ''}
                 </div>
@@ -920,14 +993,22 @@
             el.addEventListener('click', (e) => { e.stopPropagation(); toggleCompare(parseInt(el.dataset.compare), e); });
         });
         document.querySelectorAll('.athlete-card').forEach(card => {
-            card.addEventListener('click', () => showAthleteDetail(parseInt(card.dataset.id)));
+            card.addEventListener('click', () => {
+                const id = parseInt(card.dataset.id);
+                const athlete = athletes.find(a => a.id === id);
+                if (athlete && athlete.flagged) {
+                    showToast('This athlete has been flagged as low quality', 'warning');
+                } else {
+                    showAthleteDetail(id);
+                }
+            });
         });
     }
 
     function renderWatchlist() {
         const grid = document.getElementById('watchlistGrid');
         if (!grid) return;
-        const watchlistAthletes = athletes.filter(a => currentUser.watchlist.includes(a.id));
+        const watchlistAthletes = athletes.filter(a => currentUser.watchlist.includes(a.id) && !a.flagged);
         if (!watchlistAthletes.length) { grid.innerHTML = '<div class="empty-state">Your watchlist is empty.<br>⭐ Tap the star icon on any athlete card to save them here.</div>'; return; }
         grid.innerHTML = watchlistAthletes.map(a => `<div class="athlete-card" data-id="${a.id}"><div class="athlete-avatar ${a.avatarBg}"><div class="player-silhouette"></div><div class="jersey-number">${a.jerseyNum}</div></div><div class="athlete-info"><div class="athlete-name">${a.name}</div><div class="athlete-school">${a.school}</div><div class="metrics-container"><div class="metric-item"><div class="metric-value">${a.metrics.vertical?.value || '?'}"</div><div class="metric-label">Vertical</div></div><div class="metric-item"><div class="metric-value">${a.metrics.sprint?.value || '?'}s</div><div class="metric-label">Sprint</div></div></div>${a.trustScore > 0 ? `<div class="trust-score">⭐ Trust: ${a.trustScore}</div>` : ''}</div></div>`).join('');
         document.querySelectorAll('#watchlistGrid .athlete-card').forEach(card => {
@@ -938,7 +1019,7 @@
     function renderComparison() {
         const list = document.getElementById('compareList');
         if (!list) return;
-        const compareAthletes = athletes.filter(a => compareSelectedIds.includes(a.id));
+        const compareAthletes = athletes.filter(a => compareSelectedIds.includes(a.id) && !a.flagged);
         if (!compareAthletes.length) { list.innerHTML = '<div class="empty-state">Select athletes to compare using checkboxes on Discover page</div>'; return; }
         list.innerHTML = compareAthletes.map(a => `<div class="comparison-card"><div class="athlete-name" style="font-weight:700;">${a.name}</div><div style="font-size:0.8rem;">${a.school}</div><div>🏀 Vertical: <strong>${a.metrics.vertical?.value || 'N/A'}"</strong></div><div>🏃 Sprint: <strong>${a.metrics.sprint?.value || 'N/A'}s</strong></div><div>⭐ Trust: ${a.trustScore || 'Pending'}</div><button class="btn-outline" style="margin-top:0.5rem; padding:0.3rem; font-size:0.7rem;" onclick="showAthleteDetail(${a.id})">View Profile</button></div>`).join('');
     }
@@ -953,7 +1034,7 @@
 
     function renderRecruitingBoard() {
         const year = document.getElementById('classYear')?.value || '2025';
-        const filtered = athletes.filter(a => a.classYear == year);
+        const filtered = athletes.filter(a => !a.flagged && a.classYear == year);
         const grid = document.getElementById('recruitingBoardList');
         if (!grid) return;
         if (!filtered.length) { grid.innerHTML = '<div class="empty-state">No athletes in this class year</div>'; return; }
@@ -964,7 +1045,7 @@
     }
 
     function exportToCSV() {
-        const wl = athletes.filter(a => currentUser.watchlist.includes(a.id));
+        const wl = athletes.filter(a => currentUser.watchlist.includes(a.id) && !a.flagged);
         if (!wl.length) { showToast('Your watchlist is empty', 'error'); return; }
         let csv = 'Name,School,Position,Vertical (in),Sprint (s),Trust Score,Views,Status\n';
         wl.forEach(a => csv += `"${a.name}","${a.school}",${a.position},${a.metrics.vertical?.value || 'N/A'},${a.metrics.sprint?.value || 'N/A'},${a.trustScore || 'Pending'},${a.views},${a.metrics.vertical?.status}\n`);
@@ -1045,6 +1126,8 @@
                 avatarBg: bgClasses[Math.floor(Math.random() * bgClasses.length)],
                 jerseyNum: Math.floor(Math.random() * 99).toString(),
                 classYear: 2026,
+                flagged: false,
+                flaggedReason: null,
                 metrics: {
                     vertical: { value: v.vertical_inches, status: v.needs_confirmations === 0 ? 'verified' : 'pending', confidence: v.confidence, verifications: 0 },
                     sprint: { value: s.sprint_seconds, status: s.needs_confirmations === 0 ? 'verified' : 'pending', confidence: s.confidence, verifications: 0 }
@@ -1103,6 +1186,7 @@
 
     function confirmVerification() {
         if (!currentDetailAthlete) return;
+        if (currentDetailAthlete.flagged) { showToast('Cannot confirm flagged athlete', 'error'); return; }
         if (currentUser.confirmedAthleteIds.includes(currentDetailAthlete.id)) { showToast('You already confirmed this athlete', 'error'); return; }
         
         currentUser.confirmedAthleteIds.push(currentDetailAthlete.id);
@@ -1168,6 +1252,7 @@
 
     function challengeVerification() {
         if (!currentDetailAthlete) return;
+        if (currentDetailAthlete.flagged) { showToast('Cannot challenge flagged athlete', 'error'); return; }
         if (currentUser.challengedAthleteIds?.includes(currentDetailAthlete.id)) { showToast('You already challenged this athlete', 'error'); return; }
         if (!currentUser.challengedAthleteIds) currentUser.challengedAthleteIds = [];
         currentUser.challengedAthleteIds.push(currentDetailAthlete.id);
@@ -1194,6 +1279,10 @@
     function showAthleteDetail(id) {
         const athlete = athletes.find(a => a.id === id);
         if (!athlete) return;
+        if (athlete.flagged) {
+            showToast('This athlete has been flagged as low quality', 'warning');
+            return;
+        }
         currentDetailAthlete = athlete;
         athlete.views = (athlete.views || 0) + 1;
         
@@ -1221,10 +1310,12 @@
         document.getElementById('undoConfirmBtn').style.display = hasConfirmed ? 'block' : 'none';
         document.getElementById('challengeBtn').style.display = (!hasChallenged && !isVerified) ? 'block' : 'none';
         document.getElementById('unchallengeBtn').style.display = hasChallenged ? 'block' : 'none';
+        document.getElementById('flagBtn').style.display = 'block';
         document.getElementById('watchlistDetailBtn').innerText = inWatchlist ? '⭐ Remove from Watchlist' : '⭐ Save to Watchlist';
         
         document.getElementById('shareBadgeBtn')?.addEventListener('click', () => showEmbedModal(athlete));
         document.getElementById('unverifyBtn')?.addEventListener('click', unverifyAthlete);
+        document.getElementById('flagBtn')?.addEventListener('click', flagAthlete);
         showModal('detailModal');
         saveData();
     }
