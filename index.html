@@ -227,7 +227,7 @@
             <div class="card">
                 <p>Select athletes to compare (2-4) by tapping the checkbox on athlete cards in Discover.</p>
                 <div id="compareList" class="comparison-grid"></div>
-                <button class="btn-primary" id="refreshCompareBtn">🔄 Refresh Comparison</button>
+                <button class="btn-primary" id="refreshCompareBtn">🔄 Reset Comparison</button>
             </div>
         </div>
         <div id="recruitingMode" style="display:none;"><div class="card"><div class="form-group"><label>Recruiting Class Year</label><select class="form-select" id="classYear"><option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option></select></div><div id="recruitingBoardList" class="athlete-grid"></div></div></div>
@@ -410,11 +410,33 @@
     }
     
     function refreshComparison() {
-        renderComparison();
+        // Clear all selected athlete IDs
+        compareSelectedIds = [];
+        
+        // Uncheck all compare checkboxes in the UI
+        document.querySelectorAll('.compare-checkbox').forEach(checkbox => {
+            checkbox.classList.remove('selected');
+            const span = checkbox.querySelector('span');
+            if (span) span.innerText = '';
+        });
+        
+        // Clear the comparison grid
+        const compareList = document.getElementById('compareList');
+        if (compareList) {
+            compareList.innerHTML = '<div class="empty-state">Select athletes to compare using checkboxes on Discover page</div>';
+        }
+        
+        // Save to localStorage
+        saveData();
+        
+        // Re-render athlete grid to update checkbox states
+        renderAthleteGrid();
+        
+        // Visual feedback
         const refreshBtn = document.getElementById('refreshCompareBtn');
         if (refreshBtn) {
             const originalText = refreshBtn.innerText;
-            refreshBtn.innerText = '✓ Refreshed!';
+            refreshBtn.innerText = '✓ Reset!';
             setTimeout(() => {
                 refreshBtn.innerText = originalText;
             }, 1500);
