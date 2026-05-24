@@ -6,15 +6,9 @@
     <title>VANTAGE | 运动员认证平台</title>
     <style>
         /* ============================================
-           RESET & FONT STACK (Asian + US Market)
+           FONT STACK - Asian + US Market Optimized
            ============================================ */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Microsoft YaHei', system-ui, sans-serif;
             background: #0a0a0a;
@@ -22,1004 +16,183 @@
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
-
+        
         /* ============================================
-           BRAND COLOR SYSTEM
+           BRAND COLORS
            ============================================ */
         :root {
-            --primary-blue: #3B82F6;
-            --primary-purple: #8B5CF6;
-            --primary-gold: #F59E0B;
-            --success-green: #10B981;
-            --error-red: #EF4444;
-            --gray-dark: #1a1a1a;
-            --gray-medium: #2a2a2a;
+            --navy: #0F172A;
+            --blue: #3B82F6;
+            --blue-glow: rgba(59,130,246,0.3);
+            --purple: #8B5CF6;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            --gray: #6B7280;
             --gray-light: #9CA3AF;
-            --glass-bg: rgba(18, 18, 24, 0.8);
-            --glass-border: rgba(59, 130, 246, 0.15);
         }
-
+        
         /* ============================================
            NAVIGATION
            ============================================ */
-        .navbar {
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 0.5px solid var(--glass-border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            padding: 0.75rem 1.25rem;
-        }
-
-        .navbar-content {
-            max-width: 1280px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
-        }
-
-        .logo-icon svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        .logo-text {
-            font-size: 1.4rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #ffffff, var(--primary-blue));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .logo-tag {
-            font-size: 0.65rem;
-            color: var(--gray-light);
-            font-weight: 400;
-        }
-
-        /* Desktop Navigation */
-        .desktop-nav {
-            display: none;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .desktop-nav a {
-            color: var(--gray-light);
-            text-decoration: none;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .desktop-nav a:hover {
-            color: var(--primary-blue);
-        }
-
-        /* Info Button */
-        .info-btn {
-            background: none;
-            border: none;
-            color: var(--gray-light);
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 0.25rem 0.5rem;
-            border-radius: 30px;
-            transition: all 0.2s;
-        }
-
-        .info-btn:hover {
-            color: var(--primary-blue);
-            background: rgba(59, 130, 246, 0.1);
-        }
-
-        /* Mobile Bottom Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(20px);
-            border-top: 0.5px solid var(--glass-border);
-            display: flex;
-            justify-content: space-around;
-            padding: 0.5rem 0.5rem 0.75rem;
-            z-index: 100;
-            overflow-x: auto;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.2rem;
-            background: none;
-            border: none;
-            color: var(--gray-light);
-            font-size: 0.65rem;
-            cursor: pointer;
-            padding: 0.2rem 0.6rem;
-            border-radius: 30px;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-
-        .nav-item.active {
-            color: var(--primary-blue);
-            background: rgba(59, 130, 246, 0.1);
-        }
-
-        .nav-icon {
-            font-size: 1.3rem;
-        }
-
+        .navbar { background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); border-bottom: 0.5px solid var(--blue-glow); position: sticky; top: 0; z-index: 100; padding: 0.75rem 1.25rem; }
+        .navbar-content { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+        
+        .logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--blue), var(--purple)); border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--blue-glow); }
+        .logo-icon svg { width: 20px; height: 20px; }
+        .logo-text { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(135deg, #ffffff, var(--blue)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .logo-tag { font-size: 0.65rem; color: var(--gray-light); font-weight: 400; letter-spacing: 0; }
+        
+        .desktop-nav { display: none; gap: 2rem; align-items: center; }
+        .desktop-nav a { color: var(--gray-light); text-decoration: none; font-size: 0.9rem; cursor: pointer; transition: color 0.2s; }
+        .desktop-nav a:hover { color: var(--blue); }
+        
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,10,0.95); backdrop-filter: blur(20px); border-top: 0.5px solid var(--blue-glow); display: flex; justify-content: space-around; padding: 0.5rem 0.5rem 0.75rem; z-index: 100; overflow-x: auto; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; background: none; border: none; color: var(--gray); font-size: 0.65rem; cursor: pointer; padding: 0.2rem 0.6rem; border-radius: 30px; transition: all 0.2s; white-space: nowrap; }
+        .nav-item.active { color: var(--blue); background: rgba(59,130,246,0.1); }
+        .nav-icon { font-size: 1.3rem; }
+        
         /* ============================================
-           TOAST NOTIFICATIONS
+           TOAST NOTIFICATION
            ============================================ */
-        .toast {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 0.75rem 1.5rem;
-            border-radius: 40px;
-            color: white;
-            z-index: 2000;
-            animation: fadeInUp 0.3s ease-out;
-            max-width: 90%;
-            text-align: center;
-            font-size: 0.85rem;
-            border-left: 3px solid var(--primary-blue);
-        }
-
-        .toast-success {
-            border-left-color: var(--success-green);
-        }
-
-        .toast-error {
-            border-left-color: var(--error-red);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-        }
-
+        .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); padding: 0.75rem 1.5rem; border-radius: 40px; color: white; z-index: 2000; animation: fadeInUp 0.3s ease-out; max-width: 90%; text-align: center; font-size: 0.85rem; }
+        .toast-success { border-left: 3px solid var(--success); }
+        .toast-error { border-left: 3px solid var(--error); }
+        .toast-info { border-left: 3px solid var(--blue); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        
         /* ============================================
            MAIN CONTAINER
            ============================================ */
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 1rem 1rem 5rem;
-        }
-
-        .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border: 0.5px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 1.25rem;
-            margin-bottom: 1rem;
-            transition: transform 0.15s;
-        }
-
+        .container { max-width: 1280px; margin: 0 auto; padding: 1rem 1rem 5rem; }
+        .card { background: rgba(18,18,24,0.8); backdrop-filter: blur(10px); border: 0.5px solid rgba(59,130,246,0.15); border-radius: 20px; padding: 1.25rem; margin-bottom: 1rem; transition: transform 0.15s; }
+        
         /* ============================================
            STATS GRID
            ============================================ */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .stat-card {
-            background: rgba(18, 18, 24, 0.6);
-            border-radius: 16px;
-            padding: 0.875rem 0.5rem;
-            text-align: center;
-            border: 0.5px solid rgba(59, 130, 246, 0.1);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .stat-card:active {
-            transform: scale(0.97);
-        }
-
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-blue);
-        }
-
-        .stat-label {
-            font-size: 0.7rem;
-            color: var(--gray-light);
-        }
-
+        .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+        .stat-card { background: rgba(18,18,24,0.6); border-radius: 16px; padding: 0.875rem 0.5rem; text-align: center; border: 0.5px solid rgba(59,130,246,0.1); cursor: pointer; transition: all 0.2s; }
+        .stat-card:active { transform: scale(0.97); }
+        .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--blue); }
+        .stat-label { font-size: 0.7rem; color: var(--gray-light); }
+        
         /* ============================================
            SEARCH & SORT
            ============================================ */
-        .search-bar {
-            margin-bottom: 1rem;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            background: rgba(30, 30, 38, 0.8);
-            border: 0.5px solid rgba(59, 130, 246, 0.3);
-            border-radius: 30px;
-            color: white;
-            font-size: 0.9rem;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-        }
-
-        .sort-options {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .sort-chip {
-            background: rgba(30, 30, 38, 0.6);
-            padding: 0.35rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .sort-chip.active {
-            background: var(--primary-blue);
-        }
-
-        /* ============================================
-           FILTERS
-           ============================================ */
-        .filters {
-            display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-            scrollbar-width: none;
-        }
-
-        .filters::-webkit-scrollbar {
-            display: none;
-        }
-
-        .filter-chip {
-            background: rgba(30, 30, 38, 0.8);
-            border: 0.5px solid rgba(59, 130, 246, 0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .filter-chip.active {
-            background: var(--primary-blue);
-            color: white;
-        }
-
+        .search-bar { margin-bottom: 1rem; }
+        .search-input { width: 100%; padding: 0.75rem 1rem; background: rgba(30,30,38,0.8); border: 0.5px solid rgba(59,130,246,0.3); border-radius: 30px; color: white; font-size: 0.9rem; }
+        .search-input:focus { outline: none; border-color: var(--blue); }
+        .sort-options { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .sort-chip { background: rgba(30,30,38,0.6); padding: 0.35rem 0.75rem; border-radius: 20px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+        .sort-chip.active { background: var(--blue); }
+        
         /* ============================================
            ATHLETE GRID
            ============================================ */
-        .athlete-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.875rem;
-            margin-top: 0.5rem;
-        }
-
-        .athlete-card {
-            background: rgba(18, 18, 24, 0.7);
-            border-radius: 16px;
-            overflow: hidden;
-            cursor: pointer;
-            border: 0.5px solid rgba(59, 130, 246, 0.1);
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .athlete-card:active {
-            transform: scale(0.98);
-        }
-
-        /* Card Actions (Top Right) */
-        .card-actions {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            display: flex;
-            gap: 8px;
-            z-index: 15;
-        }
-
-        .action-icon {
-            width: 32px;
-            height: 32px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 1rem;
-            border: 0.5px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .action-icon:active {
-            transform: scale(0.9);
-        }
-
-        .action-icon.watchlist-active {
-            background: var(--primary-gold);
-            color: #000;
-        }
-
-        /* Compare Checkbox (Top Left) */
-        .compare-checkbox {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            width: 32px;
-            height: 32px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 15;
-            border: 0.5px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.2s;
-        }
-
-        .compare-checkbox.selected {
-            background: var(--primary-blue);
-            border-color: var(--primary-blue);
-        }
-
-        .compare-checkbox span {
-            color: white;
-            font-size: 1rem;
-            font-weight: bold;
-        }
-
-        /* Athlete Avatar */
-        .athlete-avatar {
-            width: 100%;
-            aspect-ratio: 1/1;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .avatar-bg-1 {
-            background: linear-gradient(135deg, #1e3a5f, #0f2b3d);
-        }
-
-        .avatar-bg-2 {
-            background: linear-gradient(135deg, #2d1b4e, #1a0f2e);
-        }
-
-        .avatar-bg-3 {
-            background: linear-gradient(135deg, #1e4a3b, #0f2e23);
-        }
-
-        .avatar-bg-4 {
-            background: linear-gradient(135deg, #5f3e1e, #3d2712);
-        }
-
-        .avatar-bg-5 {
-            background: linear-gradient(135deg, #3a1e5f, #24123d);
-        }
-
-        .avatar-bg-6 {
-            background: linear-gradient(135deg, #1e5f5a, #123d39);
-        }
-
-        .player-silhouette {
-            width: 80%;
-            height: 80%;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .player-silhouette::before {
-            content: "🏀";
-            font-size: 2.5rem;
-            opacity: 0.6;
-        }
-
-        .jersey-number {
-            position: absolute;
-            bottom: 8px;
-            right: 12px;
-            font-size: 0.9rem;
-            font-weight: 800;
-            color: rgba(255, 255, 255, 0.4);
-            background: rgba(0, 0, 0, 0.4);
-            padding: 0.1rem 0.4rem;
-            border-radius: 20px;
-        }
-
-        /* Athlete Info */
-        .athlete-info {
-            padding: 0.75rem;
-        }
-
-        .athlete-name {
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .athlete-school {
-            font-size: 0.7rem;
-            color: var(--gray-light);
-            margin-bottom: 0.5rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .metrics-container {
-            display: flex;
-            gap: 0.5rem;
-            margin: 0.5rem 0;
-        }
-
-        .metric-item {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            padding: 0.35rem 0;
-            text-align: center;
-        }
-
-        .metric-value {
-            font-weight: 700;
-            font-size: 0.85rem;
-            color: var(--primary-blue);
-        }
-
-        .metric-label {
-            font-size: 0.6rem;
-            color: var(--gray-light);
-        }
-
-        .verified-badge {
-            background: linear-gradient(135deg, var(--success-green), #059669);
-            font-size: 0.6rem;
-            padding: 0.2rem 0.5rem;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 0.5rem;
-        }
-
-        .pending-badge {
-            background: rgba(245, 158, 11, 0.2);
-            color: var(--primary-gold);
-            font-size: 0.6rem;
-            padding: 0.2rem 0.5rem;
-            border-radius: 20px;
-            display: inline-block;
-        }
-
-        .trust-score {
-            font-size: 0.65rem;
-            color: var(--primary-purple);
-            margin-top: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .verification-count {
-            font-size: 0.6rem;
-            color: var(--gray-light);
-            margin-top: 0.25rem;
-        }
-
-        .progress-container {
-            margin-top: 0.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            height: 4px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            background: var(--primary-blue);
-            height: 100%;
-            border-radius: 20px;
-            transition: width 0.3s;
-        }
-
-        /* ============================================
-           MODAL
-           ============================================ */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: rgba(18, 18, 24, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 28px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 1.5rem;
-            border: 0.5px solid var(--glass-border);
-        }
-
-        .close-modal {
-            float: right;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--gray-light);
-            line-height: 1;
-        }
-
-        /* ============================================
-           FORMS & BUTTONS
-           ============================================ */
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-size: 0.85rem;
-            color: var(--gray-light);
-        }
-
-        .form-input,
-        .form-select {
-            width: 100%;
-            padding: 0.875rem;
-            background: rgba(0, 0, 0, 0.4);
-            border: 0.5px solid rgba(59, 130, 246, 0.3);
-            border-radius: 12px;
-            color: white;
-            font-size: 0.95rem;
-            transition: all 0.2s;
-        }
-
-        .form-input:focus,
-        .form-select:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            background: rgba(0, 0, 0, 0.6);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-blue), #2563eb);
-            border: none;
-            padding: 0.875rem;
-            border-radius: 30px;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            transition: transform 0.1s, opacity 0.2s;
-        }
-
-        .btn-primary:active {
-            transform: scale(0.97);
-            opacity: 0.9;
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-secondary {
-            background: rgba(59, 130, 246, 0.2);
-            border: 0.5px solid rgba(59, 130, 246, 0.5);
-            padding: 0.75rem;
-            border-radius: 30px;
-            color: var(--primary-blue);
-            font-weight: 500;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.2s;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 0.5px solid var(--primary-blue);
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-            color: var(--primary-blue);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-confirm {
-            flex: 1;
-            background: var(--success-green);
-            border: none;
-            padding: 0.75rem;
-            border-radius: 30px;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .btn-undo {
-            flex: 1;
-            background: rgba(107, 114, 128, 0.2);
-            border: 0.5px solid var(--gray-light);
-            padding: 0.75rem;
-            border-radius: 30px;
-            color: var(--gray-light);
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .btn-challenge {
-            flex: 1;
-            background: rgba(239, 68, 68, 0.15);
-            border: 0.5px solid var(--error-red);
-            padding: 0.75rem;
-            border-radius: 30px;
-            color: var(--error-red);
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        /* ============================================
-           MODE TOGGLE (Scout Portal)
-           ============================================ */
-        .mode-toggle {
-            background: rgba(30, 30, 38, 0.8);
-            border-radius: 40px;
-            padding: 0.25rem;
-            display: inline-flex;
-            gap: 0.25rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .mode-btn {
-            padding: 0.5rem 1.25rem;
-            border-radius: 30px;
-            border: none;
-            background: transparent;
-            color: var(--gray-light);
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .mode-btn.active {
-            background: var(--primary-blue);
-            color: white;
-        }
-
-        /* ============================================
-           COMPARISON GRID
-           ============================================ */
-        .comparison-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .comparison-card {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 16px;
-            padding: 1rem;
-            text-align: center;
-        }
-
-        /* ============================================
-           PAGE TRANSITIONS
-           ============================================ */
-        .page {
-            display: none;
-            animation: fadeIn 0.25s ease-out;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ============================================
-           EMPTY STATES & UTILITIES
-           ============================================ */
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1.5rem;
-            color: var(--gray-light);
-        }
-
-        .page-header {
-            margin-bottom: 1rem;
-        }
-
-        .page-header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.3px;
-        }
-
-        .page-header p {
-            font-size: 0.8rem;
-            color: var(--gray-light);
-            margin-top: 0.25rem;
-        }
-
-        .alert-success {
-            background: rgba(16, 185, 129, 0.15);
-            border: 0.5px solid var(--success-green);
-            padding: 0.75rem;
-            border-radius: 12px;
-            color: var(--success-green);
-            margin-top: 1rem;
-        }
-
-        .alert-error {
-            background: rgba(239, 68, 68, 0.15);
-            border: 0.5px solid var(--error-red);
-            padding: 0.75rem;
-            border-radius: 12px;
-            color: #f87171;
-            margin-top: 1rem;
-        }
-
-        /* ============================================
-           DETAIL MODAL STYLES
-           ============================================ */
-        .athlete-detail-avatar {
-            width: 100%;
-            aspect-ratio: 1/1;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-
-        .metrics-detail {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 16px;
-            padding: 1rem;
-            margin: 1rem 0;
-        }
-
-        .metric-detail-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.75rem 0;
-            border-bottom: 0.5px solid rgba(59, 130, 246, 0.2);
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .metric-detail-item:last-child {
-            border-bottom: none;
-        }
-
-        /* ============================================
-           HOW IT WORKS PAGE
-           ============================================ */
-        .step-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .step {
-            display: flex;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-
-        .step-number {
-            width: 32px;
-            height: 32px;
-            background: var(--primary-blue);
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .step-content h4 {
-            margin-bottom: 0.25rem;
-        }
-
-        .step-content p {
-            font-size: 0.85rem;
-            color: var(--gray-light);
-        }
-
-        .trust-rules {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .rule-card {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            padding: 0.75rem;
-            text-align: center;
-        }
-
-        .rule-positive {
-            color: var(--success-green);
-        }
-
-        .rule-negative {
-            color: var(--error-red);
-        }
-
-        .faq-item {
-            margin-bottom: 1rem;
-        }
-
-        .faq-question {
-            font-weight: 600;
-            cursor: pointer;
-            padding: 0.5rem 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 0.5px solid rgba(59, 130, 246, 0.2);
-        }
-
-        .faq-answer {
-            font-size: 0.85rem;
-            color: var(--gray-light);
-            padding: 0.5rem 0;
-            display: none;
-        }
-
-        .faq-answer.show {
-            display: block;
-        }
-
-        .footer {
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 0.5px solid var(--glass-border);
-            text-align: center;
-            font-size: 0.7rem;
-            color: var(--gray-light);
-        }
-
-        .footer a {
-            color: var(--primary-blue);
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
+        .athlete-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem; margin-top: 0.5rem; }
+        .athlete-card { background: rgba(18,18,24,0.7); border-radius: 16px; overflow: hidden; cursor: pointer; border: 0.5px solid rgba(59,130,246,0.1); transition: all 0.2s; position: relative; }
+        .athlete-card:active { transform: scale(0.98); }
+        
+        /* Interactive Icons - Top Right Corner */
+        .card-actions { position: absolute; top: 8px; right: 8px; display: flex; gap: 8px; z-index: 15; }
+        .action-icon { width: 32px; height: 32px; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); border-radius: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; font-size: 1rem; border: 0.5px solid rgba(255,255,255,0.2); }
+        .action-icon:active { transform: scale(0.9); }
+        .action-icon.active { background: var(--blue); }
+        .action-icon.watchlist-active { background: var(--warning); color: #000; }
+        
+        /* Compare Checkbox - Top Left Corner */
+        .compare-checkbox { position: absolute; top: 8px; left: 8px; width: 32px; height: 32px; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 15; border: 0.5px solid rgba(255,255,255,0.3); transition: all 0.2s; }
+        .compare-checkbox.selected { background: var(--blue); border-color: var(--blue); }
+        .compare-checkbox span { color: white; font-size: 1rem; font-weight: bold; }
+        
+        .athlete-avatar { width: 100%; aspect-ratio: 1/1; position: relative; display: flex; align-items: center; justify-content: center; }
+        .avatar-bg-1 { background: linear-gradient(135deg, #1e3a5f, #0f2b3d); }
+        .avatar-bg-2 { background: linear-gradient(135deg, #2d1b4e, #1a0f2e); }
+        .avatar-bg-3 { background: linear-gradient(135deg, #1e4a3b, #0f2e23); }
+        .avatar-bg-4 { background: linear-gradient(135deg, #5f3e1e, #3d2712); }
+        .avatar-bg-5 { background: linear-gradient(135deg, #3a1e5f, #24123d); }
+        .avatar-bg-6 { background: linear-gradient(135deg, #1e5f5a, #123d39); }
+        .player-silhouette { width: 80%; height: 80%; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; }
+        .player-silhouette::before { content: "🏀"; font-size: 2.5rem; opacity: 0.6; }
+        .jersey-number { position: absolute; bottom: 8px; right: 12px; font-size: 0.9rem; font-weight: 800; color: rgba(255,255,255,0.4); background: rgba(0,0,0,0.4); padding: 0.1rem 0.4rem; border-radius: 20px; }
+        
+        .athlete-info { padding: 0.75rem; }
+        .athlete-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
+        .athlete-school { font-size: 0.7rem; color: var(--gray-light); margin-bottom: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .metrics-container { display: flex; gap: 0.5rem; margin: 0.5rem 0; }
+        .metric-item { flex: 1; background: rgba(0,0,0,0.3); border-radius: 10px; padding: 0.35rem 0; text-align: center; }
+        .metric-value { font-weight: 700; font-size: 0.85rem; color: var(--blue); }
+        .metric-label { font-size: 0.6rem; color: var(--gray-light); }
+        .verified-badge { background: linear-gradient(135deg, var(--success), #059669); font-size: 0.6rem; padding: 0.2rem 0.5rem; border-radius: 20px; display: inline-block; margin-top: 0.5rem; }
+        .pending-badge { background: rgba(245,158,11,0.2); color: var(--warning); font-size: 0.6rem; padding: 0.2rem 0.5rem; border-radius: 20px; display: inline-block; }
+        .trust-score { font-size: 0.65rem; color: var(--purple); margin-top: 0.5rem; display: flex; align-items: center; gap: 0.25rem; }
+        .verification-count { font-size: 0.6rem; color: var(--gray-light); margin-top: 0.25rem; }
+        .progress-container { margin-top: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 20px; height: 4px; overflow: hidden; }
+        .progress-bar { background: var(--blue); height: 100%; border-radius: 20px; transition: width 0.3s; }
+        
+        .filters { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.5rem; margin-bottom: 1rem; scrollbar-width: none; }
+        .filters::-webkit-scrollbar { display: none; }
+        .filter-chip { background: rgba(30,30,38,0.8); border: 0.5px solid rgba(59,130,246,0.2); padding: 0.5rem 1rem; border-radius: 30px; font-size: 0.8rem; white-space: nowrap; cursor: pointer; transition: all 0.2s; }
+        .filter-chip.active { background: var(--blue); color: white; }
+        
+        .mode-toggle { background: rgba(30,30,38,0.8); border-radius: 40px; padding: 0.25rem; display: inline-flex; gap: 0.25rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .mode-btn { padding: 0.5rem 1.25rem; border-radius: 30px; border: none; background: transparent; color: var(--gray); cursor: pointer; font-weight: 500; transition: all 0.2s; }
+        .mode-btn.active { background: var(--blue); color: white; }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: rgba(18,18,24,0.95); backdrop-filter: blur(20px); border-radius: 28px; max-width: 500px; width: 90%; max-height: 85vh; overflow-y: auto; padding: 1.5rem; border: 0.5px solid rgba(59,130,246,0.2); }
+        .close-modal { float: right; font-size: 1.5rem; cursor: pointer; color: var(--gray-light); line-height: 1; }
+        
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--gray-light); }
+        .form-input, .form-select { width: 100%; padding: 0.875rem; background: rgba(0,0,0,0.4); border: 0.5px solid rgba(59,130,246,0.3); border-radius: 12px; color: white; font-size: 0.95rem; transition: all 0.2s; }
+        .form-input:focus { outline: none; border-color: var(--blue); background: rgba(0,0,0,0.6); }
+        
+        .btn-primary { background: linear-gradient(135deg, var(--blue), #2563eb); border: none; padding: 0.875rem; border-radius: 30px; color: white; font-weight: 600; font-size: 1rem; cursor: pointer; width: 100%; transition: transform 0.1s, opacity 0.2s; }
+        .btn-primary:active { transform: scale(0.97); opacity: 0.9; }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-secondary { background: rgba(59,130,246,0.2); border: 0.5px solid rgba(59,130,246,0.5); padding: 0.75rem; border-radius: 30px; color: var(--blue); font-weight: 500; cursor: pointer; width: 100%; transition: all 0.2s; }
+        .btn-outline { background: transparent; border: 0.5px solid var(--blue); padding: 0.5rem 1rem; border-radius: 30px; color: var(--blue); cursor: pointer; transition: all 0.2s; }
+        
+        .button-group { display: flex; gap: 0.75rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .btn-confirm { flex: 1; background: var(--success); border: none; padding: 0.75rem; border-radius: 30px; color: white; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
+        .btn-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-undo { flex: 1; background: rgba(107,114,128,0.2); border: 0.5px solid var(--gray); padding: 0.75rem; border-radius: 30px; color: var(--gray-light); font-weight: 500; cursor: pointer; }
+        .btn-challenge { flex: 1; background: rgba(239,68,68,0.15); border: 0.5px solid #ef4444; padding: 0.75rem; border-radius: 30px; color: #ef4444; font-weight: 500; cursor: pointer; }
+        
+        .comparison-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .comparison-card { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 1rem; text-align: center; }
+        
+        .page { display: none; animation: fadeIn 0.25s ease-out; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .empty-state { text-align: center; padding: 3rem 1.5rem; color: var(--gray-light); }
+        .page-header { margin-bottom: 1rem; }
+        .page-header h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; }
+        .page-header p { font-size: 0.8rem; color: var(--gray-light); margin-top: 0.25rem; }
+        
+        .alert-success { background: rgba(16,185,129,0.15); border: 0.5px solid var(--success); padding: 0.75rem; border-radius: 12px; color: var(--success); margin-top: 1rem; }
+        .alert-error { background: rgba(239,68,68,0.15); border: 0.5px solid #ef4444; padding: 0.75rem; border-radius: 12px; color: #f87171; margin-top: 1rem; }
+        
+        .athlete-detail-avatar { width: 100%; aspect-ratio: 1/1; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; position: relative; }
+        .metrics-detail { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 1rem; margin: 1rem 0; }
+        .metric-detail-item { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 0.5px solid rgba(59,130,246,0.2); flex-wrap: wrap; gap: 0.5rem; }
+        .metric-detail-item:last-child { border-bottom: none; }
+        
+        .footer { margin-top: 2rem; padding-top: 1rem; border-top: 0.5px solid rgba(59,130,246,0.15); text-align: center; font-size: 0.7rem; color: var(--gray-light); }
+        .footer a { color: var(--blue); text-decoration: none; cursor: pointer; }
+        
         @media (min-width: 768px) {
-            .bottom-nav {
-                display: none;
-            }
-
-            .desktop-nav {
-                display: flex;
-            }
-
-            .athlete-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1rem;
-            }
-
-            .stats-grid {
-                gap: 1rem;
-            }
-
-            .stat-value {
-                font-size: 1.75rem;
-            }
-
-            .container {
-                padding-bottom: 2rem;
-            }
+            .bottom-nav { display: none; }
+            .desktop-nav { display: flex; }
+            .athlete-grid { grid-template-columns: repeat(3,1fr); gap: 1rem; }
+            .stats-grid { gap: 1rem; }
+            .stat-value { font-size: 1.75rem; }
+            .container { padding-bottom: 2rem; }
         }
     </style>
 </head>
@@ -1028,18 +201,8 @@
 <div class="navbar">
     <div class="navbar-content">
         <div class="logo">
-            <div class="logo-icon">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 20L20 4" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M4 4L20 20" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M12 2L12 22" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M2 12L22 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <div>
-                <span class="logo-text">VANTAGE</span>
-                <span class="logo-tag">Verified Athletic Intelligence</span>
-            </div>
+            <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 20L20 4" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M4 4L20 20" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M12 2L12 22" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M2 12L22 12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div><span class="logo-text">VANTAGE</span><span class="logo-tag">Verified Athletic Intelligence</span></div>
         </div>
         <div class="desktop-nav">
             <a data-page="discover">Discover</a>
@@ -1048,7 +211,6 @@
             <a data-page="leaderboard">Leaderboard</a>
             <a data-page="pricing">Pricing</a>
         </div>
-        <button class="info-btn" onclick="showPage('howitworks')">ⓘ</button>
     </div>
 </div>
 
@@ -1062,12 +224,8 @@
 </div>
 
 <div class="container" id="app">
-    <!-- DISCOVER PAGE -->
     <div id="discoverPage" class="page active">
-        <div class="page-header">
-            <h1>Verified Athletes</h1>
-            <p>AI-measured vertical leap · Community verified</p>
-        </div>
+        <div class="page-header"><h1>Verified Athletes</h1><p>AI-measured vertical leap · Community verified</p></div>
         <div class="stats-grid">
             <div class="stat-card" onclick="applyFilter('all')"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Athletes</div></div>
             <div class="stat-card" onclick="applyFilter('verified')"><div class="stat-value" id="statVerified">0</div><div class="stat-label">Verified</div></div>
@@ -1075,22 +233,11 @@
             <div class="stat-card"><div class="stat-value" id="statAvgVert">0</div><div class="stat-label">Avg Vertical</div></div>
         </div>
         <div class="search-bar"><input type="text" class="search-input" id="searchInput" placeholder="🔍 Search athletes by name or school..."></div>
-        <div class="sort-options">
-            <span class="sort-chip active" data-sort="default">Default</span>
-            <span class="sort-chip" data-sort="vertical">Highest Vertical</span>
-            <span class="sort-chip" data-sort="trust">Top Trust Score</span>
-            <span class="sort-chip" data-sort="views">Most Viewed</span>
-        </div>
-        <div class="filters">
-            <div class="filter-chip active" data-filter="all">All</div>
-            <div class="filter-chip" data-filter="verified">Verified</div>
-            <div class="filter-chip" data-filter="pending">Pending</div>
-            <div class="filter-chip" data-filter="trending">🔥 Trending</div>
-        </div>
+        <div class="sort-options"><span class="sort-chip active" data-sort="default">Default</span><span class="sort-chip" data-sort="vertical">Highest Vertical</span><span class="sort-chip" data-sort="trust">Top Trust Score</span><span class="sort-chip" data-sort="views">Most Viewed</span></div>
+        <div class="filters"><div class="filter-chip active" data-filter="all">All</div><div class="filter-chip" data-filter="verified">Verified</div><div class="filter-chip" data-filter="pending">Pending</div><div class="filter-chip" data-filter="trending">🔥 Trending</div></div>
         <div class="athlete-grid" id="athleteGrid"></div>
     </div>
 
-    <!-- SUBMIT PAGE -->
     <div id="submitPage" class="page">
         <div class="page-header"><h1>Get Verified</h1><p>Submit your Instagram video for AI analysis</p></div>
         <div class="card">
@@ -1104,7 +251,6 @@
         </div>
     </div>
 
-    <!-- SCOUT PORTAL PAGE -->
     <div id="scoutPage" class="page">
         <div class="page-header"><h1>Scout Portal</h1><p>Advanced tools for talent evaluation</p></div>
         <div class="mode-toggle">
@@ -1112,89 +258,37 @@
             <button class="mode-btn" data-mode="compare">Compare</button>
             <button class="mode-btn" data-mode="recruiting">Recruiting Board</button>
         </div>
-        <div id="watchlistMode">
-            <div class="card"><div class="stats-grid" style="margin-bottom:0;"><div class="stat-card"><div class="stat-value" id="watchlistCount">0</div><div class="stat-label">Saved Athletes</div></div><div class="stat-card"><div class="stat-value">3</div><div class="stat-label">Open Spots</div></div></div></div>
-            <div class="athlete-grid" id="watchlistGrid"></div>
-            <button class="btn-secondary" id="exportCsvBtn">📥 Export Watchlist to CSV</button>
-        </div>
-        <div id="compareMode" style="display:none;">
-            <div class="card"><p>Select athletes to compare (2-4) by tapping the checkbox on athlete cards in Discover.</p><div id="compareList" class="comparison-grid"></div><button class="btn-primary" id="refreshCompareBtn">🔄 Reset Comparison</button></div>
-        </div>
-        <div id="recruitingMode" style="display:none;">
-            <div class="card"><div class="form-group"><label>Recruiting Class Year</label><select class="form-select" id="classYear"><option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option></select></div><div id="recruitingBoardList" class="athlete-grid"></div></div>
-        </div>
+        <div id="watchlistMode"><div class="card"><div class="stats-grid" style="margin-bottom:0;"><div class="stat-card"><div class="stat-value" id="watchlistCount">0</div><div class="stat-label">Saved Athletes</div></div><div class="stat-card"><div class="stat-value">3</div><div class="stat-label">Open Spots</div></div></div></div><div class="athlete-grid" id="watchlistGrid"></div><button class="btn-secondary" id="exportCsvBtn">📥 Export Watchlist to CSV</button></div>
+        <div id="compareMode" style="display:none;"><div class="card"><p>Select athletes to compare (2-4) by tapping the checkbox on athlete cards in Discover.</p><div id="compareList" class="comparison-grid"></div><button class="btn-primary" id="refreshCompareBtn">🔄 Reset Comparison</button></div></div>
+        <div id="recruitingMode" style="display:none;"><div class="card"><div class="form-group"><label>Recruiting Class Year</label><select class="form-select" id="classYear"><option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option></select></div><div id="recruitingBoardList" class="athlete-grid"></div></div></div>
     </div>
 
-    <!-- LEADERBOARD PAGE -->
     <div id="leaderboardPage" class="page">
         <div class="page-header"><h1>Trust Leaderboard</h1><p>Top verifiers earn scout access</p></div>
         <div class="card" id="leaderboardList"></div>
         <div class="card"><h3>Your Stats</h3><div>Confirmations: <strong id="userConfirmCount">0</strong></div><div>Current streak: <strong id="userStreak">0</strong> days</div><div>Trust score: <strong id="userTrustDisplay">85</strong></div><div class="progress-container"><div class="progress-bar" id="trustProgress" style="width:85%"></div></div></div>
     </div>
 
-    <!-- HOW IT WORKS PAGE -->
-    <div id="howitworksPage" class="page">
-        <div class="page-header"><h1>How It Works</h1><p>The VANTAGE trust engine</p></div>
-        <div class="card">
-            <h3>🔍 The Verification Process</h3>
-            <div class="step-container">
-                <div class="step"><div class="step-number">1</div><div class="step-content"><h4>AI Measurement</h4><p>Our AI analyzes your Instagram video frame-by-frame, detecting takeoff, peak height, and using the basketball rim (10ft) as a reference to calculate your exact vertical leap.</p><p style="margin-top:0.5rem; font-size:0.75rem; color:var(--primary-purple);">AI Confidence Score: 0-100% based on video quality, rim visibility, and camera angle.</p></div></div>
-                <div class="step"><div class="step-number">2</div><div class="step-content"><h4>Community Confirmation</h4><p>Other users watch your video and review the AI's measurement. If they agree it's accurate, they click "Confirm." Each metric needs 2-3 confirmations to become verified.</p><p style="margin-top:0.5rem; font-size:0.75rem; color:var(--primary-purple);">High confidence (90%+) = auto-verified. Medium (70-89%) = needs 2 confirmations. Low (below 70%) = needs 3 confirmations.</p></div></div>
-                <div class="step"><div class="step-number">3</div><div class="step-content"><h4>Verified Badge</h4><p>Once enough community members confirm your metrics, you receive a green "Verified" badge. Your verified profile becomes searchable and visible to scouts.</p></div></div>
-            </div>
-        </div>
-        <div class="card">
-            <h3>⭐ Trust Score System</h3>
-            <p style="margin-bottom:1rem;">Your trust score reflects your reliability as a verifier.</p>
-            <div class="trust-rules">
-                <div class="rule-card"><span class="rule-positive">+2 points</span><br>Confirming an accurate metric</div>
-                <div class="rule-card"><span class="rule-positive">+1 point</span><br>Correctly challenging an inaccurate metric</div>
-                <div class="rule-card"><span class="rule-negative">-5 points</span><br>Falsely confirming an inaccurate metric</div>
-                <div class="rule-card"><span class="rule-negative">-3 points</span><br>Falsely challenging an accurate metric</div>
-            </div>
-            <div style="margin-top:1rem; text-align:center; font-size:0.8rem; color:var(--gray-light);">✨ 7+ day verification streak → Bonus points<br>🏆 Top verifiers earn free Scout Pro access</div>
-        </div>
-        <div class="card">
-            <h3>❓ Frequently Asked Questions</h3>
-            <div style="margin-top:1rem;">
-                <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">What makes VANTAGE different? <span>▼</span></div><div class="faq-answer">Unlike Hudl or recruiting platforms that rely on self-reported stats, VANTAGE uses AI + community verification to ensure every metric is accurate. Scouts can trust what they see.</div></div>
-                <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Can I challenge a verification? <span>▼</span></div><div class="faq-answer">Yes. Click "Challenge" on any athlete's profile. The metric will be re-reviewed by our team and the community.</div></div>
-                <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">How do I earn a higher trust score? <span>▼</span></div><div class="faq-answer">Consistently confirm accurate metrics and maintain a daily verification streak. Higher trust scores make you a "Trusted Verifier."</div></div>
-                <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Is VANTAGE really free for athletes? <span>▼</span></div><div class="faq-answer">Yes. Athletes never pay. Scouts pay $500/year for full database access, advanced filters, and export tools.</div></div>
-            </div>
-        </div>
-        <div class="card" style="text-align:center;">
-            <h3>Ready to get started?</h3>
-            <p style="margin:0.5rem 0;">Join thousands of athletes getting verified.</p>
-            <div style="display:flex; gap:1rem; justify-content:center; margin-top:1rem;">
-                <button class="btn-primary" style="width:auto; padding:0.5rem 1.5rem;" onclick="showPage('submit')">Get Verified</button>
-                <button class="btn-secondary" style="width:auto; padding:0.5rem 1.5rem;" onclick="showPage('discover')">Browse Athletes</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- PRICING PAGE -->
     <div id="pricingPage" class="page">
         <div class="page-header"><h1>Simple Pricing</h1><p>Free for athletes · $500/year for scouts</p></div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-            <div class="card" style="text-align:center;"><h3>Athlete</h3><p style="font-size:2.5rem; font-weight:700;">$0</p><p style="color:var(--gray-light);">Forever free</p><div style="margin-top:1rem; text-align:left;"><div>✓ Unlimited verifications</div><div>✓ Public verified profile</div><div>✓ Instagram embed badge</div></div><button class="btn-primary" style="margin-top:1rem; background:linear-gradient(135deg,#10b981,#059669);" onclick="showPage('submit')">Get Started</button></div>
-            <div class="card" style="text-align:center; border-color:var(--primary-blue);"><div style="background:var(--primary-blue); display:inline-block; padding:0.2rem 0.75rem; border-radius:20px; font-size:0.7rem; margin-bottom:0.5rem;">MOST POPULAR</div><h3>Scout Pro</h3><p style="font-size:2.5rem; font-weight:700;">$500</p><p style="color:var(--gray-light);">Per year</p><div style="margin-top:1rem; text-align:left;"><div>✓ Full athlete database</div><div>✓ Advanced filters</div><div>✓ Save & compare athletes</div><div>✓ Export to CSV</div></div><button class="btn-primary" style="margin-top:1rem;" onclick="showToast('Demo: Stripe integration would open here', 'info')">Subscribe</button></div>
+            <div class="card" style="text-align:center;"><h3>Athlete</h3><p style="font-size:2.5rem; font-weight:700;">$0</p><p style="color:#9ca3af;">Forever free</p><div style="margin-top:1rem; text-align:left;"><div>✓ Unlimited verifications</div><div>✓ Public verified profile</div><div>✓ Instagram embed badge</div></div><button class="btn-primary" style="margin-top:1rem; background:linear-gradient(135deg,#10b981,#059669);" onclick="showPage('submit')">Get Started</button></div>
+            <div class="card" style="text-align:center; border-color:#3b82f6;"><div style="background:#3b82f6; display:inline-block; padding:0.2rem 0.75rem; border-radius:20px; font-size:0.7rem; margin-bottom:0.5rem;">MOST POPULAR</div><h3>Scout Pro</h3><p style="font-size:2.5rem; font-weight:700;">$500</p><p style="color:#9ca3af;">Per year</p><div style="margin-top:1rem; text-align:left;"><div>✓ Full athlete database</div><div>✓ Advanced filters</div><div>✓ Save & compare athletes</div><div>✓ Export to CSV</div></div><button class="btn-primary" style="margin-top:1rem;" onclick="showToast('Demo: Stripe integration would open here')">Subscribe</button></div>
         </div>
     </div>
 </div>
 
-<!-- MODALS -->
-<div id="loginModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('loginModal')">&times;</span><h2>Sign In</h2><div class="form-group"><label>Email</label><input type="email" class="form-input" id="loginEmail" placeholder="coach@example.com"></div><div class="form-group"><label>Password</label><input type="password" class="form-input" id="loginPassword" placeholder="••••••••"></div><button class="btn-primary" id="doLoginBtn">Sign In</button><p style="text-align:center; margin-top:1rem; font-size:0.75rem; color:var(--gray-light);">Demo: Any email works</p></div></div>
+<div id="loginModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('loginModal')">&times;</span><h2>Sign In</h2><div class="form-group"><label>Email</label><input type="email" class="form-input" id="loginEmail" placeholder="coach@example.com"></div><div class="form-group"><label>Password</label><input type="password" class="form-input" id="loginPassword" placeholder="••••••••"></div><button class="btn-primary" id="doLoginBtn">Sign In</button><p style="text-align:center; margin-top:1rem; font-size:0.75rem; color:#6b7280;">Demo: Any email works</p></div></div>
 
-<div id="detailModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('detailModal')">&times;</span><div id="detailContent"></div><div class="button-group" id="actionButtons"><button class="btn-confirm" id="confirmBtn">✓ Confirm</button><button class="btn-undo" id="undoConfirmBtn" style="display:none;">↩️ Undo</button><button class="btn-challenge" id="challengeBtn">⚠ Challenge</button></div><div class="button-group"><button class="btn-secondary" id="watchlistDetailBtn">⭐ Save to Watchlist</button></div></div></div>
+<div id="detailModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('detailModal')">&times;</span><div id="detailContent"></div><div class="button-group" id="actionButtons"><button class="btn-confirm" id="confirmBtn">✓ Confirm</button><button class="btn-challenge" id="challengeBtn">⚠ Challenge</button><button class="btn-undo" id="undoConfirmBtn" style="display:none;">↩️ Undo Confirmation</button></div><div class="button-group" id="watchlistAction"><button class="btn-secondary" id="watchlistDetailBtn">⭐ Save to Watchlist</button></div></div></div>
 
 <div id="embedModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('embedModal')">&times;</span><h3>Share Your Verified Badge</h3><p style="margin:1rem 0;">Copy this code to your Instagram bio:</p><div style="background:#1a1a1a; padding:0.75rem; border-radius:12px; font-family:monospace; font-size:0.7rem; word-break:break-all;" id="embedCode"></div><button class="btn-primary" style="margin-top:1rem;" onclick="copyEmbedCode()">Copy Code</button></div></div>
 
 <script>
     // ============================================
-    // VANTAGE - COMPLETE FINAL VERSION
+    // VANTAGE - COMPLETE DEBUGGED VERSION
     // ============================================
-
+    
     let athletes = [];
     let currentUser = { name: "Demo User", trustScore: 85, email: null, confirmationsMade: 0, streak: 3, watchlist: [], confirmedAthleteIds: [] };
     let currentFilter = "all";
@@ -1202,19 +296,16 @@
     let currentSearch = "";
     let currentDetailAthlete = null;
     let compareSelectedIds = [];
-
+    
     const defaultAthletes = [
-        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: null }, trustScore: 94, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson"], views: 342 },
-        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, sprint: null }, trustScore: 91, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson"], views: 189 },
-        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, metrics: { vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, sprint: null }, trustScore: 96, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson","Mike Ross","Lisa Wong"], views: 567 },
-        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, metrics: { vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, sprint: null }, trustScore: 0, confirmations: ["Coach Miller"], views: 45 },
-        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, metrics: { vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, sprint: null }, trustScore: 0, confirmations: [], views: 34 },
-        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: null }, trustScore: 0, confirmations: [], views: 28 }
+        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: { value: 4.38, status: "verified", confidence: 94, verifications: 4 } }, trustScore: 94, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson"], views: 342 },
+        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, sprint: { value: 4.45, status: "pending", confidence: 72, verifications: 1 } }, trustScore: 91, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson"], views: 189 },
+        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, metrics: { vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, sprint: { value: 4.28, status: "verified", confidence: 96, verifications: 6 } }, trustScore: 96, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson","Mike Ross","Lisa Wong"], views: 567 },
+        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, metrics: { vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, sprint: { value: null, status: null } }, trustScore: 0, confirmations: ["Coach Miller"], views: 45 },
+        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, metrics: { vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, sprint: { value: 4.42, status: "pending", confidence: 68, verifications: 0 } }, trustScore: 0, confirmations: [], views: 34 },
+        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: { value: 4.35, status: "pending", confidence: 74, verifications: 0 } }, trustScore: 0, confirmations: [], views: 28 }
     ];
-
-    // ============================================
-    // HELPER FUNCTIONS
-    // ============================================
+    
     function showToast(message, type = 'info') {
         const existing = document.querySelector('.toast');
         if (existing) existing.remove();
@@ -1224,42 +315,24 @@
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
     }
-
-    function toggleFaq(element) {
-        const answer = element.nextElementSibling;
-        const arrow = element.querySelector('span');
-        if (answer.classList.contains('show')) {
-            answer.classList.remove('show');
-            if (arrow) arrow.innerHTML = '▼';
-        } else {
-            answer.classList.add('show');
-            if (arrow) arrow.innerHTML = '▲';
-        }
-    }
-
+    
     function loadData() {
         const saved = localStorage.getItem('vantage_athletes');
         athletes = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(defaultAthletes));
         const savedUser = localStorage.getItem('vantage_user');
-        if (savedUser) {
-            const parsed = JSON.parse(savedUser);
-            currentUser = { ...currentUser, ...parsed };
-        }
+        if (savedUser) Object.assign(currentUser, JSON.parse(savedUser));
         if (!currentUser.confirmedAthleteIds) currentUser.confirmedAthleteIds = [];
         if (!currentUser.watchlist) currentUser.watchlist = [];
         const savedCompare = localStorage.getItem('vantage_compare');
         if (savedCompare) compareSelectedIds = JSON.parse(savedCompare);
     }
-
+    
     function saveData() {
         localStorage.setItem('vantage_athletes', JSON.stringify(athletes));
         localStorage.setItem('vantage_user', JSON.stringify(currentUser));
         localStorage.setItem('vantage_compare', JSON.stringify(compareSelectedIds));
     }
-
-    // ============================================
-    // STATS & UI UPDATES
-    // ============================================
+    
     function updateStats() {
         document.getElementById('statTotal').innerText = athletes.length;
         document.getElementById('statVerified').innerText = athletes.filter(a => a.metrics.vertical?.status === 'verified').length;
@@ -1272,29 +345,26 @@
         document.getElementById('userStreak').innerText = currentUser.streak;
         document.getElementById('userTrustDisplay').innerText = currentUser.trustScore;
         document.getElementById('trustProgress').style.width = currentUser.trustScore + '%';
-        const topVerifiers = [...athletes].filter(a => a.trustScore > 0).sort((a, b) => b.trustScore - a.trustScore).slice(0, 5);
-        document.getElementById('leaderboardList').innerHTML = topVerifiers.length ? topVerifiers.map((a, i) => `<div style="padding:0.75rem; border-bottom:0.5px solid rgba(59,130,246,0.15); display:flex; justify-content:space-between;"><span><strong>${i + 1}.</strong> ${a.name}</span><span style="color:var(--primary-purple);">⭐ ${a.trustScore}</span></div>`).join('') : '<div class="empty-state">No verified verifiers yet</div>';
+        const topVerifiers = [...athletes].filter(a => a.trustScore > 0).sort((a,b) => b.trustScore - a.trustScore).slice(0,5);
+        document.getElementById('leaderboardList').innerHTML = topVerifiers.length ? topVerifiers.map((a,i) => `<div style="padding:0.75rem; border-bottom:0.5px solid rgba(59,130,246,0.15); display:flex; justify-content:space-between;"><span><strong>${i+1}.</strong> ${a.name}</span><span style="color:#8b5cf6;">⭐ ${a.trustScore}</span></div>`).join('') : '<div class="empty-state">No verified verifiers yet</div>';
         saveData();
     }
-
+    
     function getFilteredAthletes() {
         let filtered = [...athletes];
         if (currentFilter === 'verified') filtered = filtered.filter(a => a.metrics.vertical?.status === 'verified');
         else if (currentFilter === 'pending') filtered = filtered.filter(a => a.metrics.vertical?.status === 'pending');
-        else if (currentFilter === 'trending') filtered = [...athletes].sort((a, b) => b.views - a.views).slice(0, 3);
+        else if (currentFilter === 'trending') filtered = [...athletes].sort((a,b) => b.views - a.views).slice(0,3);
         if (currentSearch) {
             const s = currentSearch.toLowerCase();
             filtered = filtered.filter(a => a.name.toLowerCase().includes(s) || a.school.toLowerCase().includes(s));
         }
-        if (currentSort === 'vertical') filtered.sort((a, b) => (b.metrics.vertical?.value || 0) - (a.metrics.vertical?.value || 0));
-        else if (currentSort === 'trust') filtered.sort((a, b) => (b.trustScore || 0) - (a.trustScore || 0));
-        else if (currentSort === 'views') filtered.sort((a, b) => (b.views || 0) - (a.views || 0));
+        if (currentSort === 'vertical') filtered.sort((a,b) => (b.metrics.vertical?.value || 0) - (a.metrics.vertical?.value || 0));
+        else if (currentSort === 'trust') filtered.sort((a,b) => (b.trustScore || 0) - (a.trustScore || 0));
+        else if (currentSort === 'views') filtered.sort((a,b) => (b.views || 0) - (a.views || 0));
         return filtered;
     }
-
-    // ============================================
-    // CORE ACTIONS (Watchlist, Compare)
-    // ============================================
+    
     function toggleWatchlist(athleteId, event) {
         if (event) event.stopPropagation();
         const idx = currentUser.watchlist.indexOf(athleteId);
@@ -1314,7 +384,7 @@
             if (btn) btn.innerText = currentUser.watchlist.includes(athleteId) ? '⭐ Remove from Watchlist' : '⭐ Save to Watchlist';
         }
     }
-
+    
     function toggleCompare(athleteId, event) {
         if (event) event.stopPropagation();
         const idx = compareSelectedIds.indexOf(athleteId);
@@ -1333,10 +403,7 @@
         renderAthleteGrid();
         renderComparison();
     }
-
-    // ============================================
-    // RENDER FUNCTIONS
-    // ============================================
+    
     function renderAthleteGrid() {
         const grid = document.getElementById('athleteGrid');
         if (!grid) return;
@@ -1344,6 +411,7 @@
         if (!filtered.length) { grid.innerHTML = '<div class="empty-state">No athletes found</div>'; return; }
         grid.innerHTML = filtered.map(a => {
             const isVerified = a.metrics.vertical?.status === 'verified';
+            const pendingCount = !isVerified && a.metrics.vertical?.status === 'pending' ? 1 : 0;
             const inWatchlist = currentUser.watchlist.includes(a.id);
             const inCompare = compareSelectedIds.includes(a.id);
             return `<div class="athlete-card" data-id="${a.id}">
@@ -1372,7 +440,7 @@
             card.addEventListener('click', () => showAthleteDetail(parseInt(card.dataset.id)));
         });
     }
-
+    
     function renderWatchlist() {
         const grid = document.getElementById('watchlistGrid');
         if (!grid) return;
@@ -1383,7 +451,7 @@
             card.addEventListener('click', () => showAthleteDetail(parseInt(card.dataset.id)));
         });
     }
-
+    
     function renderComparison() {
         const list = document.getElementById('compareList');
         if (!list) return;
@@ -1391,7 +459,7 @@
         if (!compareAthletes.length) { list.innerHTML = '<div class="empty-state">Select athletes to compare using checkboxes on Discover page</div>'; return; }
         list.innerHTML = compareAthletes.map(a => `<div class="comparison-card"><div class="athlete-name" style="font-weight:700;">${a.name}</div><div style="font-size:0.8rem;">${a.school}</div><div>🏀 Vertical: <strong>${a.metrics.vertical?.value || 'N/A'}"</strong></div><div>⭐ Trust: ${a.trustScore || 'Pending'}</div><button class="btn-outline" style="margin-top:0.5rem; padding:0.3rem; font-size:0.7rem;" onclick="showAthleteDetail(${a.id})">View Profile</button></div>`).join('');
     }
-
+    
     function refreshComparison() {
         compareSelectedIds = [];
         saveData();
@@ -1399,19 +467,15 @@
         renderComparison();
         showToast('Comparison reset', 'info');
     }
-
-    function renderRecruitingBoard() {
-        const year = document.getElementById('classYear')?.value || '2025';
-        const filtered = athletes.filter(a => a.classYear == year);
-        const grid = document.getElementById('recruitingBoardList');
-        if (!grid) return;
-        if (!filtered.length) { grid.innerHTML = '<div class="empty-state">No athletes in this class year</div>'; return; }
-        grid.innerHTML = filtered.map(a => `<div class="athlete-card" data-id="${a.id}"><div class="athlete-avatar ${a.avatarBg}"><div class="player-silhouette"></div><div class="jersey-number">${a.jerseyNum}</div></div><div class="athlete-info"><div class="athlete-name">${a.name}</div><div class="athlete-school">${a.school}</div><div class="metrics-container"><div class="metric-item"><div class="metric-value">${a.metrics.vertical?.value || '?'}"</div><div class="metric-label">Vertical</div></div></div>${a.trustScore > 0 ? `<div class="trust-score">⭐ Trust: ${a.trustScore}</div>` : ''}</div></div>`).join('');
-        document.querySelectorAll('#recruitingBoardList .athlete-card').forEach(card => {
-            card.addEventListener('click', () => showAthleteDetail(parseInt(card.dataset.id)));
-        });
+    
+    function applyFilter(filter) {
+        currentFilter = filter;
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        const active = document.querySelector(`.filter-chip[data-filter="${filter}"]`);
+        if (active) active.classList.add('active');
+        renderAthleteGrid();
     }
-
+    
     function exportToCSV() {
         const wl = athletes.filter(a => currentUser.watchlist.includes(a.id));
         if (!wl.length) { showToast('Your watchlist is empty', 'error'); return; }
@@ -1421,44 +485,12 @@
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `vantage_watchlist_${new Date().toISOString().slice(0, 10)}.csv`;
+        link.download = `vantage_watchlist_${new Date().toISOString().slice(0,10)}.csv`;
         link.click();
         URL.revokeObjectURL(url);
         showToast('CSV downloaded', 'success');
     }
-
-    // ============================================
-    // ATHLETE DETAIL & VERIFICATION
-    // ============================================
-    function showAthleteDetail(id) {
-        const athlete = athletes.find(a => a.id === id);
-        if (!athlete) return;
-        currentDetailAthlete = athlete;
-        athlete.views = (athlete.views || 0) + 1;
-        const isVerified = athlete.metrics.vertical?.status === 'verified';
-        const hasConfirmed = currentUser.confirmedAthleteIds.includes(athlete.id);
-        const inWatchlist = currentUser.watchlist.includes(athlete.id);
-        const needConfirmations = athlete.metrics.vertical?.status === 'pending' ? (2 - (athlete.metrics.vertical.verifications || 0)) : 0;
-        document.getElementById('detailContent').innerHTML = `
-            <div class="athlete-detail-avatar ${athlete.avatarBg}" style="display:flex; align-items:center; justify-content:center; flex-direction:column;"><div class="player-silhouette" style="width:60%; height:60%;"></div><div class="jersey-number" style="position:static; margin-top:0.5rem;">#${athlete.jerseyNum}</div></div>
-            <h2 style="text-align:center;">${athlete.name}</h2>
-            <p style="text-align:center; color:var(--gray-light);">${athlete.school} · ${athlete.position}</p>
-            <div class="metrics-detail"><div class="metric-detail-item"><span>🏀 Vertical Leap</span><span><strong>${athlete.metrics.vertical?.value || '?'}"</strong> <span style="color:var(--gray-light);">AI: ${athlete.metrics.vertical?.confidence || 0}%</span> ${isVerified ? '✓' : `⏳ (${athlete.metrics.vertical?.verifications || 0}/2 verifications)`}</span></div></div>
-            <div style="margin:1rem 0;"><div class="verification-count">🔒 Verified by ${athlete.confirmations.length} community members</div><div class="trust-score">⭐ Trust Score: ${athlete.trustScore || 'Pending'}</div>${!isVerified && needConfirmations > 0 ? `<div class="progress-container"><div class="progress-bar" style="width: ${((2 - needConfirmations) / 2) * 100}%;"></div></div><div class="verification-count">Needs ${needConfirmations} more confirmation${needConfirmations !== 1 ? 's' : ''}</div>` : ''}</div>
-            <button class="btn-outline" id="shareBadgeBtn" style="width:100%;">🏅 Share Verified Badge</button>`;
-        const confirmBtn = document.getElementById('confirmBtn');
-        const undoBtn = document.getElementById('undoConfirmBtn');
-        const challengeBtn = document.getElementById('challengeBtn');
-        if (confirmBtn) confirmBtn.style.display = (!hasConfirmed && !isVerified) ? 'block' : 'none';
-        if (undoBtn) undoBtn.style.display = hasConfirmed ? 'block' : 'none';
-        if (challengeBtn) challengeBtn.style.display = (!hasConfirmed && !isVerified) ? 'block' : 'none';
-        const watchlistDetailBtn = document.getElementById('watchlistDetailBtn');
-        if (watchlistDetailBtn) watchlistDetailBtn.innerText = inWatchlist ? '⭐ Remove from Watchlist' : '⭐ Save to Watchlist';
-        document.getElementById('shareBadgeBtn')?.addEventListener('click', () => showEmbedModal(athlete));
-        showModal('detailModal');
-        saveData();
-    }
-
+    
     function confirmVerification() {
         if (!currentDetailAthlete) return;
         if (currentUser.confirmedAthleteIds.includes(currentDetailAthlete.id)) {
@@ -1482,7 +514,7 @@
         if (currentDetailAthlete) showAthleteDetail(currentDetailAthlete.id);
         showToast(`✓ Verified! +2 trust points. Streak: ${currentUser.streak} days`, 'success');
     }
-
+    
     function undoConfirmation() {
         if (!currentDetailAthlete) return;
         const idx = currentUser.confirmedAthleteIds.indexOf(currentDetailAthlete.id);
@@ -1490,7 +522,7 @@
         currentUser.confirmedAthleteIds.splice(idx, 1);
         currentUser.confirmationsMade = Math.max(0, currentUser.confirmationsMade - 1);
         currentUser.trustScore = Math.max(0, currentUser.trustScore - 2);
-        if (currentDetailAthlete.metrics.vertical && currentDetailAthlete.metrics.vertical.verifications > 0) {
+        if (currentDetailAthlete.metrics.vertical?.status === 'verified' && currentDetailAthlete.metrics.vertical.verifications > 0) {
             currentDetailAthlete.metrics.vertical.verifications--;
             if (currentDetailAthlete.metrics.vertical.verifications < 2) {
                 currentDetailAthlete.metrics.vertical.status = 'pending';
@@ -1503,33 +535,59 @@
         if (currentDetailAthlete) showAthleteDetail(currentDetailAthlete.id);
         showToast(`↩️ Confirmation undone. Trust score: ${currentUser.trustScore}`, 'info');
     }
-
+    
     function challengeVerification() {
         showToast('⚠ Challenge submitted. Our team will review within 24 hours.', 'info');
     }
-
+    
     function toggleWatchlistFromDetail() {
         if (!currentDetailAthlete) return;
         toggleWatchlist(currentDetailAthlete.id);
         const btn = document.getElementById('watchlistDetailBtn');
         if (btn) btn.innerText = currentUser.watchlist.includes(currentDetailAthlete.id) ? '⭐ Remove from Watchlist' : '⭐ Save to Watchlist';
     }
-
+    
+    function showAthleteDetail(id) {
+        const athlete = athletes.find(a => a.id === id);
+        if (!athlete) return;
+        currentDetailAthlete = athlete;
+        athlete.views = (athlete.views || 0) + 1;
+        const isVerified = athlete.metrics.vertical?.status === 'verified';
+        const hasConfirmed = currentUser.confirmedAthleteIds.includes(athlete.id);
+        const inWatchlist = currentUser.watchlist.includes(athlete.id);
+        const needConfirmations = athlete.metrics.vertical?.status === 'pending' ? (2 - (athlete.metrics.vertical.verifications || 0)) : 0;
+        document.getElementById('detailContent').innerHTML = `
+            <div class="athlete-detail-avatar ${athlete.avatarBg}" style="display:flex; align-items:center; justify-content:center; flex-direction:column;"><div class="player-silhouette" style="width:60%; height:60%;"></div><div class="jersey-number" style="position:static; margin-top:0.5rem;">#${athlete.jerseyNum}</div></div>
+            <h2 style="text-align:center;">${athlete.name}</h2>
+            <p style="text-align:center; color:#9ca3af;">${athlete.school} · ${athlete.position}</p>
+            <div class="metrics-detail"><div class="metric-detail-item"><span>🏀 Vertical Leap</span><span><strong>${athlete.metrics.vertical?.value || '?'}"</strong> <span style="color:#9ca3af;">AI: ${athlete.metrics.vertical?.confidence || 0}%</span> ${isVerified ? '✓' : `⏳ (${athlete.metrics.vertical?.verifications || 0}/2 verifications)`}</span></div></div>
+            <div style="margin:1rem 0;"><div class="verification-count">🔒 Verified by ${athlete.confirmations.length} community members</div><div class="trust-score">⭐ Trust Score: ${athlete.trustScore || 'Pending'}</div>${!isVerified && needConfirmations > 0 ? `<div class="progress-container"><div class="progress-bar" style="width: ${((2-needConfirmations)/2)*100}%;"></div></div><div class="verification-count">Needs ${needConfirmations} more confirmation${needConfirmations !== 1 ? 's' : ''}</div>` : ''}</div>
+            <button class="btn-outline" id="shareBadgeBtn" style="width:100%;">🏅 Share Verified Badge</button>`;
+        const confirmBtn = document.getElementById('confirmBtn');
+        const undoBtn = document.getElementById('undoConfirmBtn');
+        const challengeBtn = document.getElementById('challengeBtn');
+        if (confirmBtn) confirmBtn.style.display = (!hasConfirmed && !isVerified) ? 'block' : 'none';
+        if (undoBtn) undoBtn.style.display = hasConfirmed ? 'block' : 'none';
+        if (challengeBtn) challengeBtn.style.display = (!hasConfirmed && !isVerified) ? 'block' : 'none';
+        const watchlistDetailBtn = document.getElementById('watchlistDetailBtn');
+        if (watchlistDetailBtn) watchlistDetailBtn.innerText = inWatchlist ? '⭐ Remove from Watchlist' : '⭐ Save to Watchlist';
+        document.getElementById('shareBadgeBtn')?.addEventListener('click', () => showEmbedModal(athlete));
+        showModal('detailModal');
+        saveData();
+    }
+    
     function showEmbedModal(athlete) {
         const code = `<a href="https://vantageapp.vercel.app/athlete/${athlete.id}"><img src="https://vantageapp.vercel.app/badge/${athlete.id}" alt="VANTAGE Verified: ${athlete.metrics.vertical?.value || '?'}" /></a>`;
         document.getElementById('embedCode').innerText = code;
         showModal('embedModal');
     }
-
+    
     function copyEmbedCode() {
         const code = document.getElementById('embedCode')?.innerText;
         if (code) { navigator.clipboard.writeText(code); showToast('Badge code copied! Add to your Instagram bio.', 'success'); }
         closeModal('embedModal');
     }
-
-    // ============================================
-    // SUBMIT VIDEO
-    // ============================================
+    
     function submitVideo() {
         const url = document.getElementById('videoUrl')?.value.trim();
         const name = document.getElementById('athleteName')?.value.trim();
@@ -1551,7 +609,7 @@
             measured = Math.max(20, Math.min(60, measured));
             const confidence = Math.min(98, Math.max(55, Math.round(90 - Math.abs(measured - claimed) * 5 + quality * 10)));
             const needs = confidence >= 90 ? 0 : (confidence >= 70 ? 2 : 3);
-            const bgClasses = ['avatar-bg-1', 'avatar-bg-2', 'avatar-bg-3', 'avatar-bg-4', 'avatar-bg-5', 'avatar-bg-6'];
+            const bgClasses = ['avatar-bg-1','avatar-bg-2','avatar-bg-3','avatar-bg-4','avatar-bg-5','avatar-bg-6'];
             const newId = Math.max(...athletes.map(a => a.id), 0) + 1;
             athletes.push({
                 id: newId, name, school: school || "Not specified", position, avatarBg: bgClasses[Math.floor(Math.random() * bgClasses.length)],
@@ -1574,13 +632,9 @@
             showToast('Athlete submitted successfully!', 'success');
         }, 1500);
     }
-
-    // ============================================
-    // PAGE NAVIGATION
-    // ============================================
+    
     function showPage(pageId) {
-        const pages = ['discover', 'submit', 'scout', 'leaderboard', 'howitworks', 'pricing'];
-        pages.forEach(id => {
+        ['discover','submit','scout','leaderboard','pricing'].forEach(id => {
             const el = document.getElementById(id + 'Page');
             if (el) el.classList.remove('active');
         });
@@ -1592,25 +646,11 @@
         if (pageId === 'discover') renderAthleteGrid();
         if (pageId === 'scout') { renderWatchlist(); renderComparison(); }
         if (pageId === 'leaderboard') updateStats();
-        if (pageId === 'howitworks') {
-            document.querySelectorAll('.faq-answer').forEach(el => el.classList.remove('show'));
-        }
     }
-
-    function applyFilter(filter) {
-        currentFilter = filter;
-        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-        const active = document.querySelector(`.filter-chip[data-filter="${filter}"]`);
-        if (active) active.classList.add('active');
-        renderAthleteGrid();
-    }
-
-    // ============================================
-    // MODAL CONTROLS
-    // ============================================
+    
     function showModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
+    
     function handleLogin() {
         const email = document.getElementById('loginEmail')?.value.trim();
         if (email) {
@@ -1622,39 +662,46 @@
             updateStats();
         } else { showToast('Please enter an email', 'error'); }
     }
-
+    
+    function renderRecruitingBoard() {
+        const year = document.getElementById('classYear')?.value || '2025';
+        const filtered = athletes.filter(a => a.classYear == year);
+        const grid = document.getElementById('recruitingBoardList');
+        if (!grid) return;
+        if (!filtered.length) { grid.innerHTML = '<div class="empty-state">No athletes in this class year</div>'; return; }
+        grid.innerHTML = filtered.map(a => `<div class="athlete-card" data-id="${a.id}"><div class="athlete-avatar ${a.avatarBg}"><div class="player-silhouette"></div><div class="jersey-number">${a.jerseyNum}</div></div><div class="athlete-info"><div class="athlete-name">${a.name}</div><div class="athlete-school">${a.school}</div><div class="metrics-container"><div class="metric-item"><div class="metric-value">${a.metrics.vertical?.value || '?'}"</div><div class="metric-label">Vertical</div></div></div>${a.trustScore > 0 ? `<div class="trust-score">⭐ Trust: ${a.trustScore}</div>` : ''}</div></div>`).join('');
+        document.querySelectorAll('#recruitingBoardList .athlete-card').forEach(card => {
+            card.addEventListener('click', () => showAthleteDetail(parseInt(card.dataset.id)));
+        });
+    }
+    
     function initScoutModes() {
-        const watchlistMode = document.getElementById('watchlistMode');
-        const compareMode = document.getElementById('compareMode');
-        const recruitingMode = document.getElementById('recruitingMode');
+        const modes = ['watchlist', 'compare', 'recruiting'];
         document.querySelectorAll('.mode-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 const mode = btn.dataset.mode;
-                if (watchlistMode) watchlistMode.style.display = mode === 'watchlist' ? 'block' : 'none';
-                if (compareMode) compareMode.style.display = mode === 'compare' ? 'block' : 'none';
-                if (recruitingMode) recruitingMode.style.display = mode === 'recruiting' ? 'block' : 'none';
+                document.getElementById('watchlistMode').style.display = mode === 'watchlist' ? 'block' : 'none';
+                document.getElementById('compareMode').style.display = mode === 'compare' ? 'block' : 'none';
+                document.getElementById('recruitingMode').style.display = mode === 'recruiting' ? 'block' : 'none';
                 if (mode === 'compare') renderComparison();
                 if (mode === 'recruiting') renderRecruitingBoard();
             });
         });
     }
-
-    // ============================================
-    // EVENT LISTENERS
-    // ============================================
+    
     document.querySelectorAll('.filter-chip').forEach(chip => {
-        chip.addEventListener('click', function () { applyFilter(this.dataset.filter); });
+        chip.addEventListener('click', function() { applyFilter(this.dataset.filter); });
     });
     document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', function () { const page = this.dataset.page; if (page) showPage(page); });
+        item.addEventListener('click', function() { const page = this.dataset.page; if (page) showPage(page); });
     });
     document.querySelectorAll('.desktop-nav a').forEach(item => {
-        item.addEventListener('click', function () { const page = this.dataset.page; if (page) showPage(page); });
+        item.addEventListener('click', function() { const page = this.dataset.page; if (page) showPage(page); });
     });
     document.querySelectorAll('.sort-chip').forEach(chip => {
-        chip.addEventListener('click', function () {
+        chip.addEventListener('click', function() {
             currentSort = this.dataset.sort;
             document.querySelectorAll('.sort-chip').forEach(c => c.classList.remove('active'));
             this.classList.add('active');
@@ -1673,10 +720,7 @@
     document.getElementById('refreshCompareBtn')?.addEventListener('click', refreshComparison);
     document.getElementById('classYear')?.addEventListener('change', renderRecruitingBoard);
     window.onclick = (e) => { if (e.target.classList && e.target.classList.contains('modal')) closeModal(e.target.id); };
-
-    // ============================================
-    // INITIALIZE
-    // ============================================
+    
     loadData();
     initScoutModes();
     renderAthleteGrid();
