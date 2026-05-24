@@ -32,6 +32,7 @@
             --glass-border: rgba(59, 130, 246, 0.15);
         }
 
+        /* Navigation */
         .navbar {
             background: rgba(10, 10, 10, 0.85);
             backdrop-filter: blur(20px);
@@ -165,6 +166,7 @@
             font-size: 1.3rem;
         }
 
+        /* Toast Notifications */
         .toast {
             position: fixed;
             bottom: 80px;
@@ -294,6 +296,7 @@
             margin-top: 0.5rem;
         }
 
+        /* Athlete Grid */
         .athlete-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -359,6 +362,7 @@
         .compare-checkbox.selected { background: var(--primary-blue); }
         .compare-checkbox span { color: white; font-size: 1rem; font-weight: bold; }
 
+        /* Athlete Avatar with Video Thumbnail */
         .athlete-avatar {
             width: 100%;
             aspect-ratio: 1/1;
@@ -366,25 +370,48 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
-        .avatar-bg-1 { background: linear-gradient(135deg, #1e3a5f, #0f2b3d); }
-        .avatar-bg-2 { background: linear-gradient(135deg, #2d1b4e, #1a0f2e); }
-        .avatar-bg-3 { background: linear-gradient(135deg, #1e4a3b, #0f2e23); }
-        .avatar-bg-4 { background: linear-gradient(135deg, #5f3e1e, #3d2712); }
-        .avatar-bg-5 { background: linear-gradient(135deg, #3a1e5f, #24123d); }
-        .avatar-bg-6 { background: linear-gradient(135deg, #1e5f5a, #123d39); }
 
-        .player-silhouette {
-            width: 80%;
-            height: 80%;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
+        .athlete-video-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .athlete-stock-avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .play-icon-overlay {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
+            cursor: pointer;
+            z-index: 20;
+            font-size: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.2s;
         }
-        .player-silhouette::before { content: "🏀"; font-size: 2.5rem; opacity: 0.6; }
+
+        .play-icon-overlay:hover {
+            background: var(--primary-blue);
+            transform: scale(1.05);
+        }
+
         .jersey-number {
             position: absolute;
             bottom: 8px;
@@ -395,6 +422,7 @@
             background: rgba(0, 0, 0, 0.4);
             padding: 0.1rem 0.4rem;
             border-radius: 20px;
+            z-index: 21;
         }
 
         .athlete-info { padding: 0.75rem; }
@@ -450,6 +478,7 @@
         }
         .mode-btn.active { background: var(--primary-blue); color: white; }
 
+        /* Modals */
         .modal {
             display: none;
             position: fixed;
@@ -476,6 +505,7 @@
         }
         .close-modal { float: right; font-size: 1.5rem; cursor: pointer; color: var(--gray-light); line-height: 1; }
 
+        /* Video Player Modal */
         .video-modal {
             max-width: 800px;
             width: 90%;
@@ -489,7 +519,7 @@
             position: absolute;
             bottom: 20px;
             left: 20px;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(10px);
             border-radius: 12px;
             padding: 0.75rem 1rem;
@@ -513,95 +543,7 @@
             font-size: 0.8rem;
         }
 
-        .play-icon-overlay {
-            position: absolute;
-            bottom: 8px;
-            left: 8px;
-            width: 32px;
-            height: 32px;
-            background: rgba(0,0,0,0.7);
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 20;
-            font-size: 1rem;
-            border: 1px solid rgba(255,255,255,0.3);
-            transition: all 0.2s;
-        }
-
-        .play-icon-overlay:hover {
-            background: var(--primary-blue);
-            transform: scale(1.05);
-        }
-
-        .video-input-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .tab-btn {
-            padding: 0.5rem 1rem;
-            background: rgba(30,30,38,0.8);
-            border: 0.5px solid rgba(59,130,246,0.2);
-            border-radius: 30px;
-            color: var(--gray-light);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .tab-btn.active {
-            background: var(--primary-blue);
-            color: white;
-        }
-
-        .supported-platforms {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-            margin-top: 0.5rem;
-            font-size: 0.7rem;
-            color: var(--gray-light);
-        }
-
-        .upload-area {
-            border: 2px dashed rgba(59,130,246,0.3);
-            border-radius: 16px;
-            padding: 2rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .upload-area:hover {
-            border-color: var(--primary-blue);
-            background: rgba(59,130,246,0.05);
-        }
-
-        .upload-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .upload-subtitle {
-            font-size: 0.7rem;
-            color: var(--gray-light);
-            margin-top: 0.25rem;
-        }
-
-        .camera-container {
-            text-align: center;
-        }
-
-        .camera-container video {
-            width: 100%;
-            border-radius: 12px;
-            background: #1a1a1a;
-            margin-bottom: 1rem;
-        }
-
+        /* Forms */
         .form-group { margin-bottom: 1rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--gray-light); }
         .form-input, .form-select {
@@ -696,7 +638,10 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
         }
+
         .metrics-detail {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 16px;
@@ -729,6 +674,72 @@
             margin-top: 0.5rem;
             font-size: 0.7rem;
             border-radius: 8px;
+        }
+
+        .video-input-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(30, 30, 38, 0.8);
+            border: 0.5px solid rgba(59, 130, 246, 0.2);
+            border-radius: 30px;
+            color: var(--gray-light);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .supported-platforms {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+            font-size: 0.7rem;
+            color: var(--gray-light);
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(59, 130, 246, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-blue);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-subtitle {
+            font-size: 0.7rem;
+            color: var(--gray-light);
+            margin-top: 0.25rem;
+        }
+
+        .camera-container {
+            text-align: center;
+        }
+
+        .camera-container video {
+            width: 100%;
+            border-radius: 12px;
+            background: #1a1a1a;
+            margin-bottom: 1rem;
         }
 
         @media (min-width: 768px) {
@@ -815,7 +826,6 @@
                 <button class="tab-btn" data-tab="camera">Camera</button>
             </div>
             
-            <!-- URL Tab -->
             <div id="urlTab" class="tab-content active">
                 <div class="form-group">
                     <label>Video URL</label>
@@ -830,7 +840,6 @@
                 </div>
             </div>
             
-            <!-- Upload Tab -->
             <div id="uploadTab" class="tab-content" style="display:none;">
                 <div class="upload-area" id="uploadArea">
                     <div class="upload-icon">📤</div>
@@ -844,12 +853,10 @@
                 </div>
             </div>
             
-            <!-- Camera Tab -->
             <div id="cameraTab" class="tab-content" style="display:none;">
                 <div class="camera-container">
                     <video id="cameraPreview" autoplay playsinline style="width:100%; border-radius:12px;"></video>
                     <button type="button" class="btn-secondary" id="captureBtn" style="margin-bottom:0.5rem;">📸 Record 5 Seconds</button>
-                    <div id="recordedVideoPreview" style="display:none;"></div>
                 </div>
             </div>
             
@@ -896,7 +903,7 @@
             <h3>🔍 The Verification Process</h3>
             <div class="step-container">
                 <div class="step"><div class="step-number">1</div><div class="step-content"><h4>Submit Video</h4><p>Paste a link from Instagram, YouTube, TikTok, or upload directly. Even record from your camera!</p></div></div>
-                <div class="step"><div class="step-number">2</div><div class="step-content"><h4>AI Analysis</h4><p>Our AI downloads and analyzes frame-by-frame to measure vertical leap and sprint speed.</p></div></div>
+                <div class="step"><div class="step-number">2</div><div class="step-content"><h4>AI Analysis</h4><p>Our AI downloads and analyzes frame-by-frame to measure vertical leap and sprint speed. It also extracts highlight clips automatically.</p></div></div>
                 <div class="step"><div class="step-number">3</div><div class="step-content"><h4>Community Verification</h4><p>Other users confirm your measurements. After 3 confirmations, you earn the Verified badge.</p></div></div>
             </div>
         </div>
@@ -905,7 +912,7 @@
             <div class="trust-rules" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-top: 1rem;">
                 <div class="rule-card" style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.75rem; text-align: center;"><span style="color: var(--success-green);">+2 points</span><br>Confirming accurate metric</div>
                 <div class="rule-card" style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.75rem; text-align: center;"><span style="color: var(--success-green);">+1 point</span><br>Correctly challenging</div>
-                <div class="rule-card" style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.75rem; text-align: center;"><span style="color: var(--error-red);">-5 points</span><br>Falsely confirming</div>
+                <div class="rule-card" style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.75rem; text-align; center;"><span style="color: var(--error-red);">-5 points</span><br>Falsely confirming</div>
                 <div class="rule-card" style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.75rem; text-align: center;"><span style="color: var(--error-red);">-3 points</span><br>Falsely challenging</div>
                 <div class="rule-card" style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.75rem; text-align: center;"><span style="color: var(--success-green);">+10 points</span><br>Unverifying false athlete</div>
             </div>
@@ -942,6 +949,7 @@
 
 <div id="embedModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('embedModal')">&times;</span><h3>Share Your Verified Badge</h3><p style="margin:1rem 0;">Copy this code to your Instagram bio:</p><div style="background:#1a1a1a; padding:0.75rem; border-radius:12px; font-family:monospace; font-size:0.7rem; word-break:break-all;" id="embedCode"></div><button class="btn-primary" style="margin-top:1rem;" onclick="copyEmbedCode()">Copy Code</button></div></div>
 
+<!-- Video Player Modal -->
 <div id="videoPlayerModal" class="modal">
     <div class="modal-content video-modal">
         <span class="close-modal" onclick="closeVideoPlayer()">&times;</span>
@@ -957,7 +965,7 @@
 
 <script>
     // ============================================
-    // VANTAGE - UNIVERSAL VIDEO INTAKE
+    // VANTAGE - COMPLETE WITH VIDEO CLIPS
     // BACKEND URL: https://vantage-backend-production-5621.up.railway.app
     // ============================================
 
@@ -975,12 +983,12 @@
     let recordedChunks = [];
 
     const defaultAthletes = [
-        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: { value: 4.38, status: "verified", confidence: 94, verifications: 4 } }, trustScore: 94, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson"], views: 342 },
-        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, sprint: { value: 4.45, status: "pending", confidence: 72, verifications: 1 } }, trustScore: 91, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson"], views: 189 },
-        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, flagged: false, hasClip: true, metrics: { vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, sprint: { value: 4.28, status: "verified", confidence: 96, verifications: 6 } }, trustScore: 96, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson","Mike Ross","Lisa Wong"], views: 567 },
-        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, flagged: false, hasClip: false, metrics: { vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, sprint: { value: null, status: null } }, trustScore: 0, confirmations: ["Coach Miller"], views: 45 },
-        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, flagged: false, hasClip: false, metrics: { vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, sprint: { value: 4.42, status: "pending", confidence: 68, verifications: 0 } }, trustScore: 0, confirmations: [], views: 34 },
-        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, flagged: false, hasClip: false, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: { value: 4.35, status: "pending", confidence: 74, verifications: 0 } }, trustScore: 0, confirmations: [], views: 28 }
+        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, flagged: false, hasClip: true, thumbnailUrl: null, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: { value: 4.38, status: "verified", confidence: 94, verifications: 4 } }, trustScore: 94, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson"], views: 342 },
+        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, flagged: false, hasClip: true, thumbnailUrl: null, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, sprint: { value: 4.45, status: "pending", confidence: 72, verifications: 1 } }, trustScore: 91, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson"], views: 189 },
+        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, flagged: false, hasClip: true, thumbnailUrl: null, metrics: { vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, sprint: { value: 4.28, status: "verified", confidence: 96, verifications: 6 } }, trustScore: 96, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson","Mike Ross","Lisa Wong"], views: 567 },
+        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, flagged: false, hasClip: false, thumbnailUrl: null, metrics: { vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, sprint: { value: null, status: null } }, trustScore: 0, confirmations: ["Coach Miller"], views: 45 },
+        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, flagged: false, hasClip: false, thumbnailUrl: null, metrics: { vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, sprint: { value: 4.42, status: "pending", confidence: 68, verifications: 0 } }, trustScore: 0, confirmations: [], views: 34 },
+        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, flagged: false, hasClip: false, thumbnailUrl: null, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: { value: 4.35, status: "pending", confidence: 74, verifications: 0 } }, trustScore: 0, confirmations: [], views: 28 }
     ];
 
     // ============================================
@@ -1053,16 +1061,28 @@
     function playHighlight(athleteId, metricType, event) {
         if (event) event.stopPropagation();
         const athlete = athletes.find(a => a.id === athleteId);
-        if (!athlete) return;
+        if (!athlete) {
+            showToast('Athlete not found', 'error');
+            return;
+        }
+        
+        if (!athlete.hasClip) {
+            showToast('No highlight clip available for this athlete', 'warning');
+            return;
+        }
         
         const video = document.getElementById('highlightVideo');
         const source = document.getElementById('videoSource');
         
-        source.src = `${BACKEND_URL}/static/clips/athlete_${athleteId}/${metricType}.mp4`;
+        const clipUrl = `${BACKEND_URL}/static/clips/athlete_${athleteId}/${metricType}.mp4`;
+        source.src = clipUrl;
         video.load();
         
         showModal('videoPlayerModal');
-        video.play().catch(e => console.log('Playback error:', e));
+        
+        video.oncanplay = () => {
+            video.play().catch(e => console.log('Playback error:', e));
+        };
         
         const overlay = document.getElementById('videoMetricsOverlay');
         overlay.innerHTML = `
@@ -1075,8 +1095,10 @@
 
     function closeVideoPlayer() {
         const video = document.getElementById('highlightVideo');
-        video.pause();
-        video.currentTime = 0;
+        if (video) {
+            video.pause();
+            video.currentTime = 0;
+        }
         closeModal('videoPlayerModal');
     }
 
@@ -1355,7 +1377,7 @@
     }
 
     // ============================================
-    // RENDER FUNCTIONS
+    // RENDER FUNCTIONS WITH VIDEO CLIPS
     // ============================================
     
     function renderAthleteGrid() {
@@ -1376,6 +1398,8 @@
             let avatarHtml = '';
             if (hasClip && a.thumbnailUrl) {
                 avatarHtml = `<img src="${a.thumbnailUrl}" class="athlete-video-thumbnail" style="width:100%; height:100%; object-fit:cover;">`;
+            } else if (hasClip) {
+                avatarHtml = `<div class="athlete-stock-avatar" style="width:100%; height:100%; background:${a.avatarBg}; display:flex; align-items:center; justify-content:center;"><span style="font-size:3rem;">🏀</span></div>`;
             } else {
                 const stockAvatar = generateStockAvatar(a.name, a.position);
                 avatarHtml = `<img src="${stockAvatar}" class="athlete-stock-avatar" style="width:100%; height:100%; object-fit:cover;">`;
@@ -1436,13 +1460,17 @@
         if (!watchlistAthletes.length) { grid.innerHTML = '<div class="empty-state">Your watchlist is empty.<br>⭐ Tap the star icon on any athlete card to save them here.</div>'; return; }
         grid.innerHTML = watchlistAthletes.map(a => {
             const hasClip = a.hasClip === true;
+            
             let avatarHtml = '';
             if (hasClip && a.thumbnailUrl) {
                 avatarHtml = `<img src="${a.thumbnailUrl}" class="athlete-video-thumbnail" style="width:100%; height:100%; object-fit:cover;">`;
+            } else if (hasClip) {
+                avatarHtml = `<div class="athlete-stock-avatar" style="width:100%; height:100%; background:${a.avatarBg}; display:flex; align-items:center; justify-content:center;"><span style="font-size:3rem;">🏀</span></div>`;
             } else {
                 const stockAvatar = generateStockAvatar(a.name, a.position);
                 avatarHtml = `<img src="${stockAvatar}" class="athlete-stock-avatar" style="width:100%; height:100%; object-fit:cover;">`;
             }
+            
             return `<div class="athlete-card" data-id="${a.id}">
                 <div class="athlete-avatar ${a.avatarBg}" style="position:relative;">
                     ${avatarHtml}
@@ -1492,13 +1520,17 @@
         if (!filtered.length) { grid.innerHTML = '<div class="empty-state">No athletes in this class year</div>'; return; }
         grid.innerHTML = filtered.map(a => {
             const hasClip = a.hasClip === true;
+            
             let avatarHtml = '';
             if (hasClip && a.thumbnailUrl) {
                 avatarHtml = `<img src="${a.thumbnailUrl}" class="athlete-video-thumbnail" style="width:100%; height:100%; object-fit:cover;">`;
+            } else if (hasClip) {
+                avatarHtml = `<div class="athlete-stock-avatar" style="width:100%; height:100%; background:${a.avatarBg}; display:flex; align-items:center; justify-content:center;"><span style="font-size:3rem;">🏀</span></div>`;
             } else {
                 const stockAvatar = generateStockAvatar(a.name, a.position);
                 avatarHtml = `<img src="${stockAvatar}" class="athlete-stock-avatar" style="width:100%; height:100%; object-fit:cover;">`;
             }
+            
             return `<div class="athlete-card" data-id="${a.id}">
                 <div class="athlete-avatar ${a.avatarBg}" style="position:relative;">
                     ${avatarHtml}
@@ -1527,8 +1559,8 @@
     function exportToCSV() {
         const wl = athletes.filter(a => currentUser.watchlist.includes(a.id) && !a.flagged);
         if (!wl.length) { showToast('Your watchlist is empty', 'error'); return; }
-        let csv = 'Name,School,Position,Vertical (in),Sprint (s),Trust Score,Views,Status\n';
-        wl.forEach(a => csv += `"${a.name}","${a.school}",${a.position},${a.metrics.vertical?.value || 'N/A'},${a.metrics.sprint?.value || 'N/A'},${a.trustScore || 'Pending'},${a.views},${a.metrics.vertical?.status}\n`);
+        let csv = 'Name,School,Position,Vertical (in),Sprint (s),Trust Score,Views,Status,HasClip\n';
+        wl.forEach(a => csv += `"${a.name}","${a.school}",${a.position},${a.metrics.vertical?.value || 'N/A'},${a.metrics.sprint?.value || 'N/A'},${a.trustScore || 'Pending'},${a.views},${a.metrics.vertical?.status},${a.hasClip ? 'Yes' : 'No'}\n`);
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -1794,8 +1826,21 @@
         const needSprintConfirmations = athlete.metrics.sprint?.status === 'pending' ? (3 - (athlete.metrics.sprint.verifications || 0)) : 0;
         const canUnverify = currentUser.trustScore >= 90 && isVerified;
         
+        let avatarHtml = '';
+        if (athlete.hasClip && athlete.thumbnailUrl) {
+            avatarHtml = `<img src="${athlete.thumbnailUrl}" style="width:100%; height:100%; object-fit:cover;">`;
+        } else if (athlete.hasClip) {
+            avatarHtml = `<div style="width:100%; height:100%; background:${athlete.avatarBg}; display:flex; align-items:center; justify-content:center;"><span style="font-size:4rem;">🏀</span></div>`;
+        } else {
+            avatarHtml = `<img src="${generateStockAvatar(athlete.name, athlete.position)}" style="width:100%; height:100%; object-fit:cover;">`;
+        }
+        
         document.getElementById('detailContent').innerHTML = `
-            <div class="athlete-detail-avatar ${athlete.avatarBg}" style="display:flex; align-items:center; justify-content:center; flex-direction:column;"><div class="player-silhouette" style="width:60%; height:60%;"></div><div class="jersey-number" style="position:static; margin-top:0.5rem;">#${athlete.jerseyNum}</div></div>
+            <div class="athlete-detail-avatar ${athlete.avatarBg}" style="display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;">
+                ${avatarHtml}
+                ${athlete.hasClip ? `<div class="play-icon-overlay" style="bottom: auto; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; font-size: 1.5rem;" data-play-detail="${athlete.id}" data-metric="vertical">▶</div>` : ''}
+                <div class="jersey-number" style="bottom: 8px; right: 12px; top: auto;">#${athlete.jerseyNum}</div>
+            </div>
             <h2 style="text-align:center;">${athlete.name}</h2>
             <p style="text-align:center; color:var(--gray-light);">${athlete.school} · ${athlete.position}</p>
             <div class="metrics-detail">
@@ -1816,6 +1861,11 @@
         
         document.getElementById('shareBadgeBtn')?.addEventListener('click', () => showEmbedModal(athlete));
         document.getElementById('watchClipBtn')?.addEventListener('click', () => playHighlight(athlete.id, 'vertical'));
+        document.querySelector('[data-play-detail]')?.addEventListener('click', (e) => {
+            const id = parseInt(e.currentTarget.dataset.playDetail);
+            const metric = e.currentTarget.dataset.metric;
+            playHighlight(id, metric, e);
+        });
         document.getElementById('unverifyBtn')?.addEventListener('click', unverifyAthlete);
         document.getElementById('flagBtn')?.addEventListener('click', flagAthlete);
         showModal('detailModal');
