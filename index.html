@@ -1,20 +1,3 @@
-You're right. The issue is that the backend is generating clips but the frontend mock athletes (defaultAthletes) don't have actual video files. The hasClip flag is set to true but there are no real video URLs.
-
-Let me fix this by:
-
-1. Creating demo video clips using Canvas API (client-side generated videos)
-2. Storing them in localStorage so they persist
-3. Fixing the clip URL structure to work with demo videos
-
----
-
-Complete Fix: Client-Side Demo Videos
-
-Since we can't generate real videos on the backend without actual uploaded content, I'll create generated demo videos using Canvas/WebCodecs that will play as actual video clips.
-
-Here is the complete, working frontend with generated demo videos:
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1880,4 +1863,3 @@ Here is the complete, working frontend with generated demo videos:
 </script>
 </body>
 </html>
-```
