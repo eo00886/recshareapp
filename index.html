@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
     <title>VANTAGE | Verified Athletic Intelligence</title>
     <style>
+        /* ============================================
+           COMPLETE STYLES (from previous working version)
+           Include all styles from the last working frontend
+           ============================================ */
         * {
             margin: 0;
             padding: 0;
@@ -166,7 +170,6 @@
             font-size: 1.3rem;
         }
 
-        /* Toast Notifications */
         .toast {
             position: fixed;
             bottom: 80px;
@@ -296,7 +299,6 @@
             margin-top: 0.5rem;
         }
 
-        /* Athlete Grid */
         .athlete-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -362,7 +364,6 @@
         .compare-checkbox.selected { background: var(--primary-blue); }
         .compare-checkbox span { color: white; font-size: 1rem; font-weight: bold; }
 
-        /* Athlete Avatar with Video Thumbnail */
         .athlete-avatar {
             width: 100%;
             aspect-ratio: 1/1;
@@ -371,6 +372,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            background: linear-gradient(135deg, #1e3a5f, #0f2b3d);
         }
 
         .athlete-video-thumbnail {
@@ -386,6 +388,10 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
         }
 
         .play-icon-overlay {
@@ -478,7 +484,6 @@
         }
         .mode-btn.active { background: var(--primary-blue); color: white; }
 
-        /* Modals */
         .modal {
             display: none;
             position: fixed;
@@ -505,7 +510,6 @@
         }
         .close-modal { float: right; font-size: 1.5rem; cursor: pointer; color: var(--gray-light); line-height: 1; }
 
-        /* Video Player Modal */
         .video-modal {
             max-width: 800px;
             width: 90%;
@@ -543,7 +547,6 @@
             font-size: 0.8rem;
         }
 
-        /* Forms */
         .form-group { margin-bottom: 1rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--gray-light); }
         .form-input, .form-select {
@@ -898,13 +901,13 @@
     </div>
 
     <div id="howitworksPage" class="page">
-        <div class="page-header"><h1>How VANTAGE Works</h1><p>AI-powered athletic verification from any video source</p></div>
+        <div class="page-header"><h1>How VANTAGE Works</h1><p>AI-powered athletic verification with video clips</p></div>
         <div class="card">
             <h3>🔍 The Verification Process</h3>
             <div class="step-container">
                 <div class="step"><div class="step-number">1</div><div class="step-content"><h4>Submit Video</h4><p>Paste a link from Instagram, YouTube, TikTok, or upload directly. Even record from your camera!</p></div></div>
-                <div class="step"><div class="step-number">2</div><div class="step-content"><h4>AI Analysis</h4><p>Our AI downloads and analyzes frame-by-frame to measure vertical leap and sprint speed. It also extracts highlight clips automatically.</p></div></div>
-                <div class="step"><div class="step-number">3</div><div class="step-content"><h4>Community Verification</h4><p>Other users confirm your measurements. After 3 confirmations, you earn the Verified badge.</p></div></div>
+                <div class="step"><div class="step-number">2</div><div class="step-content"><h4>AI Analysis + Clip Generation</h4><p>Our AI analyzes frame-by-frame to measure vertical leap and sprint speed. It automatically extracts highlight clips.</p></div></div>
+                <div class="step"><div class="step-number">3</div><div class="step-content"><h4>Watch & Verify</h4><p>Scouts can watch the verified clips directly on your profile. Community members confirm accuracy.</p></div></div>
             </div>
         </div>
         <div class="card">
@@ -912,7 +915,7 @@
             <div class="trust-rules" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-top: 1rem;">
                 <div class="rule-card" style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.75rem; text-align: center;"><span style="color: var(--success-green);">+2 points</span><br>Confirming accurate metric</div>
                 <div class="rule-card" style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.75rem; text-align: center;"><span style="color: var(--success-green);">+1 point</span><br>Correctly challenging</div>
-                <div class="rule-card" style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.75rem; text-align; center;"><span style="color: var(--error-red);">-5 points</span><br>Falsely confirming</div>
+                <div class="rule-card" style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.75rem; text-align: center;"><span style="color: var(--error-red);">-5 points</span><br>Falsely confirming</div>
                 <div class="rule-card" style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.75rem; text-align: center;"><span style="color: var(--error-red);">-3 points</span><br>Falsely challenging</div>
                 <div class="rule-card" style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 0.75rem; text-align: center;"><span style="color: var(--success-green);">+10 points</span><br>Unverifying false athlete</div>
             </div>
@@ -949,7 +952,6 @@
 
 <div id="embedModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('embedModal')">&times;</span><h3>Share Your Verified Badge</h3><p style="margin:1rem 0;">Copy this code to your Instagram bio:</p><div style="background:#1a1a1a; padding:0.75rem; border-radius:12px; font-family:monospace; font-size:0.7rem; word-break:break-all;" id="embedCode"></div><button class="btn-primary" style="margin-top:1rem;" onclick="copyEmbedCode()">Copy Code</button></div></div>
 
-<!-- Video Player Modal -->
 <div id="videoPlayerModal" class="modal">
     <div class="modal-content video-modal">
         <span class="close-modal" onclick="closeVideoPlayer()">&times;</span>
@@ -991,10 +993,6 @@
         { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, flagged: false, hasClip: false, thumbnailUrl: null, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: { value: 4.35, status: "pending", confidence: 74, verifications: 0 } }, trustScore: 0, confirmations: [], views: 28 }
     ];
 
-    // ============================================
-    // UI HELPERS
-    // ============================================
-    
     function showToast(message, type = 'info', undoCallback = null, undoLabel = 'Undo') {
         const existing = document.querySelector('.toast');
         if (existing) existing.remove();
@@ -1074,23 +1072,34 @@
         const video = document.getElementById('highlightVideo');
         const source = document.getElementById('videoSource');
         
-        const clipUrl = `${BACKEND_URL}/static/clips/athlete_${athleteId}/${metricType}.mp4`;
-        source.src = clipUrl;
-        video.load();
+        const clipUrl = `${BACKEND_URL}/clip/${athleteId}/${metricType}`;
         
-        showModal('videoPlayerModal');
-        
-        video.oncanplay = () => {
-            video.play().catch(e => console.log('Playback error:', e));
-        };
-        
-        const overlay = document.getElementById('videoMetricsOverlay');
-        overlay.innerHTML = `
-            <div class="metric-badge">🏀 Vertical: ${athlete.metrics.vertical?.value || '?'}"</div>
-            <div class="metric-badge">🏃 Sprint: ${athlete.metrics.sprint?.value || '?'}s</div>
-            <div class="trust-badge">⭐ Trust Score: ${athlete.trustScore || 'Pending'}</div>
-            <div class="metric-badge">✓ ${athlete.confirmations.length} verifications</div>
-        `;
+        fetch(clipUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists && data.clip_url) {
+                    source.src = data.clip_url;
+                    video.load();
+                    showModal('videoPlayerModal');
+                    video.oncanplay = () => {
+                        video.play().catch(e => console.log('Playback error:', e));
+                    };
+                    
+                    const overlay = document.getElementById('videoMetricsOverlay');
+                    overlay.innerHTML = `
+                        <div class="metric-badge">🏀 Vertical: ${athlete.metrics.vertical?.value || '?'}"</div>
+                        <div class="metric-badge">🏃 Sprint: ${athlete.metrics.sprint?.value || '?'}s</div>
+                        <div class="trust-badge">⭐ Trust Score: ${athlete.trustScore || 'Pending'}</div>
+                        <div class="metric-badge">✓ ${athlete.confirmations.length} verifications</div>
+                    `;
+                } else {
+                    showToast('Clip not yet available', 'warning');
+                }
+            })
+            .catch(err => {
+                console.error('Clip fetch error:', err);
+                showToast('Could not load clip', 'error');
+            });
     }
 
     function closeVideoPlayer() {
@@ -1102,10 +1111,7 @@
         closeModal('videoPlayerModal');
     }
 
-    // ============================================
-    // TAB SWITCHING & CAMERA
-    // ============================================
-    
+    // Tab switching
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1139,7 +1145,7 @@
                 if (video) video.srcObject = stream;
             })
             .catch(err => {
-                showToast('Camera access denied. Please check permissions.', 'error');
+                showToast('Camera access denied', 'error');
             });
     }
 
@@ -1171,10 +1177,6 @@
         }, 5000);
     });
 
-    // ============================================
-    // UPLOAD HANDLING
-    // ============================================
-    
     const uploadArea = document.getElementById('uploadArea');
     const videoFile = document.getElementById('videoFile');
 
@@ -1227,7 +1229,7 @@
                     showToast('Video uploaded successfully!', 'success');
                 }
             } else {
-                showToast('Upload failed: ' + (data.error || 'Unknown error'), 'error');
+                showToast('Upload failed', 'error');
             }
         } catch (error) {
             if (progressDiv) progressDiv.style.display = 'none';
@@ -1235,10 +1237,6 @@
         }
     }
 
-    // ============================================
-    // DATA MANAGEMENT
-    // ============================================
-    
     function loadData() {
         const saved = localStorage.getItem('vantage_athletes');
         athletes = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(defaultAthletes));
@@ -1295,10 +1293,6 @@
         return filtered;
     }
 
-    // ============================================
-    // CORE ACTIONS
-    // ============================================
-    
     function flagAthlete() {
         if (!currentDetailAthlete) return;
         if (currentDetailAthlete.flagged) {
@@ -1321,14 +1315,14 @@
         renderComparison();
         updateStats();
         closeModal('detailModal');
-        showToast(`🚩 ${currentDetailAthlete.name} has been flagged as low quality. They can resubmit with better video.`, 'warning');
+        showToast(`🚩 ${currentDetailAthlete.name} has been flagged`, 'warning');
     }
 
     function toggleWatchlist(athleteId, event) {
         if (event) event.stopPropagation();
         const athlete = athletes.find(a => a.id === athleteId);
         if (athlete && athlete.flagged) {
-            showToast('Cannot add flagged athlete to watchlist', 'error');
+            showToast('Cannot add flagged athlete', 'error');
             return;
         }
         const idx = currentUser.watchlist.indexOf(athleteId);
@@ -1376,10 +1370,6 @@
         renderComparison();
     }
 
-    // ============================================
-    // RENDER FUNCTIONS WITH VIDEO CLIPS
-    // ============================================
-    
     function renderAthleteGrid() {
         const grid = document.getElementById('athleteGrid');
         if (!grid) return;
@@ -1398,8 +1388,6 @@
             let avatarHtml = '';
             if (hasClip && a.thumbnailUrl) {
                 avatarHtml = `<img src="${a.thumbnailUrl}" class="athlete-video-thumbnail" style="width:100%; height:100%; object-fit:cover;">`;
-            } else if (hasClip) {
-                avatarHtml = `<div class="athlete-stock-avatar" style="width:100%; height:100%; background:${a.avatarBg}; display:flex; align-items:center; justify-content:center;"><span style="font-size:3rem;">🏀</span></div>`;
             } else {
                 const stockAvatar = generateStockAvatar(a.name, a.position);
                 avatarHtml = `<img src="${stockAvatar}" class="athlete-stock-avatar" style="width:100%; height:100%; object-fit:cover;">`;
@@ -1422,7 +1410,7 @@
                         <div class="metric-item"><div class="metric-value">${verticalValue}"</div><div class="metric-label">Vert ${isVerified ? '✓' : '⏳'}</div></div>
                         <div class="metric-item"><div class="metric-value">${sprintValue !== '?' ? sprintValue + 's' : '—'}</div><div class="metric-label">Sprint ${sprintStatus === 'verified' ? '✓' : (sprintStatus === 'pending' ? '⏳' : '')}</div></div>
                     </div>
-                    ${isFlagged ? '<span class="flagged-badge">🚩 Flagged (Low Quality)</span>' : (isVerified && sprintStatus === 'verified' ? '<span class="verified-badge">✓ Verified</span>' : '<span class="pending-badge">⏳ Pending</span>')}
+                    ${isFlagged ? '<span class="flagged-badge">🚩 Flagged</span>' : (isVerified && sprintStatus === 'verified' ? '<span class="verified-badge">✓ Verified</span>' : '<span class="pending-badge">⏳ Pending</span>')}
                     <div class="verification-count">👁️ ${a.views} views</div>
                     ${a.trustScore > 0 ? `<div class="trust-score">⭐ Trust: ${a.trustScore}</div>` : ''}
                 </div>
@@ -1444,7 +1432,7 @@
                     const id = parseInt(card.dataset.id);
                     const athlete = athletes.find(a => a.id === id);
                     if (athlete && athlete.flagged) {
-                        showToast('This athlete has been flagged as low quality', 'warning');
+                        showToast('This athlete has been flagged', 'warning');
                     } else {
                         showAthleteDetail(id);
                     }
@@ -1464,8 +1452,6 @@
             let avatarHtml = '';
             if (hasClip && a.thumbnailUrl) {
                 avatarHtml = `<img src="${a.thumbnailUrl}" class="athlete-video-thumbnail" style="width:100%; height:100%; object-fit:cover;">`;
-            } else if (hasClip) {
-                avatarHtml = `<div class="athlete-stock-avatar" style="width:100%; height:100%; background:${a.avatarBg}; display:flex; align-items:center; justify-content:center;"><span style="font-size:3rem;">🏀</span></div>`;
             } else {
                 const stockAvatar = generateStockAvatar(a.name, a.position);
                 avatarHtml = `<img src="${stockAvatar}" class="athlete-stock-avatar" style="width:100%; height:100%; object-fit:cover;">`;
@@ -1524,8 +1510,6 @@
             let avatarHtml = '';
             if (hasClip && a.thumbnailUrl) {
                 avatarHtml = `<img src="${a.thumbnailUrl}" class="athlete-video-thumbnail" style="width:100%; height:100%; object-fit:cover;">`;
-            } else if (hasClip) {
-                avatarHtml = `<div class="athlete-stock-avatar" style="width:100%; height:100%; background:${a.avatarBg}; display:flex; align-items:center; justify-content:center;"><span style="font-size:3rem;">🏀</span></div>`;
             } else {
                 const stockAvatar = generateStockAvatar(a.name, a.position);
                 avatarHtml = `<img src="${stockAvatar}" class="athlete-stock-avatar" style="width:100%; height:100%; object-fit:cover;">`;
@@ -1571,10 +1555,6 @@
         showToast('CSV downloaded', 'success');
     }
 
-    // ============================================
-    // BACKEND API CALLS
-    // ============================================
-    
     async function callBackendAPI(videoSource, athleteId, athleteName, athleteSchool, athletePosition, claimedVertical, claimedSprint) {
         try {
             const response = await fetch(`${BACKEND_URL}/verify`, {
@@ -1593,37 +1573,21 @@
             if (!response.ok) throw new Error(`API error: ${response.status}`);
             return await response.json();
         } catch (error) {
-            console.warn('Backend unreachable, using mock simulation:', error);
-            return simulateMockAnalysis(videoSource, claimedVertical, claimedSprint);
+            console.warn('Backend unreachable, using mock:', error);
+            return {
+                success: true,
+                vertical_inches: claimedVertical || 38,
+                sprint_seconds: claimedSprint || 4.5,
+                vertical_confidence: 85,
+                sprint_confidence: 80,
+                vertical_needs_confirmations: 2,
+                sprint_needs_confirmations: 2,
+                vertical_clip_url: null,
+                sprint_clip_url: null,
+                thumbnail_url: null,
+                error: null
+            };
         }
-    }
-
-    function simulateMockAnalysis(videoSource, claimedVertical, claimedSprint) {
-        let quality = 0.7;
-        if (videoSource.includes('/reel/')) quality += 0.1;
-        if (videoSource.includes('instagram.com') || videoSource.includes('youtube')) quality += 0.05;
-        
-        let measuredVert = claimedVertical || 36;
-        let vertConfidence = Math.min(98, Math.max(55, Math.round(85 + (quality * 10) + (Math.random() - 0.5) * 15)));
-        let sprintMeasured = claimedSprint || 4.6;
-        let sprintConfidence = Math.min(98, Math.max(55, Math.round(85 + (quality * 10) + (Math.random() - 0.5) * 15)));
-        
-        if (claimedVertical && Math.abs(measuredVert - claimedVertical) > 5) vertConfidence = Math.max(55, vertConfidence - 15);
-        if (claimedSprint && Math.abs(sprintMeasured - claimedSprint) > 0.3) sprintConfidence = Math.max(55, sprintConfidence - 15);
-        
-        return {
-            success: true,
-            vertical_inches: Math.round(measuredVert * 10) / 10,
-            sprint_seconds: Math.round(sprintMeasured * 100) / 100,
-            vertical_confidence: vertConfidence,
-            sprint_confidence: sprintConfidence,
-            vertical_needs_confirmations: vertConfidence >= 90 ? 0 : (vertConfidence >= 70 ? 2 : 3),
-            sprint_needs_confirmations: sprintConfidence >= 90 ? 0 : (sprintConfidence >= 70 ? 2 : 3),
-            vertical_clip_url: null,
-            sprint_clip_url: null,
-            thumbnail_url: null,
-            error: null
-        };
     }
 
     async function submitVideo() {
@@ -1668,7 +1632,7 @@
             
             const vStatus = apiResult.vertical_needs_confirmations === 0 ? 'VERIFIED!' : `Pending (needs ${apiResult.vertical_needs_confirmations} confirmations)`;
             const sStatus = apiResult.sprint_needs_confirmations === 0 ? 'VERIFIED!' : `Pending (needs ${apiResult.sprint_needs_confirmations} confirmations)`;
-            resultDiv.innerHTML = `<div class="alert-success">✅ AI Analysis Complete!<br>🏀 Vertical: ${apiResult.vertical_inches}" (${apiResult.vertical_confidence}% confidence) - ${vStatus}<br>🏃 40-Yard Sprint: ${apiResult.sprint_seconds}s (${apiResult.sprint_confidence}% confidence) - ${sStatus}<br><br>📹 For best accuracy, ensure rim is visible for vertical and court lines are visible for sprint.</div>`;
+            resultDiv.innerHTML = `<div class="alert-success">✅ AI Analysis Complete!<br>🏀 Vertical: ${apiResult.vertical_inches}" (${apiResult.vertical_confidence}% confidence) - ${vStatus}<br>🏃 40-Yard Sprint: ${apiResult.sprint_seconds}s (${apiResult.sprint_confidence}% confidence) - ${sStatus}<br><br>📹 ${apiResult.vertical_clip_url ? 'Vertical clip generated!' : 'No vertical clip generated'}</div>`;
             
             document.getElementById('videoUrl').value = '';
             document.getElementById('athleteName').value = '';
@@ -1690,10 +1654,6 @@
         }
     }
 
-    // ============================================
-    // VERIFICATION ACTIONS
-    // ============================================
-    
     function unverifyAthlete() {
         if (!currentDetailAthlete) return;
         if (currentUser.trustScore < 90) { showToast('Only high-trust users (90+) can unverify athletes', 'error'); return; }
@@ -1812,7 +1772,7 @@
         const athlete = athletes.find(a => a.id === id);
         if (!athlete) return;
         if (athlete.flagged) {
-            showToast('This athlete has been flagged as low quality', 'warning');
+            showToast('This athlete has been flagged', 'warning');
             return;
         }
         currentDetailAthlete = athlete;
@@ -1829,10 +1789,9 @@
         let avatarHtml = '';
         if (athlete.hasClip && athlete.thumbnailUrl) {
             avatarHtml = `<img src="${athlete.thumbnailUrl}" style="width:100%; height:100%; object-fit:cover;">`;
-        } else if (athlete.hasClip) {
-            avatarHtml = `<div style="width:100%; height:100%; background:${athlete.avatarBg}; display:flex; align-items:center; justify-content:center;"><span style="font-size:4rem;">🏀</span></div>`;
         } else {
-            avatarHtml = `<img src="${generateStockAvatar(athlete.name, athlete.position)}" style="width:100%; height:100%; object-fit:cover;">`;
+            const stockAvatar = generateStockAvatar(athlete.name, athlete.position);
+            avatarHtml = `<img src="${stockAvatar}" style="width:100%; height:100%; object-fit:cover;">`;
         }
         
         document.getElementById('detailContent').innerHTML = `
@@ -1886,7 +1845,7 @@
 
     function copyEmbedCode() {
         const code = document.getElementById('embedCode')?.innerText;
-        if (code) { navigator.clipboard.writeText(code); showToast('Badge code copied! Add to your Instagram bio.', 'success'); }
+        if (code) { navigator.clipboard.writeText(code); showToast('Badge code copied!', 'success'); }
         closeModal('embedModal');
     }
 
@@ -1944,10 +1903,6 @@
         });
     }
 
-    // ============================================
-    // EVENT LISTENERS & INIT
-    // ============================================
-    
     document.querySelectorAll('.filter-chip').forEach(c => c.addEventListener('click', function() { applyFilter(this.dataset.filter); }));
     document.querySelectorAll('.nav-item').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
     document.querySelectorAll('.desktop-nav a').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
