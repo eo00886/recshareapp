@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <title>VANTAGE | Basketball Athletic Intelligence</title>
+    <title>VANTAGE | Verified Athletic Intelligence</title>
     <style>
         * {
             margin: 0;
@@ -604,7 +604,7 @@
             </div>
             <div>
                 <span class="logo-text">VANTAGE</span>
-                <span class="logo-tag">Basketball Athletic Intelligence</span>
+                <span class="logo-tag">Verified Athletic Intelligence</span>
             </div>
         </div>
         <div class="desktop-nav">
@@ -630,7 +630,7 @@
 
 <div class="container" id="app">
     <div id="discoverPage" class="page active">
-        <div class="page-header"><h1>Verified Basketball Athletes</h1><p>AI-measured vertical leap + 40-yard sprint · Community verified</p></div>
+        <div class="page-header"><h1>Verified Athletes</h1><p>AI-measured vertical leap + 40-yard sprint · Community verified</p></div>
         <div class="stats-grid">
             <div class="stat-card" onclick="applyFilter('all')"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Athletes</div></div>
             <div class="stat-card" onclick="applyFilter('verified')"><div class="stat-value" id="statVerified">0</div><div class="stat-label">Verified</div></div>
@@ -654,7 +654,7 @@
     </div>
 
     <div id="submitPage" class="page">
-        <div class="page-header"><h1>Get Verified</h1><p>Submit your basketball Instagram video for AI analysis</p></div>
+        <div class="page-header"><h1>Get Verified</h1><p>Submit your Instagram video for AI analysis</p></div>
         <div class="card">
             <div class="form-group"><label>Instagram URL</label><input type="url" class="form-input" id="videoUrl" placeholder="https://www.instagram.com/p/..."></div>
             <div class="form-group"><label>Full Name</label><input type="text" class="form-input" id="athleteName" placeholder="Marcus Thompson"></div>
@@ -669,7 +669,7 @@
     </div>
 
     <div id="scoutPage" class="page">
-        <div class="page-header"><h1>Scout Portal</h1><p>Advanced tools for basketball talent evaluation</p></div>
+        <div class="page-header"><h1>Scout Portal</h1><p>Advanced tools for talent evaluation</p></div>
         <div class="mode-toggle">
             <button class="mode-btn active" data-mode="watchlist">My Watchlist</button>
             <button class="mode-btn" data-mode="compare">Compare</button>
@@ -695,23 +695,14 @@
     </div>
 
     <div id="howitworksPage" class="page">
-        <div class="page-header"><h1>How VANTAGE Works</h1><p>Basketball athletic intelligence</p></div>
+        <div class="page-header"><h1>How VANTAGE Works</h1><p>AI-powered athletic verification</p></div>
         <div class="card">
-            <h3>🏀 Vertical Leap Measurement</h3>
+            <h3>🔍 The Verification Process</h3>
             <div class="step-container">
-                <div class="step"><div class="step-number">1</div><div class="step-content"><h4>Upload Video</h4><p>Share your Instagram video showing a vertical jump with the basketball rim clearly visible.</p></div></div>
-                <div class="step"><div class="step-number">2</div><div class="step-content"><h4>AI Analysis</h4><p>Our AI detects rim position, tracks your feet at takeoff and peak, and calculates vertical inches using the 10ft rim as reference.</p></div></div>
-                <div class="step"><div class="step-number">3</div><div class="step-content"><h4>Community Verification</h4><p>Other users confirm your measurement. After 3 confirmations, you earn the Verified badge.</p></div></div>
+                <div class="step"><div class="step-number">1</div><div class="step-content"><h4>Upload Video</h4><p>Share your Instagram video showing athletic performance.</p></div></div>
+                <div class="step"><div class="step-number">2</div><div class="step-content"><h4>AI Analysis</h4><p>Our AI analyzes frame-by-frame to measure vertical leap, sprint speed, and other metrics.</p></div></div>
+                <div class="step"><div class="step-number">3</div><div class="step-content"><h4>Community Verification</h4><p>Other users confirm your measurements. After 3 confirmations, you earn the Verified badge.</p></div></div>
             </div>
-        </div>
-        <div class="card">
-            <h3>🏃 40-Yard Sprint Measurement (Basketball Court)</h3>
-            <div class="step-container">
-                <div class="step"><div class="step-number">1</div><div class="step-content"><h4>Film on Basketball Court</h4><p>For best accuracy, film from baseline to baseline or baseline to half-court with court lines visible.</p></div></div>
-                <div class="step"><div class="step-number">2</div><div class="step-content"><h4>AI Tracks Movement</h4><p>Our AI detects court lines, tracks player position across frames, and calculates 40-yard dash time.</p></div></div>
-                <div class="step"><div class="step-number">3</div><div class="step-content"><h4>Community Verification</h4><p>Scouts and athletes confirm your sprint time. Higher confidence = fewer confirmations needed.</p></div></div>
-            </div>
-            <div class="sprint-tip" style="margin-top:1rem;">💡 Tip: For accurate sprint measurement, ensure you run in a straight line and the camera captures the full court length.</div>
         </div>
         <div class="card">
             <h3>⭐ Trust Score System</h3>
@@ -756,7 +747,7 @@
 
 <script>
     // ============================================
-    // VANTAGE - BASKETBALL ONLY - PRODUCTION READY
+    // VANTAGE - VERIFIED ATHLETIC INTELLIGENCE
     // BACKEND URL: https://vantage-backend-production-5621.up.railway.app
     // ============================================
 
@@ -1286,7 +1277,7 @@
             currentUser.name = email.split('@')[0];
             currentUser.email = email;
             saveData();
-            showToast(`Welcome to VANTAGE Basketball, ${currentUser.name}!`, 'success');
+            showToast(`Welcome to VANTAGE, ${currentUser.name}!`, 'success');
             closeModal('loginModal');
             updateStats();
         } else { showToast('Please enter an email', 'error'); }
