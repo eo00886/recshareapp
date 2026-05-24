@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -936,16 +937,17 @@
 
     const BACKEND_URL = 'https://vantage-backend-production-6d44.up.railway.app';
     
-    // PRE-POPULATED ATHLETE DATA - ALL 6 ATHLETES
-    let athletes = [
-        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: { value: 4.38, status: "verified", confidence: 94, verifications: 4 } }, trustScore: 94, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"], views: 342 },
-        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, sprint: { value: 4.45, status: "pending", confidence: 72, verifications: 1 } }, trustScore: 91, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"], views: 189 },
-        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, flagged: false, hasClip: true, metrics: { vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, sprint: { value: 4.28, status: "verified", confidence: 96, verifications: 6 } }, trustScore: 96, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson", "Mike Ross", "Lisa Wong"], views: 567 },
-        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, flagged: false, hasClip: false, metrics: { vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, sprint: { value: null, status: null } }, trustScore: 0, confirmations: ["Coach Miller"], views: 45 },
-        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, flagged: false, hasClip: false, metrics: { vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, sprint: { value: 4.42, status: "pending", confidence: 68, verifications: 0 } }, trustScore: 0, confirmations: [], views: 34 },
-        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, flagged: false, hasClip: false, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: { value: 4.35, status: "pending", confidence: 74, verifications: 0 } }, trustScore: 0, confirmations: [], views: 28 }
+    // ALL 6 ATHLETES - EXPLICITLY DEFINED
+    const athletesData = [
+        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, vertical: 42, sprint: 4.38, trustScore: 94, verified: true, views: 342, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"] },
+        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, vertical: 38, sprint: 4.45, trustScore: 91, verified: true, views: 189, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"] },
+        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, vertical: 44, sprint: 4.28, trustScore: 96, verified: true, views: 567, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson", "Mike Ross", "Lisa Wong"] },
+        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, vertical: 35, sprint: null, trustScore: 0, verified: false, views: 45, confirmations: ["Coach Miller"] },
+        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, vertical: 40, sprint: 4.42, trustScore: 0, verified: false, views: 34, confirmations: [] },
+        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, vertical: 37, sprint: 4.35, trustScore: 0, verified: false, views: 28, confirmations: [] }
     ];
 
+    let athletes = [];
     let currentUser = { name: "Demo User", trustScore: 85, email: null, confirmationsMade: 0, streak: 3, watchlist: [], confirmedAthleteIds: [], challengedAthleteIds: [] };
     let currentFilter = "all";
     let currentSort = "default";
@@ -958,7 +960,34 @@
     
     let videoUrls = {};
 
-    // Generate demo video
+    // Initialize athletes from data
+    function initAthletes() {
+        athletes = [];
+        for (const a of athletesData) {
+            athletes.push({
+                id: a.id,
+                name: a.name,
+                school: a.school,
+                position: a.position,
+                avatarBg: a.avatarBg,
+                jerseyNum: a.jerseyNum,
+                classYear: a.classYear,
+                flagged: false,
+                hasClip: a.verified,
+                metrics: {
+                    vertical: { value: a.vertical, status: a.verified ? 'verified' : 'pending', confidence: a.trustScore || 70, verifications: a.verified ? 3 : 1 },
+                    sprint: { value: a.sprint, status: a.verified ? 'verified' : (a.sprint ? 'pending' : null), confidence: a.trustScore ? a.trustScore - 3 : 65, verifications: a.verified ? 3 : 0 }
+                },
+                trustScore: a.trustScore,
+                confirmations: a.confirmations,
+                views: a.views
+            });
+        }
+        renderAthleteGrid();
+        updateStats();
+        generateAllVideos();
+    }
+
     function generateDemoVideo(athleteId, athleteName, vertical, sprint) {
         const canvas = document.createElement('canvas');
         canvas.width = 640;
@@ -1197,7 +1226,12 @@
 
     function loadData() {
         const saved = localStorage.getItem('vantage_athletes');
-        if (saved) athletes = JSON.parse(saved);
+        if (saved) {
+            athletes = JSON.parse(saved);
+        } else {
+            initAthletes();
+            return;
+        }
         const savedUser = localStorage.getItem('vantage_user');
         if (savedUser) Object.assign(currentUser, JSON.parse(savedUser));
         if (!currentUser.confirmedAthleteIds) currentUser.confirmedAthleteIds = [];
@@ -1205,6 +1239,9 @@
         if (!currentUser.watchlist) currentUser.watchlist = [];
         const savedCompare = localStorage.getItem('vantage_compare');
         if (savedCompare) compareSelectedIds = JSON.parse(savedCompare);
+        renderAthleteGrid();
+        updateStats();
+        generateAllVideos();
     }
 
     function updateStats() {
@@ -1774,7 +1811,6 @@
     window.onclick = (e) => { if (e.target.classList?.contains('modal')) closeModal(e.target.id); };
 
     loadData();
-    generateAllVideos();
     initScoutModes();
     renderAthleteGrid();
     renderWatchlist();
@@ -1782,3 +1818,4 @@
 </script>
 </body>
 </html>
+```
