@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -571,17 +570,6 @@
             cursor: pointer;
         }
 
-        .btn-danger {
-            background: rgba(239, 68, 68, 0.15);
-            border: 0.5px solid var(--error-red);
-            padding: 0.75rem;
-            border-radius: 30px;
-            color: var(--error-red);
-            font-weight: 500;
-            cursor: pointer;
-            width: 100%;
-        }
-
         .button-group {
             display: flex;
             gap: 0.75rem;
@@ -645,7 +633,6 @@
         .step-content p { font-size: 0.85rem; color: var(--gray-light); }
 
         .footer { margin-top: 2rem; padding-top: 1rem; border-top: 0.5px solid var(--glass-border); text-align: center; font-size: 0.7rem; color: var(--gray-light); }
-        .footer a { color: var(--primary-blue); text-decoration: none; cursor: pointer; }
 
         .sprint-tip {
             background: rgba(59, 130, 246, 0.1);
@@ -937,17 +924,16 @@
 
     const BACKEND_URL = 'https://vantage-backend-production-6d44.up.railway.app';
     
-    // ALL 6 ATHLETES - EXPLICITLY DEFINED
-    const athletesData = [
-        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, vertical: 42, sprint: 4.38, trustScore: 94, verified: true, views: 342, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"] },
-        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, vertical: 38, sprint: 4.45, trustScore: 91, verified: true, views: 189, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"] },
-        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, vertical: 44, sprint: 4.28, trustScore: 96, verified: true, views: 567, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson", "Mike Ross", "Lisa Wong"] },
-        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, vertical: 35, sprint: null, trustScore: 0, verified: false, views: 45, confirmations: ["Coach Miller"] },
-        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, vertical: 40, sprint: 4.42, trustScore: 0, verified: false, views: 34, confirmations: [] },
-        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, vertical: 37, sprint: 4.35, trustScore: 0, verified: false, views: 28, confirmations: [] }
+    // ALL 6 ATHLETES - DIRECTLY DEFINED (NO INITIALIZATION ISSUES)
+    let athletes = [
+        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: { value: 4.38, status: "verified", confidence: 94, verifications: 4 } }, trustScore: 94, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"], views: 342 },
+        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, sprint: { value: 4.45, status: "pending", confidence: 72, verifications: 1 } }, trustScore: 91, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"], views: 189 },
+        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, flagged: false, hasClip: true, metrics: { vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, sprint: { value: 4.28, status: "verified", confidence: 96, verifications: 6 } }, trustScore: 96, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson", "Mike Ross", "Lisa Wong"], views: 567 },
+        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, flagged: false, hasClip: false, metrics: { vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, sprint: { value: null, status: null } }, trustScore: 0, confirmations: ["Coach Miller"], views: 45 },
+        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, flagged: false, hasClip: false, metrics: { vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, sprint: { value: 4.42, status: "pending", confidence: 68, verifications: 0 } }, trustScore: 0, confirmations: [], views: 34 },
+        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, flagged: false, hasClip: false, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: { value: 4.35, status: "pending", confidence: 74, verifications: 0 } }, trustScore: 0, confirmations: [], views: 28 }
     ];
 
-    let athletes = [];
     let currentUser = { name: "Demo User", trustScore: 85, email: null, confirmationsMade: 0, streak: 3, watchlist: [], confirmedAthleteIds: [], challengedAthleteIds: [] };
     let currentFilter = "all";
     let currentSort = "default";
@@ -960,34 +946,7 @@
     
     let videoUrls = {};
 
-    // Initialize athletes from data
-    function initAthletes() {
-        athletes = [];
-        for (const a of athletesData) {
-            athletes.push({
-                id: a.id,
-                name: a.name,
-                school: a.school,
-                position: a.position,
-                avatarBg: a.avatarBg,
-                jerseyNum: a.jerseyNum,
-                classYear: a.classYear,
-                flagged: false,
-                hasClip: a.verified,
-                metrics: {
-                    vertical: { value: a.vertical, status: a.verified ? 'verified' : 'pending', confidence: a.trustScore || 70, verifications: a.verified ? 3 : 1 },
-                    sprint: { value: a.sprint, status: a.verified ? 'verified' : (a.sprint ? 'pending' : null), confidence: a.trustScore ? a.trustScore - 3 : 65, verifications: a.verified ? 3 : 0 }
-                },
-                trustScore: a.trustScore,
-                confirmations: a.confirmations,
-                views: a.views
-            });
-        }
-        renderAthleteGrid();
-        updateStats();
-        generateAllVideos();
-    }
-
+    // Generate demo video for an athlete
     function generateDemoVideo(athleteId, athleteName, vertical, sprint) {
         const canvas = document.createElement('canvas');
         canvas.width = 640;
@@ -1003,38 +962,53 @@
         recorder.onstop = () => {
             const blob = new Blob(chunks, { type: 'video/webm' });
             videoUrls[athleteId] = URL.createObjectURL(blob);
-            renderAthleteGrid();
+            renderAthleteGrid(); // Re-render to show play buttons
         };
         
         recorder.start();
         
         let frame = 0;
-        const totalFrames = 120;
+        const totalFrames = 120; // 4 seconds at 30fps
         
         function drawFrame() {
             const progress = frame / totalFrames;
             
+            // Background gradient
             const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
             grad.addColorStop(0, '#1e3a5f');
             grad.addColorStop(1, '#0f2b3d');
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
+            // Court lines
             ctx.strokeStyle = 'rgba(255,255,255,0.2)';
             ctx.lineWidth = 2;
             ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
             
+            // Rim
             ctx.beginPath();
             ctx.arc(canvas.width - 100, 100, 30, 0, Math.PI * 2);
             ctx.strokeStyle = 'orange';
             ctx.stroke();
             
+            // Animated basketball
             const ballY = 100 + (1 - Math.abs(progress - 0.5) * 2) * 200;
             ctx.fillStyle = 'orange';
             ctx.beginPath();
             ctx.arc(canvas.width - 100, ballY, 15, 0, Math.PI * 2);
             ctx.fill();
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.arc(canvas.width - 100, ballY, 5, 0, Math.PI * 2);
+            ctx.fill();
             
+            // Player silhouette
+            ctx.fillStyle = 'rgba(255,255,255,0.15)';
+            ctx.beginPath();
+            ctx.arc(100, canvas.height - 100, 40, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Text overlay - Athlete name and metrics
             ctx.fillStyle = 'white';
             ctx.font = 'bold 24px "SF Pro Display"';
             ctx.fillText(athleteName, 20, 50);
@@ -1044,6 +1018,7 @@
             ctx.fillStyle = '#8B5CF6';
             ctx.fillText(`Sprint: ${sprint}s`, 20, 130);
             
+            // Progress bar at bottom
             ctx.fillStyle = '#3B82F6';
             ctx.fillRect(0, canvas.height - 10, canvas.width * progress, 10);
             
@@ -1058,6 +1033,7 @@
         requestAnimationFrame(drawFrame);
     }
 
+    // Generate videos for all verified athletes
     function generateAllVideos() {
         athletes.forEach(athlete => {
             if (athlete.hasClip) {
@@ -1129,7 +1105,7 @@
         if (event) event.stopPropagation();
         const videoUrl = videoUrls[athleteId];
         if (!videoUrl) {
-            showToast('Video clip generating...', 'warning');
+            showToast('Video clip generating... Please wait', 'warning');
             return;
         }
         const athlete = athletes.find(a => a.id === athleteId);
@@ -1140,7 +1116,9 @@
         source.src = videoUrl;
         video.load();
         showModal('videoPlayerModal');
-        video.oncanplay = () => { video.play().catch(e => console.log(e)); };
+        video.oncanplay = () => {
+            video.play().catch(e => console.log('Playback error:', e));
+        };
         
         const overlay = document.getElementById('videoMetricsOverlay');
         overlay.innerHTML = `
@@ -1153,7 +1131,10 @@
 
     function closeVideoPlayer() {
         const video = document.getElementById('highlightVideo');
-        if (video) { video.pause(); video.currentTime = 0; }
+        if (video) {
+            video.pause();
+            video.currentTime = 0;
+        }
         closeModal('videoPlayerModal');
     }
 
@@ -1227,10 +1208,10 @@
     function loadData() {
         const saved = localStorage.getItem('vantage_athletes');
         if (saved) {
-            athletes = JSON.parse(saved);
-        } else {
-            initAthletes();
-            return;
+            const loaded = JSON.parse(saved);
+            if (loaded && loaded.length > 0) {
+                athletes = loaded;
+            }
         }
         const savedUser = localStorage.getItem('vantage_user');
         if (savedUser) Object.assign(currentUser, JSON.parse(savedUser));
@@ -1239,9 +1220,6 @@
         if (!currentUser.watchlist) currentUser.watchlist = [];
         const savedCompare = localStorage.getItem('vantage_compare');
         if (savedCompare) compareSelectedIds = JSON.parse(savedCompare);
-        renderAthleteGrid();
-        updateStats();
-        generateAllVideos();
     }
 
     function updateStats() {
@@ -1364,7 +1342,7 @@
                         <div class="metric-item"><div class="metric-value">${a.metrics.vertical?.value || '?'}"</div><div class="metric-label">Vert ${isVerified ? '✓' : '⏳'}</div></div>
                         <div class="metric-item"><div class="metric-value">${a.metrics.sprint?.value ? a.metrics.sprint.value + 's' : '—'}</div><div class="metric-label">Sprint ${a.metrics.sprint?.status === 'verified' ? '✓' : (a.metrics.sprint?.status === 'pending' ? '⏳' : '')}</div></div>
                     </div>
-                    ${isFlagged ? '<span class="flagged-badge">🚩 Flagged</span>' : (isVerified ? '<span class="verified-badge">✓ Verified</span>' : '<span class="pending-badge">⏳ Pending</span>')}
+                    ${isFlagged ? '<span class="flagged-badge">🚩 Flagged</span>' : (isVerified && a.metrics.sprint?.status === 'verified' ? '<span class="verified-badge">✓ Verified</span>' : '<span class="pending-badge">⏳ Pending</span>')}
                     <div class="verification-count">👁️ ${a.views} views</div>
                     ${a.trustScore > 0 ? `<div class="trust-score">⭐ Trust: ${a.trustScore}</div>` : ''}
                 </div>
@@ -1522,7 +1500,6 @@
                 classYear: 2026,
                 flagged: false,
                 hasClip: true,
-                thumbnailUrl: null,
                 metrics: {
                     vertical: { value: vertValue, status: 'pending', confidence: vertConf, verifications: 0 },
                     sprint: { value: parseFloat(sprintValue), status: 'pending', confidence: sprintConf, verifications: 0 }
@@ -1681,7 +1658,6 @@
         const hasChallenged = currentUser.challengedAthleteIds?.includes(athlete.id);
         const inWatchlist = currentUser.watchlist.includes(athlete.id);
         const needVert = athlete.metrics.vertical?.status === 'pending' ? (3 - (athlete.metrics.vertical.verifications || 0)) : 0;
-        const needSprint = athlete.metrics.sprint?.status === 'pending' ? (3 - (athlete.metrics.sprint.verifications || 0)) : 0;
         const canUnverify = currentUser.trustScore >= 90 && isVerified;
         const hasClip = athlete.hasClip && videoUrls[athlete.id];
         
@@ -1810,7 +1786,9 @@
     document.getElementById('classYear')?.addEventListener('change', renderRecruitingBoard);
     window.onclick = (e) => { if (e.target.classList?.contains('modal')) closeModal(e.target.id); };
 
+    // Initialize
     loadData();
+    generateAllVideos();
     initScoutModes();
     renderAthleteGrid();
     renderWatchlist();
@@ -1818,4 +1796,3 @@
 </script>
 </body>
 </html>
-```
