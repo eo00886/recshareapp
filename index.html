@@ -32,9 +32,6 @@
             --glass-border: rgba(59, 130, 246, 0.15);
         }
 
-        /* ============================================
-           NAVIGATION
-           ============================================ */
         .navbar {
             background: rgba(10, 10, 10, 0.85);
             backdrop-filter: blur(20px);
@@ -168,9 +165,6 @@
             font-size: 1.3rem;
         }
 
-        /* ============================================
-           TOAST NOTIFICATIONS
-           ============================================ */
         .toast {
             position: fixed;
             bottom: 80px;
@@ -213,9 +207,6 @@
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
-        /* ============================================
-           MAIN CONTAINER
-           ============================================ */
         .container {
             max-width: 1280px;
             margin: 0 auto;
@@ -231,9 +222,6 @@
             margin-bottom: 1rem;
         }
 
-        /* ============================================
-           STATS GRID
-           ============================================ */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -254,9 +242,6 @@
         .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--primary-blue); }
         .stat-label { font-size: 0.7rem; color: var(--gray-light); }
 
-        /* ============================================
-           SEARCH & SORT
-           ============================================ */
         .search-bar { margin-bottom: 1rem; }
         .search-input {
             width: 100%;
@@ -279,9 +264,6 @@
         }
         .sort-chip.active { background: var(--primary-blue); }
 
-        /* ============================================
-           FILTERS
-           ============================================ */
         .filters {
             display: flex;
             gap: 0.5rem;
@@ -312,9 +294,6 @@
             margin-top: 0.5rem;
         }
 
-        /* ============================================
-           ATHLETE GRID & CARDS
-           ============================================ */
         .athlete-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -380,7 +359,6 @@
         .compare-checkbox.selected { background: var(--primary-blue); }
         .compare-checkbox span { color: white; font-size: 1rem; font-weight: bold; }
 
-        /* Athlete Avatar */
         .athlete-avatar {
             width: 100%;
             aspect-ratio: 1/1;
@@ -462,9 +440,6 @@
         .progress-container { margin-top: 0.5rem; background: rgba(255, 255, 255, 0.1); border-radius: 20px; height: 4px; overflow: hidden; }
         .progress-bar { background: var(--primary-blue); height: 100%; border-radius: 20px; transition: width 0.3s; }
 
-        /* ============================================
-           MODE TOGGLE
-           ============================================ */
         .mode-toggle {
             background: rgba(30, 30, 38, 0.8);
             border-radius: 40px;
@@ -485,9 +460,6 @@
         }
         .mode-btn.active { background: var(--primary-blue); color: white; }
 
-        /* ============================================
-           MODALS
-           ============================================ */
         .modal {
             display: none;
             position: fixed;
@@ -551,9 +523,6 @@
             font-size: 0.8rem;
         }
 
-        /* ============================================
-           FORMS
-           ============================================ */
         .form-group { margin-bottom: 1rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--gray-light); }
         .form-input, .form-select {
@@ -567,9 +536,6 @@
         }
         .form-input:focus, .form-select:focus { outline: none; border-color: var(--primary-blue); background: rgba(0, 0, 0, 0.6); }
 
-        /* ============================================
-           BUTTONS
-           ============================================ */
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-blue), #2563eb);
             border: none;
@@ -604,6 +570,17 @@
             cursor: pointer;
         }
 
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            border: 0.5px solid var(--error-red);
+            padding: 0.75rem;
+            border-radius: 30px;
+            color: var(--error-red);
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+        }
+
         .button-group {
             display: flex;
             gap: 0.75rem;
@@ -617,15 +594,9 @@
         .btn-unchallenge { flex: 1; background: rgba(16, 185, 129, 0.15); border: 0.5px solid var(--success-green); padding: 0.75rem; border-radius: 30px; color: var(--success-green); font-weight: 500; cursor: pointer; }
         .btn-flag { flex: 1; background: rgba(239, 68, 68, 0.15); border: 0.5px solid var(--error-red); padding: 0.75rem; border-radius: 30px; color: var(--error-red); font-weight: 500; cursor: pointer; }
 
-        /* ============================================
-           COMPARISON GRID
-           ============================================ */
         .comparison-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1rem 0; }
         .comparison-card { background: rgba(0, 0, 0, 0.3); border-radius: 16px; padding: 1rem; text-align: center; }
 
-        /* ============================================
-           PAGE TRANSITIONS
-           ============================================ */
         .page { display: none; animation: fadeIn 0.25s ease-out; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -673,6 +644,7 @@
         .step-content p { font-size: 0.85rem; color: var(--gray-light); }
 
         .footer { margin-top: 2rem; padding-top: 1rem; border-top: 0.5px solid var(--glass-border); text-align: center; font-size: 0.7rem; color: var(--gray-light); }
+        .footer a { color: var(--primary-blue); text-decoration: none; cursor: pointer; }
 
         .sprint-tip {
             background: rgba(59, 130, 246, 0.1);
@@ -958,13 +930,15 @@
 
 <script>
     // ============================================
-    // VANTAGE - FULLY WORKING VERSION
+    // VANTAGE - COMPLETE WORKING VERSION
     // BACKEND URL: https://vantage-backend-production-5621.up.railway.app
     // ============================================
 
     const BACKEND_URL = 'https://vantage-backend-production-5621.up.railway.app';
     
-    // Pre-populated athlete data - DEFINED IMMEDIATELY
+    // ============================================
+    // PRE-POPULATED ATHLETE DATA
+    // ============================================
     let athletes = [
         { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: { value: 4.38, status: "verified", confidence: 94, verifications: 4 } }, trustScore: 94, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"], views: 342 },
         { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, sprint: { value: 4.45, status: "pending", confidence: 72, verifications: 1 } }, trustScore: 91, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"], views: 189 },
@@ -990,8 +964,7 @@
     // ============================================
     // DEMO VIDEO GENERATION
     // ============================================
-    
-    function generateDemoVideo(athleteId, athleteName, vertical, sprint) {
+    function generateDemoVideo(athleteId, athleteName, vertical, sprint, callback) {
         const canvas = document.createElement('canvas');
         canvas.width = 640;
         canvas.height = 480;
@@ -1009,10 +982,8 @@
             const blob = new Blob(chunks, { type: 'video/webm' });
             const url = URL.createObjectURL(blob);
             videoUrls[athleteId] = url;
-            // Re-render to show play buttons
+            if (callback) callback();
             renderAthleteGrid();
-            renderWatchlist();
-            renderRecruitingBoard();
         };
         
         recorder.start();
@@ -1085,7 +1056,6 @@
         requestAnimationFrame(drawFrame);
     }
 
-    // Generate videos for verified athletes
     function generateAllVideos() {
         athletes.forEach(athlete => {
             if (athlete.hasClip) {
@@ -1097,7 +1067,6 @@
     // ============================================
     // HELPER FUNCTIONS
     // ============================================
-    
     function showToast(message, type = 'info', undoCallback = null, undoLabel = 'Undo') {
         const existing = document.querySelector('.toast');
         if (existing) existing.remove();
@@ -1162,7 +1131,7 @@
         
         const videoUrl = videoUrls[athleteId];
         if (!videoUrl) {
-            showToast('Video clip generating... Please wait a moment', 'warning');
+            showToast('Video clip generating... Please wait', 'warning');
             return;
         }
         
@@ -1200,7 +1169,6 @@
     // ============================================
     // TAB SWITCHING & CAMERA
     // ============================================
-    
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1268,7 +1236,6 @@
     // ============================================
     // DATA MANAGEMENT
     // ============================================
-    
     function saveData() {
         localStorage.setItem('vantage_athletes', JSON.stringify(athletes));
         localStorage.setItem('vantage_user', JSON.stringify(currentUser));
@@ -1279,12 +1246,6 @@
         const saved = localStorage.getItem('vantage_athletes');
         if (saved) {
             athletes = JSON.parse(saved);
-            // Re-generate videos for saved athletes that have clips
-            athletes.forEach(athlete => {
-                if (athlete.hasClip && !videoUrls[athlete.id]) {
-                    generateDemoVideo(athlete.id, athlete.name, athlete.metrics.vertical.value, athlete.metrics.sprint.value || 4.5);
-                }
-            });
         }
         const savedUser = localStorage.getItem('vantage_user');
         if (savedUser) Object.assign(currentUser, JSON.parse(savedUser));
@@ -1333,7 +1294,6 @@
     // ============================================
     // CORE ACTIONS
     // ============================================
-    
     function flagAthlete() {
         if (!currentDetailAthlete) return;
         if (currentDetailAthlete.flagged) { showToast('Already flagged', 'error'); return; }
@@ -1392,7 +1352,6 @@
     // ============================================
     // RENDER FUNCTIONS
     // ============================================
-    
     function renderAthleteGrid() {
         const grid = document.getElementById('athleteGrid');
         if (!grid) return;
@@ -1430,7 +1389,6 @@
             </div>`;
         }).join('');
         
-        // Attach event listeners
         document.querySelectorAll('[data-watchlist]').forEach(el => {
             el.addEventListener('click', (e) => { e.stopPropagation(); toggleWatchlist(parseInt(el.dataset.watchlist), e); });
         });
@@ -1593,7 +1551,6 @@
             };
             athletes.push(newAthlete);
             
-            // Generate demo video for new athlete
             generateDemoVideo(newId, name, vertValue, sprintValue);
             
             resultDiv.innerHTML = `<div class="alert-success">✅ AI Analysis Complete!<br>🏀 Vertical: ${vertValue}" (${vertConf}% confidence)<br>🏃 Sprint: ${sprintValue}s (${sprintConf}% confidence)<br>📹 Highlight clip generating...</div>`;
@@ -1608,7 +1565,7 @@
             renderAthleteGrid();
             updateStats();
             showPage('discover');
-            showToast('Athlete submitted! Clip generating...', 'success');
+            showToast('Athlete submitted!', 'success');
         } catch (error) {
             resultDiv.innerHTML = `<div class="alert-error">Error: ${error.message}</div>`;
         } finally {
@@ -1621,7 +1578,6 @@
     // ============================================
     // VERIFICATION ACTIONS
     // ============================================
-    
     function unverifyAthlete() {
         if (!currentDetailAthlete) return;
         if (currentUser.trustScore < 90) { showToast('Need 90+ trust to unverify', 'error'); return; }
@@ -1807,7 +1763,6 @@
     // ============================================
     // PAGE NAVIGATION
     // ============================================
-    
     function showPage(pageId) {
         const pages = ['discover', 'submit', 'scout', 'leaderboard', 'howitworks', 'pricing'];
         pages.forEach(id => { const el = document.getElementById(id + 'Page'); if (el) el.classList.remove('active'); });
@@ -1831,7 +1786,6 @@
     // ============================================
     // MODAL CONTROLS
     // ============================================
-    
     function showModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
@@ -1868,7 +1822,6 @@
     // ============================================
     // EVENT LISTENERS & INIT
     // ============================================
-    
     document.querySelectorAll('.filter-chip').forEach(c => c.addEventListener('click', function() { applyFilter(this.dataset.filter); }));
     document.querySelectorAll('.nav-item').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
     document.querySelectorAll('.desktop-nav a').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
@@ -1887,7 +1840,6 @@
     document.getElementById('classYear')?.addEventListener('change', renderRecruitingBoard);
     window.onclick = (e) => { if (e.target.classList?.contains('modal')) closeModal(e.target.id); };
 
-    // Initialize
     loadData();
     generateAllVideos();
     initScoutModes();
