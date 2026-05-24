@@ -284,7 +284,6 @@
         }
         .filter-chip.active { background: var(--primary-blue); color: white; }
 
-        /* Flagged badge */
         .flagged-badge {
             background: rgba(239, 68, 68, 0.2);
             color: var(--error-red);
@@ -651,7 +650,6 @@
     <button class="nav-item" data-page="submit"><span class="nav-icon">📤</span><span>Verify</span></button>
     <button class="nav-item" data-page="scout"><span class="nav-icon">🎯</span><span>Scout</span></button>
     <button class="nav-item" data-page="leaderboard"><span class="nav-icon">⭐</span><span>Leaderboard</span></button>
-    <button class="nav-item" data-page="howitworks"><span class="nav-icon">❓</span><span>How It Works</span></button>
     <button class="nav-item" data-page="pricing"><span class="nav-icon">💰</span><span>Pricing</span></button>
     <button class="nav-item" id="loginBtn"><span class="nav-icon">👤</span><span>Profile</span></button>
 </div>
@@ -885,11 +883,9 @@
         currentDetailAthlete.flagged = true;
         currentDetailAthlete.flaggedReason = 'Low quality video - needs resubmission';
         
-        // Remove from watchlist if present
         const watchlistIdx = currentUser.watchlist.indexOf(currentDetailAthlete.id);
         if (watchlistIdx !== -1) currentUser.watchlist.splice(watchlistIdx, 1);
         
-        // Remove from compare if present
         const compareIdx = compareSelectedIds.indexOf(currentDetailAthlete.id);
         if (compareIdx !== -1) compareSelectedIds.splice(compareIdx, 1);
         
