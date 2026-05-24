@@ -476,6 +476,66 @@
         }
         .close-modal { float: right; font-size: 1.5rem; cursor: pointer; color: var(--gray-light); line-height: 1; }
 
+        .video-modal {
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .video-player-container {
+            position: relative;
+        }
+
+        .video-metrics-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            z-index: 1010;
+        }
+
+        .metric-badge {
+            background: var(--primary-blue);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .trust-badge {
+            background: var(--primary-purple);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .play-icon-overlay {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            width: 32px;
+            height: 32px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            font-size: 1rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.2s;
+        }
+
+        .play-icon-overlay:hover {
+            background: var(--primary-blue);
+            transform: scale(1.05);
+        }
+
         .form-group { margin-bottom: 1rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--gray-light); }
         .form-input, .form-select {
@@ -773,9 +833,23 @@
 
 <div id="embedModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('embedModal')">&times;</span><h3>Share Your Verified Badge</h3><p style="margin:1rem 0;">Copy this code to your Instagram bio:</p><div style="background:#1a1a1a; padding:0.75rem; border-radius:12px; font-family:monospace; font-size:0.7rem; word-break:break-all;" id="embedCode"></div><button class="btn-primary" style="margin-top:1rem;" onclick="copyEmbedCode()">Copy Code</button></div></div>
 
+<!-- Video Player Modal -->
+<div id="videoPlayerModal" class="modal">
+    <div class="modal-content video-modal">
+        <span class="close-modal" onclick="closeVideoPlayer()">&times;</span>
+        <div class="video-player-container">
+            <video id="highlightVideo" controls style="width:100%; max-height:60vh;">
+                <source id="videoSource" src="" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-metrics-overlay" id="videoMetricsOverlay"></div>
+        </div>
+    </div>
+</div>
+
 <script>
     // ============================================
-    // VANTAGE - WITH FLAG/UNSEARCH FUNCTIONALITY
+    // VANTAGE - COMPLETE WITH VIDEO PLAYBACK
     // BACKEND URL: https://vantage-backend-production-5621.up.railway.app
     // ============================================
 
@@ -790,12 +864,12 @@
     let compareSelectedIds = [];
 
     const defaultAthletes = [
-        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, flagged: false, flaggedReason: null, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: { value: 4.38, status: "verified", confidence: 94, verifications: 4 } }, trustScore: 94, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson"], views: 342 },
-        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, flagged: false, flaggedReason: null, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, sprint: { value: 4.45, status: "pending", confidence: 72, verifications: 1 } }, trustScore: 91, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson"], views: 189 },
-        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, flagged: false, flaggedReason: null, metrics: { vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, sprint: { value: 4.28, status: "verified", confidence: 96, verifications: 6 } }, trustScore: 96, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson","Mike Ross","Lisa Wong"], views: 567 },
-        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, flagged: false, flaggedReason: null, metrics: { vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, sprint: { value: null, status: null } }, trustScore: 0, confirmations: ["Coach Miller"], views: 45 },
-        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, flagged: false, flaggedReason: null, metrics: { vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, sprint: { value: 4.42, status: "pending", confidence: 68, verifications: 0 } }, trustScore: 0, confirmations: [], views: 34 },
-        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, flagged: false, flaggedReason: null, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: { value: 4.35, status: "pending", confidence: 74, verifications: 0 } }, trustScore: 0, confirmations: [], views: 28 }
+        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: { value: 4.38, status: "verified", confidence: 94, verifications: 4 } }, trustScore: 94, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson"], views: 342 },
+        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, sprint: { value: 4.45, status: "pending", confidence: 72, verifications: 1 } }, trustScore: 91, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson"], views: 189 },
+        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, flagged: false, hasClip: true, metrics: { vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, sprint: { value: 4.28, status: "verified", confidence: 96, verifications: 6 } }, trustScore: 96, confirmations: ["Coach Miller","Sarah Chen","David Kim","James Wilson","Coach Thompson","Mike Ross","Lisa Wong"], views: 567 },
+        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, flagged: false, hasClip: false, metrics: { vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, sprint: { value: null, status: null } }, trustScore: 0, confirmations: ["Coach Miller"], views: 45 },
+        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, flagged: false, hasClip: false, metrics: { vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, sprint: { value: 4.42, status: "pending", confidence: 68, verifications: 0 } }, trustScore: 0, confirmations: [], views: 34 },
+        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, flagged: false, hasClip: false, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: { value: 4.35, status: "pending", confidence: 74, verifications: 0 } }, trustScore: 0, confirmations: [], views: 28 }
     ];
 
     function showToast(message, type = 'info', undoCallback = null, undoLabel = 'Undo') {
@@ -815,6 +889,81 @@
             setTimeout(() => toast.remove(), 3000);
         }
         document.body.appendChild(toast);
+    }
+
+    function generateStockAvatar(athleteName, position = 'SG') {
+        const canvas = document.createElement('canvas');
+        canvas.width = 400;
+        canvas.height = 400;
+        const ctx = canvas.getContext('2d');
+        
+        const gradients = {
+            'PG': ['#1e3a5f', '#0f2b3d'],
+            'SG': ['#2d1b4e', '#1a0f2e'],
+            'SF': ['#1e4a3b', '#0f2e23'],
+            'PF': ['#5f3e1e', '#3d2712'],
+            'C': ['#3a1e5f', '#24123d']
+        };
+        
+        const colors = gradients[position] || ['#1e3a5f', '#0f2b3d'];
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        grad.addColorStop(0, colors[0]);
+        grad.addColorStop(1, colors[1]);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = 'rgba(255,255,255,0.15)';
+        ctx.beginPath();
+        ctx.arc(canvas.width/2, canvas.height/2, canvas.width*0.35, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = 'rgba(255,255,255,0.4)';
+        ctx.font = `bold ${canvas.width * 0.2}px "SF Pro Display", "Inter"`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const initials = athleteName.split(' ').map(n => n[0]).join('');
+        ctx.fillText(initials.substring(0, 2), canvas.width/2, canvas.height/2);
+        
+        ctx.font = `${canvas.width * 0.15}px "Segoe UI Emoji"`;
+        ctx.fillStyle = 'rgba(255,255,255,0.2)';
+        ctx.fillText('🏀', canvas.width * 0.75, canvas.height * 0.75);
+        
+        ctx.font = `${canvas.width * 0.08}px monospace`;
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.fillText('#00', canvas.width * 0.85, canvas.height * 0.9);
+        
+        return canvas.toDataURL('image/jpeg', 0.85);
+    }
+
+    function playHighlight(athleteId, metricType, event) {
+        if (event) event.stopPropagation();
+        const athlete = athletes.find(a => a.id === athleteId);
+        if (!athlete) return;
+        
+        const video = document.getElementById('highlightVideo');
+        const source = document.getElementById('videoSource');
+        
+        // Mock clip URL - in production, this would be a real endpoint
+        source.src = `${BACKEND_URL}/static/clips/athlete_${athleteId}/${metricType}.mp4`;
+        video.load();
+        
+        showModal('videoPlayerModal');
+        video.play().catch(e => console.log('Playback error:', e));
+        
+        const overlay = document.getElementById('videoMetricsOverlay');
+        overlay.innerHTML = `
+            <div class="metric-badge">🏀 Vertical: ${athlete.metrics.vertical?.value || '?'}"</div>
+            <div class="metric-badge">🏃 Sprint: ${athlete.metrics.sprint?.value || '?'}s</div>
+            <div class="trust-badge">⭐ Trust Score: ${athlete.trustScore || 'Pending'}</div>
+            <div class="metric-badge">✓ ${athlete.confirmations.length} verifications</div>
+        `;
+    }
+
+    function closeVideoPlayer() {
+        const video = document.getElementById('highlightVideo');
+        video.pause();
+        video.currentTime = 0;
+        closeModal('videoPlayerModal');
     }
 
     function loadData() {
@@ -963,12 +1112,27 @@
             const sprintValue = a.metrics.sprint?.value || '?';
             const sprintStatus = a.metrics.sprint?.status;
             const isFlagged = a.flagged === true;
+            const hasClip = a.hasClip === true;
+            
+            // Generate avatar
+            let avatarHtml = '';
+            if (hasClip && a.thumbnailUrl) {
+                avatarHtml = `<img src="${a.thumbnailUrl}" class="athlete-video-thumbnail" style="width:100%; height:100%; object-fit:cover;">`;
+            } else {
+                const stockAvatar = generateStockAvatar(a.name, a.position);
+                avatarHtml = `<img src="${stockAvatar}" class="athlete-stock-avatar" style="width:100%; height:100%; object-fit:cover;">`;
+            }
+            
             return `<div class="athlete-card ${isFlagged ? 'flagged' : ''}" data-id="${a.id}">
                 <div class="card-actions">
                     <div class="action-icon ${inWatchlist ? 'watchlist-active' : ''}" data-watchlist="${a.id}">${inWatchlist ? '⭐' : '☆'}</div>
                 </div>
                 <div class="compare-checkbox ${inCompare ? 'selected' : ''}" data-compare="${a.id}"><span>${inCompare ? '✓' : ''}</span></div>
-                <div class="athlete-avatar ${a.avatarBg}"><div class="player-silhouette"></div><div class="jersey-number">${a.jerseyNum}</div></div>
+                <div class="athlete-avatar ${a.avatarBg}" style="position:relative;">
+                    ${avatarHtml}
+                    ${hasClip ? `<div class="play-icon-overlay" data-play="${a.id}" data-metric="vertical">▶</div>` : ''}
+                    <div class="jersey-number">${a.jerseyNum}</div>
+                </div>
                 <div class="athlete-info">
                     <div class="athlete-name">${a.name}</div>
                     <div class="athlete-school">${a.school}</div>
@@ -982,20 +1146,26 @@
                 </div>
             </div>`;
         }).join('');
+        
         document.querySelectorAll('[data-watchlist]').forEach(el => {
             el.addEventListener('click', (e) => { e.stopPropagation(); toggleWatchlist(parseInt(el.dataset.watchlist), e); });
         });
         document.querySelectorAll('[data-compare]').forEach(el => {
             el.addEventListener('click', (e) => { e.stopPropagation(); toggleCompare(parseInt(el.dataset.compare), e); });
         });
+        document.querySelectorAll('[data-play]').forEach(el => {
+            el.addEventListener('click', (e) => { e.stopPropagation(); playHighlight(parseInt(el.dataset.play), el.dataset.metric, e); });
+        });
         document.querySelectorAll('.athlete-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const id = parseInt(card.dataset.id);
-                const athlete = athletes.find(a => a.id === id);
-                if (athlete && athlete.flagged) {
-                    showToast('This athlete has been flagged as low quality', 'warning');
-                } else {
-                    showAthleteDetail(id);
+            card.addEventListener('click', (e) => {
+                if (!e.target.closest('.action-icon') && !e.target.closest('.compare-checkbox') && !e.target.closest('.play-icon-overlay')) {
+                    const id = parseInt(card.dataset.id);
+                    const athlete = athletes.find(a => a.id === id);
+                    if (athlete && athlete.flagged) {
+                        showToast('This athlete has been flagged as low quality', 'warning');
+                    } else {
+                        showAthleteDetail(id);
+                    }
                 }
             });
         });
@@ -1006,9 +1176,37 @@
         if (!grid) return;
         const watchlistAthletes = athletes.filter(a => currentUser.watchlist.includes(a.id) && !a.flagged);
         if (!watchlistAthletes.length) { grid.innerHTML = '<div class="empty-state">Your watchlist is empty.<br>⭐ Tap the star icon on any athlete card to save them here.</div>'; return; }
-        grid.innerHTML = watchlistAthletes.map(a => `<div class="athlete-card" data-id="${a.id}"><div class="athlete-avatar ${a.avatarBg}"><div class="player-silhouette"></div><div class="jersey-number">${a.jerseyNum}</div></div><div class="athlete-info"><div class="athlete-name">${a.name}</div><div class="athlete-school">${a.school}</div><div class="metrics-container"><div class="metric-item"><div class="metric-value">${a.metrics.vertical?.value || '?'}"</div><div class="metric-label">Vertical</div></div><div class="metric-item"><div class="metric-value">${a.metrics.sprint?.value || '?'}s</div><div class="metric-label">Sprint</div></div></div>${a.trustScore > 0 ? `<div class="trust-score">⭐ Trust: ${a.trustScore}</div>` : ''}</div></div>`).join('');
+        grid.innerHTML = watchlistAthletes.map(a => {
+            const hasClip = a.hasClip === true;
+            let avatarHtml = '';
+            if (hasClip && a.thumbnailUrl) {
+                avatarHtml = `<img src="${a.thumbnailUrl}" class="athlete-video-thumbnail" style="width:100%; height:100%; object-fit:cover;">`;
+            } else {
+                const stockAvatar = generateStockAvatar(a.name, a.position);
+                avatarHtml = `<img src="${stockAvatar}" class="athlete-stock-avatar" style="width:100%; height:100%; object-fit:cover;">`;
+            }
+            return `<div class="athlete-card" data-id="${a.id}">
+                <div class="athlete-avatar ${a.avatarBg}" style="position:relative;">
+                    ${avatarHtml}
+                    ${hasClip ? `<div class="play-icon-overlay" data-play="${a.id}" data-metric="vertical">▶</div>` : ''}
+                    <div class="jersey-number">${a.jerseyNum}</div>
+                </div>
+                <div class="athlete-info">
+                    <div class="athlete-name">${a.name}</div>
+                    <div class="athlete-school">${a.school}</div>
+                    <div class="metrics-container">
+                        <div class="metric-item"><div class="metric-value">${a.metrics.vertical?.value || '?'}"</div><div class="metric-label">Vertical</div></div>
+                        <div class="metric-item"><div class="metric-value">${a.metrics.sprint?.value || '?'}s</div><div class="metric-label">Sprint</div></div>
+                    </div>
+                    ${a.trustScore > 0 ? `<div class="trust-score">⭐ Trust: ${a.trustScore}</div>` : ''}
+                </div>
+            </div>`;
+        }).join('');
         document.querySelectorAll('#watchlistGrid .athlete-card').forEach(card => {
             card.addEventListener('click', () => showAthleteDetail(parseInt(card.dataset.id)));
+        });
+        document.querySelectorAll('[data-play]').forEach(el => {
+            el.addEventListener('click', (e) => { e.stopPropagation(); playHighlight(parseInt(el.dataset.play), el.dataset.metric, e); });
         });
     }
 
@@ -1034,9 +1232,37 @@
         const grid = document.getElementById('recruitingBoardList');
         if (!grid) return;
         if (!filtered.length) { grid.innerHTML = '<div class="empty-state">No athletes in this class year</div>'; return; }
-        grid.innerHTML = filtered.map(a => `<div class="athlete-card" data-id="${a.id}"><div class="athlete-avatar ${a.avatarBg}"><div class="player-silhouette"></div><div class="jersey-number">${a.jerseyNum}</div></div><div class="athlete-info"><div class="athlete-name">${a.name}</div><div class="athlete-school">${a.school}</div><div class="metrics-container"><div class="metric-item"><div class="metric-value">${a.metrics.vertical?.value || '?'}"</div><div class="metric-label">Vertical</div></div><div class="metric-item"><div class="metric-value">${a.metrics.sprint?.value || '?'}s</div><div class="metric-label">Sprint</div></div></div>${a.trustScore > 0 ? `<div class="trust-score">⭐ Trust: ${a.trustScore}</div>` : ''}</div></div>`).join('');
+        grid.innerHTML = filtered.map(a => {
+            const hasClip = a.hasClip === true;
+            let avatarHtml = '';
+            if (hasClip && a.thumbnailUrl) {
+                avatarHtml = `<img src="${a.thumbnailUrl}" class="athlete-video-thumbnail" style="width:100%; height:100%; object-fit:cover;">`;
+            } else {
+                const stockAvatar = generateStockAvatar(a.name, a.position);
+                avatarHtml = `<img src="${stockAvatar}" class="athlete-stock-avatar" style="width:100%; height:100%; object-fit:cover;">`;
+            }
+            return `<div class="athlete-card" data-id="${a.id}">
+                <div class="athlete-avatar ${a.avatarBg}" style="position:relative;">
+                    ${avatarHtml}
+                    ${hasClip ? `<div class="play-icon-overlay" data-play="${a.id}" data-metric="vertical">▶</div>` : ''}
+                    <div class="jersey-number">${a.jerseyNum}</div>
+                </div>
+                <div class="athlete-info">
+                    <div class="athlete-name">${a.name}</div>
+                    <div class="athlete-school">${a.school}</div>
+                    <div class="metrics-container">
+                        <div class="metric-item"><div class="metric-value">${a.metrics.vertical?.value || '?'}"</div><div class="metric-label">Vertical</div></div>
+                        <div class="metric-item"><div class="metric-value">${a.metrics.sprint?.value || '?'}s</div><div class="metric-label">Sprint</div></div>
+                    </div>
+                    ${a.trustScore > 0 ? `<div class="trust-score">⭐ Trust: ${a.trustScore}</div>` : ''}
+                </div>
+            </div>`;
+        }).join('');
         document.querySelectorAll('#recruitingBoardList .athlete-card').forEach(card => {
             card.addEventListener('click', () => showAthleteDetail(parseInt(card.dataset.id)));
+        });
+        document.querySelectorAll('[data-play]').forEach(el => {
+            el.addEventListener('click', (e) => { e.stopPropagation(); playHighlight(parseInt(el.dataset.play), el.dataset.metric, e); });
         });
     }
 
@@ -1055,13 +1281,17 @@
         showToast('CSV downloaded', 'success');
     }
 
-    async function callBackendAPI(url, claimedVertical, claimedSprint) {
+    async function callBackendAPI(url, athleteId, athleteName, athleteSchool, athletePosition, claimedVertical, claimedSprint) {
         try {
             const response = await fetch(`${BACKEND_URL}/verify-both`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     instagram_url: url,
+                    athlete_id: athleteId,
+                    athlete_name: athleteName,
+                    athlete_school: athleteSchool,
+                    athlete_position: athletePosition,
                     claimed_vertical: claimedVertical,
                     claimed_sprint: claimedSprint
                 })
@@ -1088,8 +1318,8 @@
         if (claimedSprint && Math.abs(sprintMeasured - claimedSprint) > 0.3) sprintConfidence = Math.max(55, sprintConfidence - 15);
         
         return {
-            vertical: { success: true, vertical_inches: Math.round(measuredVert * 10) / 10, confidence: vertConfidence, error: null, needs_confirmations: vertConfidence >= 90 ? 0 : (vertConfidence >= 70 ? 2 : 3) },
-            sprint: { success: true, sprint_seconds: Math.round(sprintMeasured * 100) / 100, confidence: sprintConfidence, error: null, needs_confirmations: sprintConfidence >= 90 ? 0 : (sprintConfidence >= 70 ? 2 : 3) }
+            vertical: { success: true, vertical_inches: Math.round(measuredVert * 10) / 10, confidence: vertConfidence, error: null, clip_url: null, thumbnail_url: null, needs_confirmations: vertConfidence >= 90 ? 0 : (vertConfidence >= 70 ? 2 : 3) },
+            sprint: { success: true, sprint_seconds: Math.round(sprintMeasured * 100) / 100, confidence: sprintConfidence, error: null, clip_url: null, needs_confirmations: sprintConfidence >= 90 ? 0 : (sprintConfidence >= 70 ? 2 : 3) }
         };
     }
 
@@ -1110,12 +1340,12 @@
         btn.innerText = 'Analyzing with AI...';
 
         try {
-            const apiResult = await callBackendAPI(url, claimedVertical, claimedSprint);
+            const newId = Math.max(...athletes.map(a => a.id), 0) + 1;
+            const apiResult = await callBackendAPI(url, newId, name, school, position, claimedVertical, claimedSprint);
             const v = apiResult.vertical;
             const s = apiResult.sprint;
             
             const bgClasses = ['avatar-bg-1', 'avatar-bg-2', 'avatar-bg-3', 'avatar-bg-4', 'avatar-bg-5', 'avatar-bg-6'];
-            const newId = Math.max(...athletes.map(a => a.id), 0) + 1;
             
             const newAthlete = {
                 id: newId, name, school: school || "Not specified", position,
@@ -1123,7 +1353,8 @@
                 jerseyNum: Math.floor(Math.random() * 99).toString(),
                 classYear: 2026,
                 flagged: false,
-                flaggedReason: null,
+                hasClip: !!(v.clip_url || s.clip_url),
+                thumbnailUrl: v.thumbnail_url,
                 metrics: {
                     vertical: { value: v.vertical_inches, status: v.needs_confirmations === 0 ? 'verified' : 'pending', confidence: v.confidence, verifications: 0 },
                     sprint: { value: s.sprint_seconds, status: s.needs_confirmations === 0 ? 'verified' : 'pending', confidence: s.confidence, verifications: 0 }
@@ -1299,7 +1530,8 @@
                 <div class="metric-detail-item"><span>🏃 40-Yard Sprint</span><span><strong>${athlete.metrics.sprint?.value || '?'}s</strong> <span style="color:var(--gray-light);">AI: ${athlete.metrics.sprint?.confidence || 0}%</span> ${athlete.metrics.sprint?.status === 'verified' ? '✓' : `⏳ (${athlete.metrics.sprint?.verifications || 0}/3 verifications)`}</span></div>
             </div>
             <div style="margin:1rem 0;"><div class="verification-count">🔒 Verified by ${athlete.confirmations.length} community members</div><div class="trust-score">⭐ Trust Score: ${athlete.trustScore || 'Pending'}</div>${(!isVerified && needVertConfirmations > 0) || (athlete.metrics.sprint?.status === 'pending' && needSprintConfirmations > 0) ? `<div class="progress-container"><div class="progress-bar" style="width: ${(((3 - needVertConfirmations) / 3) * 100)}%;"></div></div><div class="verification-count">Needs confirmations: Vertical (${needVertConfirmations}/3), Sprint (${needSprintConfirmations}/3)</div>` : ''}</div>
-            <button class="btn-outline" id="shareBadgeBtn" style="width:100%;">🏅 Share Verified Badge</button>`;
+            <button class="btn-outline" id="shareBadgeBtn" style="width:100%;">🏅 Share Verified Badge</button>
+            ${athlete.hasClip ? `<button class="btn-outline" id="watchClipBtn" style="width:100%; margin-top:0.5rem;">🎬 Watch Highlight Clip</button>` : ''}`;
         
         document.getElementById('confirmBtn').style.display = (!hasConfirmed && !isVerified) ? 'block' : 'none';
         document.getElementById('unverifyBtn').style.display = canUnverify ? 'block' : 'none';
@@ -1310,6 +1542,7 @@
         document.getElementById('watchlistDetailBtn').innerText = inWatchlist ? '⭐ Remove from Watchlist' : '⭐ Save to Watchlist';
         
         document.getElementById('shareBadgeBtn')?.addEventListener('click', () => showEmbedModal(athlete));
+        document.getElementById('watchClipBtn')?.addEventListener('click', () => playHighlight(athlete.id, 'vertical'));
         document.getElementById('unverifyBtn')?.addEventListener('click', unverifyAthlete);
         document.getElementById('flagBtn')?.addEventListener('click', flagAthlete);
         showModal('detailModal');
