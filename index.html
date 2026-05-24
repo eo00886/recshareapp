@@ -8,7 +8,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', system-ui, sans-serif; background: #0a0a0a; color: #ffffff; line-height: 1.5; -webkit-font-smoothing: antialiased; }
         
-        /* Brand Colors */
         :root {
             --navy: #0F172A;
             --navy-light: #1E293B;
@@ -25,43 +24,11 @@
         .navbar { background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); border-bottom: 0.5px solid var(--blue-glow); position: sticky; top: 0; z-index: 100; padding: 0.75rem 1.25rem; }
         .navbar-content { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
         
-        /* VANTAGE Logo */
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--blue), var(--purple));
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: 0 0 15px var(--blue-glow);
-        }
-        .logo-icon svg {
-            width: 20px;
-            height: 20px;
-        }
-        .logo-text {
-            font-size: 1.4rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #ffffff, var(--blue));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .logo-tag {
-            font-size: 0.7rem;
-            color: var(--gray-light);
-            font-weight: 400;
-            letter-spacing: 0;
-        }
+        .logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--blue), var(--purple)); border-radius: 10px; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: 0 0 15px var(--blue-glow); }
+        .logo-icon svg { width: 20px; height: 20px; }
+        .logo-text { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(135deg, #ffffff, var(--blue)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .logo-tag { font-size: 0.7rem; color: var(--gray-light); font-weight: 400; letter-spacing: 0; }
         
         .desktop-nav { display: none; gap: 2rem; align-items: center; }
         .desktop-nav a { color: var(--gray-light); text-decoration: none; font-size: 0.9rem; cursor: pointer; transition: color 0.2s; }
@@ -142,8 +109,9 @@
         .btn-challenge { flex: 1; background: rgba(239,68,68,0.15); border: 0.5px solid #ef4444; padding: 0.75rem; border-radius: 30px; color: #ef4444; font-weight: 500; cursor: pointer; }
         .btn-watchlist { flex: 1; background: rgba(139,92,246,0.2); border: 0.5px solid var(--purple); padding: 0.75rem; border-radius: 30px; color: var(--purple); font-weight: 500; cursor: pointer; }
         
-        .comparison-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0; }
-        .comparison-card { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 1rem; text-align: center; }
+        .comparison-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .comparison-card { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 1rem; text-align: center; transition: transform 0.2s; }
+        .comparison-card:hover { transform: translateY(-2px); background: rgba(59,130,246,0.1); }
         
         .page { display: none; animation: fadeIn 0.25s ease-out; }
         .page.active { display: block; }
@@ -255,7 +223,13 @@
             <div class="athlete-grid" id="watchlistGrid"></div>
             <button class="btn-secondary" id="exportCsvBtn" style="margin-top:1rem;">📥 Export Watchlist to CSV</button>
         </div>
-        <div id="compareMode" style="display:none;"><div class="card"><p>Select athletes to compare (2-4) by tapping the checkbox on athlete cards in Discover.</p><div id="compareList" class="comparison-grid"></div><button class="btn-primary" id="refreshCompareBtn">Refresh Comparison</button></div></div>
+        <div id="compareMode" style="display:none;">
+            <div class="card">
+                <p>Select athletes to compare (2-4) by tapping the checkbox on athlete cards in Discover.</p>
+                <div id="compareList" class="comparison-grid"></div>
+                <button class="btn-primary" id="refreshCompareBtn">🔄 Refresh Comparison</button>
+            </div>
+        </div>
         <div id="recruitingMode" style="display:none;"><div class="card"><div class="form-group"><label>Recruiting Class Year</label><select class="form-select" id="classYear"><option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option></select></div><div id="recruitingBoardList" class="athlete-grid"></div></div></div>
     </div>
 
@@ -412,12 +386,39 @@
     function renderComparison() {
         const compareList = document.getElementById('compareList');
         if (!compareList) return;
+        
         const compareAthletes = athletes.filter(a => compareSelectedIds.includes(a.id));
+        
         if (compareAthletes.length === 0) {
             compareList.innerHTML = '<div class="empty-state">Select athletes to compare using checkboxes on Discover page</div>';
             return;
         }
-        compareList.innerHTML = compareAthletes.map(a => `<div class="comparison-card"><div class="athlete-name">${a.name}</div><div>School: ${a.school}</div><div>Vertical: ${a.metrics.vertical?.value || 'N/A'}"</div><div>Sprint: ${a.metrics.sprint?.value || 'N/A'}s</div><div>Trust: ${a.trustScore || 'Pending'}</div></div>`).join('');
+        
+        compareList.innerHTML = compareAthletes.map(a => `
+            <div class="comparison-card">
+                <div class="athlete-name" style="font-weight:700; margin-bottom:0.5rem;">${a.name}</div>
+                <div style="font-size:0.8rem; color:#9ca3af;">${a.school}</div>
+                <div style="margin-top:0.5rem; padding-top:0.5rem; border-top:0.5px solid rgba(59,130,246,0.2);">
+                    <div>🏀 Vertical: <strong style="color:#3b82f6;">${a.metrics.vertical?.value || 'N/A'}"</strong></div>
+                    <div>🏃 Sprint: <strong style="color:#3b82f6;">${a.metrics.sprint?.value || 'N/A'}s</strong></div>
+                    <div>⭐ Trust: ${a.trustScore || 'Pending'}</div>
+                    <div>✓ ${a.confirmations.length} verifications</div>
+                </div>
+                <button class="btn-secondary" style="margin-top:0.75rem; padding:0.4rem; font-size:0.7rem;" onclick="event.stopPropagation(); showAthleteDetail(${a.id})">View Profile</button>
+            </div>
+        `).join('');
+    }
+    
+    function refreshComparison() {
+        renderComparison();
+        const refreshBtn = document.getElementById('refreshCompareBtn');
+        if (refreshBtn) {
+            const originalText = refreshBtn.innerText;
+            refreshBtn.innerText = '✓ Refreshed!';
+            setTimeout(() => {
+                refreshBtn.innerText = originalText;
+            }, 1500);
+        }
     }
     
     function applyFilter(filter) {
@@ -623,7 +624,8 @@
     document.getElementById('watchlistBtn')?.addEventListener('click', addToWatchlist);
     document.getElementById('requestReportBtn')?.addEventListener('click', () => alert('Demo: Scouting report request sent to athlete.'));
     document.getElementById('exportCsvBtn')?.addEventListener('click', exportToCSV);
-    document.getElementById('refreshCompareBtn')?.addEventListener('click', renderComparison);
+    const refreshCompareBtn = document.getElementById('refreshCompareBtn');
+    if (refreshCompareBtn) refreshCompareBtn.addEventListener('click', refreshComparison);
     document.getElementById('classYear')?.addEventListener('change', renderRecruitingBoard);
     window.onclick = function(e) { if (e.target.classList && e.target.classList.contains('modal')) { closeModal(e.target.id); } };
     
