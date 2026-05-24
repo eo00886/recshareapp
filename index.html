@@ -370,25 +370,6 @@
             background: linear-gradient(135deg, #1e3a5f, #0f2b3d);
         }
 
-        .athlete-video-thumbnail {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .athlete-stock-avatar {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-        }
-
         .play-icon-overlay {
             position: absolute;
             bottom: 8px;
@@ -949,7 +930,7 @@
 
 <script>
     // ============================================
-    // VANTAGE - WORKING VERSION WITH VIDEO CLIPS
+    // VANTAGE - WORKING WITH ALL 6 ATHLETES
     // ============================================
 
     const BACKEND_URL = 'https://vantage-backend-production-5621.up.railway.app';
@@ -968,8 +949,8 @@
     // Store generated video URLs
     let videoUrls = {};
 
-    // Default athletes data
-    const defaultAthletesData = [
+    // ALL 6 DEFAULT ATHLETES - DIRECTLY DEFINED
+    const defaultAthletes = [
         { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, vertical: 42, sprint: 4.38, trustScore: 94, verified: true, views: 342, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"] },
         { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, vertical: 38, sprint: 4.45, trustScore: 91, verified: true, views: 189, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"] },
         { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, vertical: 44, sprint: 4.28, trustScore: 96, verified: true, views: 567, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson", "Mike Ross", "Lisa Wong"] },
@@ -978,7 +959,7 @@
         { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, vertical: 37, sprint: 4.35, trustScore: 0, verified: false, views: 28, confirmations: [] }
     ];
 
-    // Generate a simple animated demo video
+    // Generate demo video for an athlete
     function generateDemoVideo(athleteId, athleteName, vertical, sprint, callback) {
         const canvas = document.createElement('canvas');
         canvas.width = 640;
@@ -997,7 +978,7 @@
             const blob = new Blob(chunks, { type: 'video/webm' });
             const url = URL.createObjectURL(blob);
             videoUrls[athleteId] = url;
-            if (callback) callback(url);
+            if (callback) callback();
         };
         
         recorder.start();
@@ -1010,7 +991,7 @@
         function drawFrame() {
             const progress = frame / totalFrames;
             
-            // Background
+            // Background gradient
             const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
             grad.addColorStop(0, '#1e3a5f');
             grad.addColorStop(1, '#0f2b3d');
@@ -1074,9 +1055,9 @@
     function initAthletes() {
         athletes = [];
         
-        defaultAthletesData.forEach(a => {
+        defaultAthletes.forEach(a => {
             const hasClip = a.trustScore > 0;
-            const vertStatus = a.verified ? 'verified' : (a.trustScore > 0 ? 'verified' : 'pending');
+            const vertStatus = a.verified ? 'verified' : 'pending';
             const sprintStatus = a.sprint ? (a.verified ? 'verified' : 'pending') : null;
             
             athletes.push({
@@ -1111,6 +1092,7 @@
         
         renderAthleteGrid();
         updateStats();
+        renderWatchlist();
     }
 
     function showToast(message, type = 'info', undoCallback = null, undoLabel = 'Undo') {
@@ -1281,18 +1263,6 @@
         localStorage.setItem('vantage_athletes', JSON.stringify(athletes));
         localStorage.setItem('vantage_user', JSON.stringify(currentUser));
         localStorage.setItem('vantage_compare', JSON.stringify(compareSelectedIds));
-    }
-
-    function loadData() {
-        const saved = localStorage.getItem('vantage_athletes');
-        if (saved) athletes = JSON.parse(saved);
-        const savedUser = localStorage.getItem('vantage_user');
-        if (savedUser) Object.assign(currentUser, JSON.parse(savedUser));
-        if (!currentUser.confirmedAthleteIds) currentUser.confirmedAthleteIds = [];
-        if (!currentUser.challengedAthleteIds) currentUser.challengedAthleteIds = [];
-        if (!currentUser.watchlist) currentUser.watchlist = [];
-        const savedCompare = localStorage.getItem('vantage_compare');
-        if (savedCompare) compareSelectedIds = JSON.parse(savedCompare);
     }
 
     function updateStats() {
