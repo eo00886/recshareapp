@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>RecShare - AI-Powered Sports Verification</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            line-height: 1.5;
+        }
+        .navbar {
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1a1a1a;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: #a1a1aa;
+            text-decoration: none;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+        .btn-outline {
+            border: 1px solid #3b82f6;
+            background: transparent;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: #3b82f6;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: #3b82f6;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .card {
+            background: #0a0a0a;
+            border: 1px solid #1f1f1f;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .athlete-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .athlete-card {
+            background: #0a0a0a;
+            border: 1px solid #1f1f1f;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .athlete-card:hover {
+            border-color: #3b82f6;
+        }
+        .athlete-info {
+            padding: 1rem;
+        }
+        .athlete-name {
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+        .vertical-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3b82f6;
+            margin: 0.5rem 0;
+        }
+        .verified-badge {
+            background: #10b981;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .pending-badge {
+            background: #f59e0b;
+            color: black;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .confidence-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            margin-right: 0.5rem;
+        }
+        .confidence-high { background: #10b981; color: white; }
+        .confidence-medium { background: #f59e0b; color: black; }
+        .confidence-low { background: #ef4444; color: white; }
+        .filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .filter-select {
+            background: #0a0a0a;
+            border: 1px solid #1f1f1f;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: white;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #0a0a0a;
+            border: 1px solid #1f1f1f;
+            border-radius: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+        .close-modal {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: #0a0a0a;
+            border: 1px solid #1f1f1f;
+            border-radius: 16px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            color: white;
+        }
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .btn-confirm {
+            background: #10b981;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+        }
+        .btn-challenge {
+            background: #ef4444;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">RECSHARE</div>
+    <div class="nav-links">
+        <a onclick="showPage('discover')">Discover</a>
+        <a onclick="showPage('submit')">Get Verified</a>
+        <a onclick="showPage('leaderboard')">Leaderboard</a>
+        <button class="btn-outline" onclick="showPage('pricing')">Pricing</button>
+        <button class="btn-primary" onclick="showModal('loginModal')">Sign In</button>
+    </div>
+</div>
+
+<div class="container" id="app">
+    <div id="discoverPage">
+        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Verified Athletes</h1>
+        <p style="color: #a1a1aa; margin-bottom: 2rem;">AI-measured + community-verified vertical leaps.</p>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total Athletes</div></div>
+            <div class="stat-card"><div class="stat-value" id="statVerified">0</div><div class="stat-label">Verified</div></div>
+            <div class="stat-card"><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
+        </div>
+        <div class="filters">
+            <select class="filter-select" id="filterStatus" onchange="filterAthletes()">
+                <option value="all">All</option>
+                <option value="verified">Verified Only</option>
+                <option value="pending">Pending Only</option>
+            </select>
+        </div>
+        <div class="athlete-grid" id="athleteGrid"></div>
+    </div>
+
+    <div id="submitPage" style="display: none;">
+        <div class="card">
+            <h2 style="margin-bottom: 1rem;">Get Your Vertical Verified</h2>
+            <p style="color: #a1a1aa; margin-bottom: 1.5rem;">Submit an Instagram video of your vertical jump.</p>
+            <div class="form-group">
+                <label>Instagram Video URL</label>
+                <input type="url" class="form-input" id="videoUrl" placeholder="https://www.instagram.com/p/...">
+            </div>
+            <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" class="form-input" id="athleteName" placeholder="e.g., Marcus Thompson">
+            </div>
+            <button class="btn-primary" onclick="submitVideo()">Submit for AI Analysis</button>
+            <div id="submitResult" style="margin-top: 1rem;"></div>
+        </div>
+    </div>
+
+    <div id="leaderboardPage" style="display: none;">
+        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Trust Leaderboard</h1>
+        <p style="color: #a1a1aa; margin-bottom: 2rem;">Users who help verify others earn trust points.</p>
+        <div class="card" id="leaderboardList"></div>
+    </div>
+
+    <div id="pricingPage" style="display: none;">
+        <h1 style="font-size: 2rem; text-align: center; margin-bottom: 2rem;">Free for Athletes. $500/year for Scouts.</h1>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+            <div class="card" style="text-align: center;"><h3>Athlete</h3><p style="font-size: 3rem; font-weight: bold;">$0</p><p>Get verified. Help verify others. Earn trust.</p><button class="btn-primary" style="margin-top: 1rem;" onclick="showPage('submit')">Get Started</button></div>
+            <div class="card" style="text-align: center; border-color: #3b82f6;"><h3>Scout Pro</h3><p style="font-size: 3rem; font-weight: bold;">$500</p><p>Per year. Full access to verified database.</p><button class="btn-primary" style="margin-top: 1rem;" onclick="alert('Demo: Stripe checkout would open here')">Subscribe</button></div>
+        </div>
+    </div>
+</div>
+
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('loginModal')">&times;</span>
+        <h2>Sign In</h2>
+        <div class="form-group"><label>Email</label><input type="email" class="form-input" id="loginEmail"></div>
+        <div class="form-group"><label>Password</label><input type="password" class="form-input" id="loginPassword"></div>
+        <button class="btn-primary" style="width: 100%;" onclick="handleLogin()">Sign In</button>
+        <p style="text-align: center; margin-top: 1rem; color: #a1a1aa;">Demo: Any email works</p>
+    </div>
+</div>
+
+<div id="detailModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('detailModal')">&times;</span>
+        <div id="detailContent"></div>
+        <div class="button-group" id="actionButtons" style="display: none;">
+            <button class="btn-confirm" onclick="confirmVerification()">✓ Confirm - This looks correct</button>
+            <button class="btn-challenge" onclick="challengeVerification()">⚠️ Challenge - This seems wrong</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let athletes = [
+        { id: 1, name: "Marcus Thompson", vertical: 42, status: "verified", confidence: 96, trustScore: 94, needsConfirmations: 0, confirmations: [] },
+        { id: 2, name: "Jaylen Carter", vertical: 38, status: "verified", confidence: 94, trustScore: 91, needsConfirmations: 0, confirmations: [] },
+        { id: 3, name: "Elijah Williams", vertical: 44, status: "verified", confidence: 98, trustScore: 96, needsConfirmations: 0, confirmations: [] },
+        { id: 4, name: "Tyler Brooks", vertical: 35, status: "pending", confidence: 78, trustScore: 0, needsConfirmations: 2, confirmations: [] },
+        { id: 5, name: "Jordan Lee", vertical: 40, status: "pending", confidence: 72, trustScore: 0, needsConfirmations: 2, confirmations: [] },
+        { id: 6, name: "Malik Henderson", vertical: 37, status: "pending", confidence: 68, trustScore: 0, needsConfirmations: 3, confirmations: [] },
+    ];
+
+    let currentAthletes = [...athletes];
+    let currentDetailAthlete = null;
+    let currentUser = { name: "Demo User", trustScore: 85, isScout: false };
+
+    function renderAthleteGrid() {
+        const grid = document.getElementById('athleteGrid');
+        if (!grid) return;
+        grid.innerHTML = currentAthletes.map(athlete => {
+            let statusHtml = athlete.status === 'verified' ? '<span class="verified-badge">✓ VERIFIED</span>' : `<span class="pending-badge">⏳ PENDING (needs ${athlete.needsConfirmations} confirmations)</span>`;
+            let confidenceClass = athlete.confidence >= 90 ? 'confidence-high' : (athlete.confidence >= 70 ? 'confidence-medium' : 'confidence-low');
+            return `<div class="athlete-card" onclick="showAthleteDetail(${athlete.id})"><div class="athlete-info"><div class="athlete-name">${athlete.name}</div><div class="vertical-display">${athlete.vertical}" Vertical</div><div><span class="confidence-badge ${confidenceClass}">AI: ${athlete.confidence}%</span> ${statusHtml}</div>${athlete.trustScore > 0 ? `<div style="font-size:0.7rem; color:#8b5cf6; margin-top:0.5rem;">⭐ Trust Score: ${athlete.trustScore}</div>` : ''}</div></div>`;
+        }).join('');
+    }
+
+    function filterAthletes() {
+        const status = document.getElementById('filterStatus').value;
+        currentAthletes = athletes.filter(a => status === 'all' ? true : a.status === status);
+        renderAthleteGrid();
+        updateStats();
+    }
+
+    function updateStats() {
+        document.getElementById('statTotal').innerText = athletes.length;
+        document.getElementById('statVerified').innerText = athletes.filter(a => a.status === 'verified').length;
+        document.getElementById('statPending').innerText = athletes.filter(a => a.status === 'pending').length;
+        const leaderboard = [...athletes].filter(a => a.trustScore > 0).sort((a,b) => b.trustScore - a.trustScore).slice(0,5);
+        const lbHtml = leaderboard.map((a,i) => `<div style="padding:0.75rem; border-bottom:1px solid #1f1f1f;"><strong>${i+1}.</strong> ${a.name} · Trust Score: ${a.trustScore}</div>`).join('');
+        document.getElementById('leaderboardList').innerHTML = lbHtml || '<div style="padding:0.75rem;">No verified athletes yet</div>';
+    }
+
+    function showAthleteDetail(id) {
+        const athlete = athletes.find(a => a.id === id);
+        if (!athlete) return;
+        currentDetailAthlete = athlete;
+        document.getElementById('detailContent').innerHTML = `<h2>${athlete.name}</h2><p style="font-size:3rem; font-weight:bold; margin:1rem 0;">${athlete.vertical}"</p><p>AI Confidence: ${athlete.confidence}%</p><p>Status: ${athlete.status === 'verified' ? '✓ Verified' : `Pending (needs ${athlete.needsConfirmations} more confirmations)`}</p>${athlete.confirmations.length > 0 ? `<p>Confirmed by: ${athlete.confirmations.join(', ')}</p>` : ''}`;
+        const hasConfirmed = athlete.confirmations.includes(currentUser.name);
+        document.getElementById('actionButtons').style.display = (athlete.status === 'pending' && !hasConfirmed) ? 'flex' : 'none';
+        showModal('detailModal');
+    }
+
+    function confirmVerification() {
+        if (!currentDetailAthlete) return;
+        currentDetailAthlete.confirmations.push(currentUser.name);
+        currentDetailAthlete.needsConfirmations--;
+        if (currentDetailAthlete.needsConfirmations <= 0) {
+            currentDetailAthlete.status = 'verified';
+            currentDetailAthlete.trustScore = Math.floor(Math.random() * 30) + 70;
+        }
+        currentUser.trustScore = Math.min(100, currentUser.trustScore + 1);
+        alert(`✓ You confirmed ${currentDetailAthlete.name}'s vertical. Your trust score: ${currentUser.trustScore}`);
+        closeModal('detailModal');
+        filterAthletes();
+        updateStats();
+    }
+
+    function challengeVerification() {
+        if (!currentDetailAthlete) return;
+        alert(`⚠️ Challenge submitted. AI will re-analyze.`);
+        closeModal('detailModal');
+    }
+
+    function submitVideo() {
+        const url = document.getElementById('videoUrl').value;
+        const name = document.getElementById('athleteName').value;
+        if (!url || !name) { alert('Please fill in both fields'); return; }
+        const simVertical = Math.floor(Math.random() * 20) + 30;
+        const simConfidence = Math.floor(Math.random() * 40) + 55;
+        const needs = simConfidence >= 90 ? 0 : (simConfidence >= 70 ? 2 : 3);
+        athletes.push({ id: athletes.length+1, name, vertical: simVertical, status: needs===0?'verified':'pending', confidence: simConfidence, trustScore: needs===0?Math.floor(Math.random()*30)+70:0, needsConfirmations: needs, confirmations: [] });
+        document.getElementById('submitResult').innerHTML = `<div style="background:#064e3b; padding:1rem; border-radius:8px;">✅ AI: ${simVertical}" (${simConfidence}% confidence)<br>Status: ${needs===0?'VERIFIED!':`Pending (needs ${needs} confirmations)`}</div>`;
+        document.getElementById('videoUrl').value = '';
+        document.getElementById('athleteName').value = '';
+        filterAthletes();
+        updateStats();
+        setTimeout(() => document.getElementById('submitResult').innerHTML = '', 5000);
+    }
+
+    function showPage(page) {
+        document.getElementById('discoverPage').style.display = page === 'discover' ? 'block' : 'none';
+        document.getElementById('submitPage').style.display = page === 'submit' ? 'block' : 'none';
+        document.getElementById('leaderboardPage').style.display = page === 'leaderboard' ? 'block' : 'none';
+        document.getElementById('pricingPage').style.display = page === 'pricing' ? 'block' : 'none';
+        if (page === 'discover') filterAthletes();
+    }
+
+    function showModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function handleLogin() { const email = document.getElementById('loginEmail').value; if(email) { alert(`Welcome to RecShare!`); closeModal('loginModal'); } else { alert('Enter email'); } }
+    window.onclick = function(e) { if(e.target.classList && e.target.classList.contains('modal')) closeModal(e.target.id); }
+    filterAthletes();
+    updateStats();
+</script>
+</body>
+</html>
