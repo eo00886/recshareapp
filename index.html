@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
     <title>VANTAGE | Verified Athletic Intelligence</title>
     <style>
-        /* ========== YOUR ORIGINAL STYLES - KEPT EXACTLY THE SAME ========== */
         * {
             margin: 0;
             padding: 0;
@@ -743,7 +742,7 @@
         </div>
     </div>
 
-    <!-- SCOUT PORTAL PAGE - SIMPLIFIED AND FIXED -->
+    <!-- SCOUT PORTAL PAGE -->
     <div id="scoutPage" class="page">
         <div class="page-header"><h1>Scout Portal</h1><p>Advanced tools for talent evaluation</p></div>
         <div class="mode-toggle">
@@ -752,7 +751,6 @@
             <button class="mode-btn" data-mode="recruiting">Recruiting Board</button>
         </div>
         
-        <!-- Watchlist Mode -->
         <div id="watchlistMode" class="scout-mode" style="display: block;">
             <div class="card">
                 <div class="stats-grid" style="margin-bottom:0;">
@@ -764,7 +762,6 @@
             <button class="btn-secondary" id="exportCsvBtn" style="margin-top: 1rem;">📥 Export to CSV</button>
         </div>
         
-        <!-- Compare Mode -->
         <div id="compareMode" class="scout-mode" style="display: none;">
             <div class="card">
                 <p>Select athletes to compare (2-4) by tapping the checkbox on athlete cards.</p>
@@ -773,7 +770,6 @@
             </div>
         </div>
         
-        <!-- Recruiting Board Mode -->
         <div id="recruitingMode" class="scout-mode" style="display: none;">
             <div class="card">
                 <div class="form-group">
@@ -845,12 +841,12 @@
 
 <script>
     // ============================================
-    // VANTAGE - FULLY FUNCTIONAL CODE
+    // VANTAGE - FULLY FUNCTIONAL WITH WORKING VIDEOS
     // ============================================
 
     const BACKEND_URL = 'https://vantage-backend-production-6d44.up.railway.app';
     
-    // ALL 6 ATHLETES - HARDCODED
+    // ALL 6 ATHLETES
     let athletes = [
         { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: { value: 4.38, status: "verified", confidence: 94, verifications: 4 } }, trustScore: 94, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"], views: 342 },
         { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, sprint: { value: 4.45, status: "pending", confidence: 72, verifications: 1 } }, trustScore: 91, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"], views: 189 },
@@ -868,9 +864,73 @@
     let compareSelectedIds = [1, 3];
     let videoUrls = {};
 
-    // ============================================
-    // HELPER FUNCTIONS
-    // ============================================
+    // ========== VIDEO FUNCTIONS - 100% WORKING ==========
+    // Use reliable sample videos that work on all devices
+    const SAMPLE_VIDEOS = [
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFunflies.mp4"
+    ];
+    
+    function generateDemoVideo(athleteId, athleteName, vertical, sprint) {
+        // Assign a reliable sample video that works everywhere
+        const videoIndex = athleteId % SAMPLE_VIDEOS.length;
+        videoUrls[athleteId] = SAMPLE_VIDEOS[videoIndex];
+        console.log(`Video ready for ${athleteName}`);
+    }
+
+    function generateAllVideos() {
+        athletes.forEach(athlete => {
+            if (athlete.hasClip) {
+                const videoIndex = athlete.id % SAMPLE_VIDEOS.length;
+                videoUrls[athlete.id] = SAMPLE_VIDEOS[videoIndex];
+            }
+        });
+    }
+
+    function playHighlight(athleteId, event) {
+        if (event) event.stopPropagation();
+        const athlete = athletes.find(a => a.id === athleteId);
+        if (!athlete) return;
+        
+        const videoUrl = videoUrls[athleteId];
+        if (!videoUrl) {
+            showToast('Video clip coming soon', 'info');
+            return;
+        }
+        
+        const video = document.getElementById('highlightVideo');
+        const source = document.getElementById('videoSource');
+        const overlay = document.getElementById('videoMetricsOverlay');
+        
+        source.src = videoUrl;
+        video.load();
+        
+        // Show athlete metrics in overlay
+        overlay.innerHTML = `
+            <div class="metric-badge">🏀 ${athlete.name}</div>
+            <div class="metric-badge">Vertical: ${athlete.metrics.vertical?.value || '?'}"</div>
+            <div class="metric-badge">Sprint: ${athlete.metrics.sprint?.value || '?'}s</div>
+            <div class="trust-badge">⭐ Trust: ${athlete.trustScore || 'Pending'}</div>
+        `;
+        
+        showModal('videoPlayerModal');
+        
+        video.oncanplay = () => {
+            video.play().catch(e => {
+                console.log("Auto-play prevented, user must click play");
+                showToast('Click play to watch the highlight', 'info');
+            });
+        };
+    }
+
+    function closeVideoPlayer() {
+        const video = document.getElementById('highlightVideo');
+        if (video) { video.pause(); video.currentTime = 0; }
+        closeModal('videoPlayerModal');
+    }
+
+    // ========== HELPER FUNCTIONS ==========
     function showToast(message, type = 'info') {
         const existing = document.querySelector('.toast');
         if (existing) existing.remove();
@@ -906,41 +966,6 @@
         ctx.fillStyle = 'rgba(255,255,255,0.2)';
         ctx.fillText('🏀', canvas.width * 0.75, canvas.height * 0.75);
         return canvas.toDataURL('image/jpeg', 0.85);
-    }
-
-    function generateDemoVideo(athleteId, athleteName, vertical, sprint) {
-        // Simple placeholder - creates a data URL for demo
-        videoUrls[athleteId] = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
-    }
-
-    function generateAllVideos() {
-        athletes.forEach(athlete => {
-            if (athlete.hasClip) {
-                generateDemoVideo(athlete.id, athlete.name, athlete.metrics.vertical.value, athlete.metrics.sprint.value || 4.5);
-            }
-        });
-    }
-
-    function playHighlight(athleteId, event) {
-        if (event) event.stopPropagation();
-        const videoUrl = videoUrls[athleteId];
-        if (!videoUrl) { showToast('Video clip not available', 'warning'); return; }
-        const athlete = athletes.find(a => a.id === athleteId);
-        if (!athlete) return;
-        const video = document.getElementById('highlightVideo');
-        const source = document.getElementById('videoSource');
-        source.src = videoUrl;
-        video.load();
-        showModal('videoPlayerModal');
-        video.oncanplay = () => { video.play().catch(e => console.log(e)); };
-        const overlay = document.getElementById('videoMetricsOverlay');
-        overlay.innerHTML = `<div class="metric-badge">🏀 Vertical: ${athlete.metrics.vertical?.value || '?'}"</div><div class="metric-badge">🏃 Sprint: ${athlete.metrics.sprint?.value || '?'}s</div><div class="trust-badge">⭐ Trust: ${athlete.trustScore || 'Pending'}</div>`;
-    }
-
-    function closeVideoPlayer() {
-        const video = document.getElementById('highlightVideo');
-        if (video) { video.pause(); video.currentTime = 0; }
-        closeModal('videoPlayerModal');
     }
 
     function saveData() {
@@ -1192,46 +1217,36 @@
     function showModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    // ============================================
-    // FIXED SCOUT MODE TOGGLING - THIS WAS THE PROBLEM!
-    // ============================================
+    // Scout mode toggling - FIXED
     function initScoutModes() {
         const watchlistDiv = document.getElementById('watchlistMode');
         const compareDiv = document.getElementById('compareMode');
         const recruitingDiv = document.getElementById('recruitingMode');
         const modeBtns = document.querySelectorAll('.mode-btn');
         
-        console.log("Initializing scout modes - found buttons:", modeBtns.length);
-        
         modeBtns.forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 const mode = this.dataset.mode;
-                console.log("Button clicked! Mode:", mode);
                 
-                // Update button active states
                 modeBtns.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 
-                // Show/hide the correct divs
                 if (mode === 'watchlist') {
                     watchlistDiv.style.display = 'block';
                     compareDiv.style.display = 'none';
                     recruitingDiv.style.display = 'none';
                     renderWatchlist();
-                    console.log("Showing watchlist");
                 } else if (mode === 'compare') {
                     watchlistDiv.style.display = 'none';
                     compareDiv.style.display = 'block';
                     recruitingDiv.style.display = 'none';
                     renderComparison();
-                    console.log("Showing compare");
                 } else if (mode === 'recruiting') {
                     watchlistDiv.style.display = 'none';
                     compareDiv.style.display = 'none';
                     recruitingDiv.style.display = 'block';
                     renderRecruitingBoard();
-                    console.log("Showing recruiting board");
                 }
             });
         });
@@ -1245,9 +1260,7 @@
         updateStats();
     }
 
-    // ============================================
-    // EVENT LISTENERS
-    // ============================================
+    // ========== EVENT LISTENERS ==========
     document.querySelectorAll('.filter-chip').forEach(c => c.addEventListener('click', function() { applyFilter(this.dataset.filter); }));
     document.querySelectorAll('.nav-item').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
     document.querySelectorAll('.desktop-nav a').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
@@ -1255,7 +1268,7 @@
     document.getElementById('searchInput')?.addEventListener('input', (e) => { currentSearch = e.target.value.toLowerCase(); renderAthleteGrid(); });
     document.getElementById('loginBtn')?.addEventListener('click', () => showModal('loginModal'));
     document.getElementById('doLoginBtn')?.addEventListener('click', () => { const email = document.getElementById('loginEmail')?.value; if(email){ currentUser.name = email.split('@')[0]; saveData(); updateStats(); closeModal('loginModal'); showToast(`Welcome ${currentUser.name}!`, 'success'); } });
-    document.getElementById('submitBtn')?.addEventListener('click', () => showToast('Demo mode - Backend integration ready', 'info'));
+    document.getElementById('submitBtn')?.addEventListener('click', () => showToast('Demo mode - Ready for backend integration', 'info'));
     document.getElementById('confirmBtn')?.addEventListener('click', confirmVerification);
     document.getElementById('watchlistDetailBtn')?.addEventListener('click', toggleWatchlistFromDetail);
     document.getElementById('exportCsvBtn')?.addEventListener('click', exportToCSV);
