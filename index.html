@@ -33,7 +33,6 @@
             --glass-border: rgba(59, 130, 246, 0.15);
         }
 
-        /* Navigation */
         .navbar {
             background: rgba(10, 10, 10, 0.85);
             backdrop-filter: blur(20px);
@@ -125,7 +124,6 @@
             background: rgba(59, 130, 246, 0.1);
         }
 
-        /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -166,7 +164,6 @@
             font-size: 1.3rem;
         }
 
-        /* Toast */
         .toast {
             position: fixed;
             bottom: 80px;
@@ -208,7 +205,6 @@
             margin-bottom: 1rem;
         }
 
-        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -229,7 +225,6 @@
         .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--primary-blue); }
         .stat-label { font-size: 0.7rem; color: var(--gray-light); }
 
-        /* Search & Sort */
         .search-bar { margin-bottom: 1rem; }
         .search-input {
             width: 100%;
@@ -252,7 +247,6 @@
         }
         .sort-chip.active { background: var(--primary-blue); }
 
-        /* Filters */
         .filters {
             display: flex;
             gap: 0.5rem;
@@ -273,7 +267,6 @@
         }
         .filter-chip.active { background: var(--primary-blue); color: white; }
 
-        /* Athlete Grid */
         .athlete-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -415,7 +408,6 @@
         .trust-score { font-size: 0.65rem; color: var(--primary-purple); margin-top: 0.5rem; display: flex; align-items: center; gap: 0.25rem; }
         .verification-count { font-size: 0.6rem; color: var(--gray-light); margin-top: 0.25rem; }
 
-        /* Mode Toggle for Scout Portal */
         .mode-toggle {
             background: rgba(30, 30, 38, 0.8);
             border-radius: 40px;
@@ -437,7 +429,6 @@
         }
         .mode-btn.active { background: var(--primary-blue); color: white; }
 
-        /* Comparison Grid */
         .comparison-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -451,7 +442,6 @@
             text-align: center;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -478,7 +468,6 @@
         }
         .close-modal { float: right; font-size: 1.5rem; cursor: pointer; color: var(--gray-light); line-height: 1; }
 
-        /* Video Player Modal */
         .video-modal {
             max-width: 800px;
             width: 90%;
@@ -510,7 +499,6 @@
             font-size: 0.8rem;
         }
 
-        /* Forms */
         .form-group { margin-bottom: 1rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--gray-light); }
         .form-input, .form-select {
@@ -570,7 +558,6 @@
         .btn-challenge { flex: 1; background: rgba(239, 68, 68, 0.15); border: 0.5px solid var(--error-red); padding: 0.75rem; border-radius: 30px; color: var(--error-red); font-weight: 500; cursor: pointer; }
         .btn-flag { flex: 1; background: rgba(239, 68, 68, 0.15); border: 0.5px solid var(--error-red); padding: 0.75rem; border-radius: 30px; color: var(--error-red); font-weight: 500; cursor: pointer; }
 
-        /* Page Transitions */
         .page { display: none; animation: fadeIn 0.25s ease-out; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -627,7 +614,6 @@
         .camera-container { text-align: center; }
         .camera-container video { width: 100%; border-radius: 12px; background: #1a1a1a; margin-bottom: 1rem; }
 
-        /* How It Works */
         .step-container { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
         .step { display: flex; gap: 1rem; align-items: flex-start; }
         .step-number { width: 32px; height: 32px; background: var(--primary-blue); border-radius: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
@@ -834,13 +820,13 @@
 
 <script>
     // ============================================
-    // VANTAGE - FULL FEATURE VERSION
+    // VANTAGE - FULL FEATURE VERSION (COMPLETE)
     // BACKEND URL: https://vantage-backend-production-6d44.up.railway.app
     // ============================================
 
     const BACKEND_URL = 'https://vantage-backend-production-6d44.up.railway.app';
     
-    // ALL 6 ATHLETES - HARDCODED (PROVEN WORKING)
+    // ALL 6 ATHLETES - HARDCODED
     let athletes = [
         { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: { value: 4.38, status: "verified", confidence: 94, verifications: 4 } }, trustScore: 94, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"], views: 342 },
         { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, sprint: { value: 4.45, status: "pending", confidence: 72, verifications: 1 } }, trustScore: 91, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"], views: 189 },
@@ -864,14 +850,29 @@
     // ============================================
     // HELPER FUNCTIONS
     // ============================================
-    function showToast(message, type = 'info') {
+    function showToast(message, type = 'info', undoCallback = null) {
         const existing = document.querySelector('.toast');
         if (existing) existing.remove();
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
         toast.innerHTML = message;
+        if (undoCallback) {
+            const undoBtn = document.createElement('button');
+            undoBtn.className = 'toast-undo-btn';
+            undoBtn.innerText = 'Undo';
+            undoBtn.style.background = 'rgba(255,255,255,0.2)';
+            undoBtn.style.border = 'none';
+            undoBtn.style.padding = '0.25rem 0.75rem';
+            undoBtn.style.borderRadius = '30px';
+            undoBtn.style.marginLeft = '0.75rem';
+            undoBtn.style.cursor = 'pointer';
+            undoBtn.onclick = () => { undoCallback(); toast.remove(); };
+            toast.appendChild(undoBtn);
+            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 5000);
+        } else {
+            setTimeout(() => toast.remove(), 3000);
+        }
         document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
     }
 
     function generateStockAvatar(athleteName, position = 'SG') {
@@ -914,6 +915,9 @@
             const blob = new Blob(chunks, { type: 'video/webm' });
             videoUrls[athleteId] = URL.createObjectURL(blob);
             renderAthleteGrid();
+            renderWatchlist();
+            renderComparison();
+            renderRecruitingBoard();
         };
         recorder.start();
         let frame = 0;
@@ -1121,10 +1125,22 @@
         const idx = currentUser.watchlist.indexOf(id);
         if (idx === -1) {
             currentUser.watchlist.push(id);
-            showToast('⭐ Added to watchlist', 'success', () => { currentUser.watchlist = currentUser.watchlist.filter(i => i !== id); showToast('Undid', 'info'); renderAthleteGrid(); renderWatchlist(); updateStats(); }, 'Undo');
+            showToast('⭐ Added to watchlist', 'success', () => { 
+                currentUser.watchlist = currentUser.watchlist.filter(i => i !== id); 
+                showToast('Undid', 'info'); 
+                renderAthleteGrid(); 
+                renderWatchlist(); 
+                updateStats(); 
+            });
         } else {
             currentUser.watchlist.splice(idx, 1);
-            showToast('☆ Removed', 'info', () => { currentUser.watchlist.push(id); showToast('Undid', 'success'); renderAthleteGrid(); renderWatchlist(); updateStats(); }, 'Undo');
+            showToast('☆ Removed', 'info', () => { 
+                currentUser.watchlist.push(id); 
+                showToast('Undid', 'success'); 
+                renderAthleteGrid(); 
+                renderWatchlist(); 
+                updateStats(); 
+            });
         }
         saveData();
         renderAthleteGrid();
@@ -1141,11 +1157,23 @@
         if (idx === -1) {
             if (compareSelectedIds.length < 4) {
                 compareSelectedIds.push(id);
-                showToast(`✓ Added (${compareSelectedIds.length}/4)`, 'success', () => { compareSelectedIds = compareSelectedIds.filter(i => i !== id); showToast('Undid', 'info'); renderAthleteGrid(); renderComparison(); }, 'Undo');
+                showToast(`✓ Added (${compareSelectedIds.length}/4)`, 'success', () => { 
+                    compareSelectedIds = compareSelectedIds.filter(i => i !== id); 
+                    showToast('Undid', 'info'); 
+                    renderAthleteGrid(); 
+                    renderComparison(); 
+                });
             } else showToast('Max 4 athletes', 'error');
         } else {
             compareSelectedIds.splice(idx, 1);
-            showToast('Removed', 'info', () => { if (compareSelectedIds.length < 4) { compareSelectedIds.push(id); showToast('Undid', 'success'); renderAthleteGrid(); renderComparison(); } }, 'Undo');
+            showToast('Removed', 'info', () => { 
+                if (compareSelectedIds.length < 4) { 
+                    compareSelectedIds.push(id); 
+                    showToast('Undid', 'success'); 
+                    renderAthleteGrid(); 
+                    renderComparison(); 
+                } 
+            });
         }
         saveData();
         renderAthleteGrid();
@@ -1233,8 +1261,15 @@
         const list = document.getElementById('compareList');
         if (!list) return;
         const compare = athletes.filter(a => compareSelectedIds.includes(a.id) && !a.flagged);
-        if (!compare.length) { list.innerHTML = '<div class="empty-state">Select athletes to compare</div>'; return; }
-        list.innerHTML = compare.map(a => `<div class="comparison-card"><div class="athlete-name" style="font-weight:700;">${a.name}</div><div style="font-size:0.8rem;">${a.school}</div><div>🏀 Vertical: <strong>${a.metrics.vertical?.value || 'N/A'}"</strong></div><div>🏃 Sprint: <strong>${a.metrics.sprint?.value || 'N/A'}s</strong></div><div>⭐ Trust: ${a.trustScore || 'Pending'}</div><button class="btn-outline" style="margin-top:0.5rem;" onclick="showAthleteDetail(${a.id})">View</button></div>`).join('');
+        if (!compare.length) { list.innerHTML = '<div class="empty-state">Select athletes to compare using checkboxes on Discover page</div>'; return; }
+        list.innerHTML = compare.map(a => `<div class="comparison-card">
+            <div class="athlete-name" style="font-weight:700;">${a.name}</div>
+            <div style="font-size:0.8rem;">${a.school}</div>
+            <div>🏀 Vertical: <strong>${a.metrics.vertical?.value || 'N/A'}"</strong></div>
+            <div>🏃 Sprint: <strong>${a.metrics.sprint?.value || 'N/A'}s</strong></div>
+            <div>⭐ Trust: ${a.trustScore || 'Pending'}</div>
+            <button class="btn-outline" style="margin-top:0.5rem;" onclick="showAthleteDetail(${a.id})">View Profile</button>
+        </div>`).join('');
     }
 
     function refreshComparison() {
@@ -1246,11 +1281,11 @@
     }
 
     function renderRecruitingBoard() {
-        const year = document.getElementById('classYear')?.value || '2025';
-        const filtered = athletes.filter(a => !a.flagged && a.classYear == year);
         const grid = document.getElementById('recruitingBoardList');
         if (!grid) return;
-        if (!filtered.length) { grid.innerHTML = '<div class="empty-state">No athletes in this class</div>'; return; }
+        const year = document.getElementById('classYear')?.value || '2025';
+        const filtered = athletes.filter(a => !a.flagged && a.classYear == year);
+        if (!filtered.length) { grid.innerHTML = '<div class="empty-state">No athletes in this class year</div>'; return; }
         grid.innerHTML = filtered.map(a => {
             const hasClip = a.hasClip && videoUrls[a.id];
             const stockAvatar = generateStockAvatar(a.name, a.position);
@@ -1345,6 +1380,7 @@
             
             saveData();
             renderAthleteGrid();
+            renderWatchlist();
             updateStats();
             showPage('discover');
             showToast('Athlete submitted!', 'success');
@@ -1385,6 +1421,7 @@
         
         saveData();
         renderAthleteGrid();
+        renderWatchlist();
         updateStats();
         if (currentDetailAthlete) showAthleteDetail(currentDetailAthlete.id);
         showToast(`✓ Verified! +2 trust. Streak: ${currentUser.streak}`, 'success');
@@ -1414,6 +1451,7 @@
         if (confirmIdx !== -1) currentDetailAthlete.confirmations.splice(confirmIdx, 1);
         saveData();
         renderAthleteGrid();
+        renderWatchlist();
         updateStats();
         if (currentDetailAthlete) showAthleteDetail(currentDetailAthlete.id);
         showToast(`↩️ Undone. Trust: ${currentUser.trustScore}`, 'info');
@@ -1493,6 +1531,7 @@
         currentUser.trustScore = Math.min(100, currentUser.trustScore + 10);
         saveData();
         renderAthleteGrid();
+        renderWatchlist();
         updateStats();
         if (currentDetailAthlete) showAthleteDetail(currentDetailAthlete.id);
         showToast(`⚠ ${currentDetailAthlete.name} unverified! +10 trust`, 'warning');
@@ -1524,7 +1563,7 @@
         const nav = document.querySelector(`.nav-item[data-page="${pageId}"]`);
         if (nav) nav.classList.add('active');
         if (pageId === 'discover') renderAthleteGrid();
-        if (pageId === 'scout') { renderWatchlist(); renderComparison(); }
+        if (pageId === 'scout') { renderWatchlist(); renderComparison(); renderRecruitingBoard(); }
         if (pageId === 'leaderboard') updateStats();
     }
 
@@ -1590,6 +1629,8 @@
     initScoutModes();
     renderAthleteGrid();
     renderWatchlist();
+    renderComparison();
+    renderRecruitingBoard();
     updateStats();
 </script>
 </body>
