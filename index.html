@@ -590,8 +590,11 @@
             border-radius: 30px;
             color: var(--gray-light);
             cursor: pointer;
+            transition: all 0.2s;
         }
         .tab-btn.active { background: var(--primary-blue); color: white; }
+        .tab-btn:hover { background: rgba(59, 130, 246, 0.3); }
+        
         .supported-platforms {
             display: flex;
             gap: 0.75rem;
@@ -606,6 +609,7 @@
             padding: 2rem;
             text-align: center;
             cursor: pointer;
+            transition: all 0.2s;
         }
         .upload-area:hover { border-color: var(--primary-blue); background: rgba(59, 130, 246, 0.05); }
         .upload-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
@@ -700,11 +704,11 @@
         <div class="athlete-grid" id="athleteGrid"></div>
     </div>
 
-    <!-- SUBMIT PAGE -->
+    <!-- SUBMIT PAGE - FIXED TABS -->
     <div id="submitPage" class="page">
         <div class="page-header"><h1>Get Verified</h1><p>Upload or paste video from any platform</p></div>
         <div class="card">
-            <div class="video-input-tabs">
+            <div class="video-input-tabs" id="videoTabs">
                 <button class="tab-btn active" data-tab="url">URL</button>
                 <button class="tab-btn" data-tab="upload">Upload</button>
                 <button class="tab-btn" data-tab="camera">Camera</button>
@@ -745,7 +749,7 @@
     <!-- SCOUT PORTAL PAGE -->
     <div id="scoutPage" class="page">
         <div class="page-header"><h1>Scout Portal</h1><p>Advanced tools for talent evaluation</p></div>
-        <div class="mode-toggle">
+        <div class="mode-toggle" id="scoutModeToggle">
             <button class="mode-btn active" data-mode="watchlist">My Watchlist</button>
             <button class="mode-btn" data-mode="compare">Compare</button>
             <button class="mode-btn" data-mode="recruiting">Recruiting Board</button>
@@ -841,7 +845,7 @@
 
 <script>
     // ============================================
-    // VANTAGE - FULLY FUNCTIONAL WITH WORKING VIDEOS
+    // VANTAGE - FULLY FUNCTIONAL
     // ============================================
 
     const BACKEND_URL = 'https://vantage-backend-production-6d44.up.railway.app';
@@ -863,20 +867,21 @@
     let currentDetailAthlete = null;
     let compareSelectedIds = [1, 3];
     let videoUrls = {};
+    let mediaStream = null;
+    let mediaRecorder = null;
+    let recordedChunks = [];
 
-    // ========== VIDEO FUNCTIONS - 100% WORKING ==========
-    // Use reliable sample videos that work on all devices
+    // Sample videos that work
     const SAMPLE_VIDEOS = [
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFunflies.mp4"
     ];
-    
-    function generateDemoVideo(athleteId, athleteName, vertical, sprint) {
-        // Assign a reliable sample video that works everywhere
+
+    // ========== VIDEO FUNCTIONS ==========
+    function generateDemoVideo(athleteId) {
         const videoIndex = athleteId % SAMPLE_VIDEOS.length;
         videoUrls[athleteId] = SAMPLE_VIDEOS[videoIndex];
-        console.log(`Video ready for ${athleteName}`);
     }
 
     function generateAllVideos() {
@@ -906,7 +911,6 @@
         source.src = videoUrl;
         video.load();
         
-        // Show athlete metrics in overlay
         overlay.innerHTML = `
             <div class="metric-badge">🏀 ${athlete.name}</div>
             <div class="metric-badge">Vertical: ${athlete.metrics.vertical?.value || '?'}"</div>
@@ -917,10 +921,7 @@
         showModal('videoPlayerModal');
         
         video.oncanplay = () => {
-            video.play().catch(e => {
-                console.log("Auto-play prevented, user must click play");
-                showToast('Click play to watch the highlight', 'info');
-            });
+            video.play().catch(e => console.log("Auto-play prevented"));
         };
     }
 
@@ -928,6 +929,82 @@
         const video = document.getElementById('highlightVideo');
         if (video) { video.pause(); video.currentTime = 0; }
         closeModal('videoPlayerModal');
+    }
+
+    // ========== TAB FUNCTIONS - FIXED ==========
+    function initVideoTabs() {
+        const tabs = document.querySelectorAll('#videoTabs .tab-btn');
+        const urlTab = document.getElementById('urlTab');
+        const uploadTab = document.getElementById('uploadTab');
+        const cameraTab = document.getElementById('cameraTab');
+        
+        tabs.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tabName = this.getAttribute('data-tab');
+                
+                // Update active state
+                tabs.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Hide all tabs
+                urlTab.style.display = 'none';
+                uploadTab.style.display = 'none';
+                cameraTab.style.display = 'none';
+                
+                // Show selected tab
+                if (tabName === 'url') urlTab.style.display = 'block';
+                else if (tabName === 'upload') uploadTab.style.display = 'block';
+                else if (tabName === 'camera') {
+                    cameraTab.style.display = 'block';
+                    initCamera();
+                }
+            });
+        });
+    }
+
+    function initCamera() {
+        if (mediaStream) mediaStream.getTracks().forEach(t => t.stop());
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => { 
+                mediaStream = stream; 
+                const preview = document.getElementById('cameraPreview');
+                if (preview) preview.srcObject = stream;
+            })
+            .catch(err => showToast('Camera access denied', 'error'));
+    }
+
+    // ========== SCOUT MODE FUNCTIONS - FIXED ==========
+    function initScoutModes() {
+        const watchlistDiv = document.getElementById('watchlistMode');
+        const compareDiv = document.getElementById('compareMode');
+        const recruitingDiv = document.getElementById('recruitingMode');
+        const modeBtns = document.querySelectorAll('#scoutModeToggle .mode-btn');
+        
+        modeBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const mode = this.getAttribute('data-mode');
+                
+                modeBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                watchlistDiv.style.display = 'none';
+                compareDiv.style.display = 'none';
+                recruitingDiv.style.display = 'none';
+                
+                if (mode === 'watchlist') {
+                    watchlistDiv.style.display = 'block';
+                    renderWatchlist();
+                } else if (mode === 'compare') {
+                    compareDiv.style.display = 'block';
+                    renderComparison();
+                } else if (mode === 'recruiting') {
+                    recruitingDiv.style.display = 'block';
+                    renderRecruitingBoard();
+                }
+            });
+        });
     }
 
     // ========== HELPER FUNCTIONS ==========
@@ -957,14 +1034,11 @@
         ctx.arc(canvas.width/2, canvas.height/2, canvas.width*0.35, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = 'rgba(255,255,255,0.4)';
-        ctx.font = `bold ${canvas.width * 0.2}px "SF Pro Display", "Inter"`;
+        ctx.font = `bold ${canvas.width * 0.2}px "SF Pro Display"`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         const initials = athleteName.split(' ').map(n => n[0]).join('');
         ctx.fillText(initials.substring(0, 2), canvas.width/2, canvas.height/2);
-        ctx.font = `${canvas.width * 0.15}px "Segoe UI Emoji"`;
-        ctx.fillStyle = 'rgba(255,255,255,0.2)';
-        ctx.fillText('🏀', canvas.width * 0.75, canvas.height * 0.75);
         return canvas.toDataURL('image/jpeg', 0.85);
     }
 
@@ -1217,41 +1291,6 @@
     function showModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    // Scout mode toggling - FIXED
-    function initScoutModes() {
-        const watchlistDiv = document.getElementById('watchlistMode');
-        const compareDiv = document.getElementById('compareMode');
-        const recruitingDiv = document.getElementById('recruitingMode');
-        const modeBtns = document.querySelectorAll('.mode-btn');
-        
-        modeBtns.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                const mode = this.dataset.mode;
-                
-                modeBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                
-                if (mode === 'watchlist') {
-                    watchlistDiv.style.display = 'block';
-                    compareDiv.style.display = 'none';
-                    recruitingDiv.style.display = 'none';
-                    renderWatchlist();
-                } else if (mode === 'compare') {
-                    watchlistDiv.style.display = 'none';
-                    compareDiv.style.display = 'block';
-                    recruitingDiv.style.display = 'none';
-                    renderComparison();
-                } else if (mode === 'recruiting') {
-                    watchlistDiv.style.display = 'none';
-                    compareDiv.style.display = 'none';
-                    recruitingDiv.style.display = 'block';
-                    renderRecruitingBoard();
-                }
-            });
-        });
-    }
-
     function renderAll() {
         renderAthleteGrid();
         renderWatchlist();
@@ -1259,6 +1298,59 @@
         renderRecruitingBoard();
         updateStats();
     }
+
+    // ========== UPLOAD HANDLERS ==========
+    const uploadArea = document.getElementById('uploadArea');
+    const videoFile = document.getElementById('videoFile');
+    
+    if (uploadArea) {
+        uploadArea.addEventListener('click', () => videoFile?.click());
+        uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.style.borderColor = 'var(--primary-blue)'; });
+        uploadArea.addEventListener('dragleave', () => { uploadArea.style.borderColor = 'rgba(59,130,246,0.3)'; });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('video/')) {
+                const url = URL.createObjectURL(file);
+                document.getElementById('videoUrl').value = url;
+                showToast('Video file loaded!', 'success');
+            }
+        });
+    }
+    
+    if (videoFile) {
+        videoFile.addEventListener('change', (e) => {
+            if (e.target.files[0]) {
+                const url = URL.createObjectURL(e.target.files[0]);
+                document.getElementById('videoUrl').value = url;
+                showToast('Video file ready!', 'success');
+            }
+        });
+    }
+    
+    document.getElementById('captureBtn')?.addEventListener('click', () => {
+        if (!mediaStream) { showToast('Camera not ready', 'error'); return; }
+        recordedChunks = [];
+        mediaRecorder = new MediaRecorder(mediaStream);
+        mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) recordedChunks.push(e.data); };
+        mediaRecorder.onstop = () => {
+            const blob = new Blob(recordedChunks, { type: 'video/mp4' });
+            const url = URL.createObjectURL(blob);
+            document.getElementById('videoUrl').value = url;
+            showToast('Recording saved!', 'success');
+        };
+        mediaRecorder.start();
+        showToast('Recording... (5s)', 'info');
+        setTimeout(() => { if (mediaRecorder?.state === 'recording') mediaRecorder.stop(); }, 5000);
+    });
+
+    document.getElementById('submitBtn')?.addEventListener('click', () => {
+        const videoUrl = document.getElementById('videoUrl')?.value;
+        const name = document.getElementById('athleteName')?.value;
+        if (!videoUrl) { showToast('Please add a video URL or upload a file', 'error'); return; }
+        if (!name) { showToast('Please enter athlete name', 'error'); return; }
+        showToast('Demo mode - Ready for backend integration!', 'success');
+    });
 
     // ========== EVENT LISTENERS ==========
     document.querySelectorAll('.filter-chip').forEach(c => c.addEventListener('click', function() { applyFilter(this.dataset.filter); }));
@@ -1268,7 +1360,6 @@
     document.getElementById('searchInput')?.addEventListener('input', (e) => { currentSearch = e.target.value.toLowerCase(); renderAthleteGrid(); });
     document.getElementById('loginBtn')?.addEventListener('click', () => showModal('loginModal'));
     document.getElementById('doLoginBtn')?.addEventListener('click', () => { const email = document.getElementById('loginEmail')?.value; if(email){ currentUser.name = email.split('@')[0]; saveData(); updateStats(); closeModal('loginModal'); showToast(`Welcome ${currentUser.name}!`, 'success'); } });
-    document.getElementById('submitBtn')?.addEventListener('click', () => showToast('Demo mode - Ready for backend integration', 'info'));
     document.getElementById('confirmBtn')?.addEventListener('click', confirmVerification);
     document.getElementById('watchlistDetailBtn')?.addEventListener('click', toggleWatchlistFromDetail);
     document.getElementById('exportCsvBtn')?.addEventListener('click', exportToCSV);
@@ -1278,6 +1369,7 @@
 
     // Initialize everything
     loadData();
+    initVideoTabs();
     initScoutModes();
     renderAll();
 </script>
