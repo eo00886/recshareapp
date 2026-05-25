@@ -27,7 +27,6 @@
             --primary-gold: #F59E0B;
             --success-green: #10B981;
             --error-red: #EF4444;
-            --warning-orange: #F97316;
             --gray-light: #9CA3AF;
             --glass-bg: rgba(18, 18, 24, 0.8);
             --glass-border: rgba(59, 130, 246, 0.15);
@@ -180,22 +179,10 @@
             text-align: center;
             font-size: 0.85rem;
             border-left: 3px solid var(--primary-blue);
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .toast-success { border-left-color: var(--success-green); }
         .toast-error { border-left-color: var(--error-red); }
-        .toast-undo-btn {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            padding: 0.2rem 0.75rem;
-            border-radius: 30px;
-            color: white;
-            font-size: 0.75rem;
-            cursor: pointer;
-        }
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateX(-50%) translateY(20px); }
@@ -231,8 +218,8 @@
             text-align: center;
             border: 0.5px solid rgba(59, 130, 246, 0.1);
             cursor: pointer;
-            transition: transform 0.1s;
         }
+
         .stat-card:active { transform: scale(0.97); }
         .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--primary-blue); }
         .stat-label { font-size: 0.7rem; color: var(--gray-light); }
@@ -755,24 +742,49 @@
         </div>
     </div>
 
-    <!-- SCOUT PORTAL PAGE -->
+    <!-- SCOUT PORTAL PAGE - FIXED -->
     <div id="scoutPage" class="page">
         <div class="page-header"><h1>Scout Portal</h1><p>Advanced tools for talent evaluation</p></div>
         <div class="mode-toggle">
-            <button class="mode-btn active" data-mode="watchlist">My Watchlist</button>
-            <button class="mode-btn" data-mode="compare">Compare</button>
-            <button class="mode-btn" data-mode="recruiting">Recruiting Board</button>
+            <button class="mode-btn active" data-mode="watchlist">📋 My Watchlist</button>
+            <button class="mode-btn" data-mode="compare">📊 Compare</button>
+            <button class="mode-btn" data-mode="recruiting">🎓 Recruiting Board</button>
         </div>
-        <div id="watchlistMode">
-            <div class="card"><div class="stats-grid" style="margin-bottom:0;"><div class="stat-card"><div class="stat-value" id="watchlistCount">0</div><div class="stat-label">Saved</div></div><div class="stat-card"><div class="stat-value">3</div><div class="stat-label">Open Spots</div></div></div></div>
+        
+        <!-- Watchlist Mode -->
+        <div id="watchlistMode" style="display: block;">
+            <div class="card">
+                <div class="stats-grid" style="margin-bottom:0;">
+                    <div class="stat-card"><div class="stat-value" id="watchlistCount">0</div><div class="stat-label">Saved Athletes</div></div>
+                    <div class="stat-card"><div class="stat-value">3</div><div class="stat-label">Open Spots</div></div>
+                </div>
+            </div>
             <div class="athlete-grid" id="watchlistGrid"></div>
-            <button class="btn-secondary" id="exportCsvBtn">📥 Export to CSV</button>
+            <button class="btn-secondary" id="exportCsvBtn" style="margin-top: 1rem;">📥 Export to CSV</button>
         </div>
-        <div id="compareMode" style="display:none;">
-            <div class="card"><p>Select athletes to compare (2-4) by tapping the checkbox on athlete cards.</p><div id="compareList" class="comparison-grid"></div><button class="btn-primary" id="refreshCompareBtn">🔄 Reset</button></div>
+        
+        <!-- Compare Mode -->
+        <div id="compareMode" style="display: none;">
+            <div class="card">
+                <p>📌 Select athletes to compare (2-4) by tapping the checkbox on athlete cards in Discover page.</p>
+                <div id="compareList" class="comparison-grid"></div>
+                <button class="btn-primary" id="refreshCompareBtn">🔄 Reset Comparison</button>
+            </div>
         </div>
-        <div id="recruitingMode" style="display:none;">
-            <div class="card"><div class="form-group"><label>Class Year</label><select class="form-select" id="classYear"><option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option></select></div><div id="recruitingBoardList" class="athlete-grid"></div></div>
+        
+        <!-- Recruiting Board Mode -->
+        <div id="recruitingMode" style="display: none;">
+            <div class="card">
+                <div class="form-group">
+                    <label>🎓 Filter by Class Year</label>
+                    <select class="form-select" id="classYear">
+                        <option value="2025">2025 (Seniors)</option>
+                        <option value="2026">2026 (Juniors)</option>
+                        <option value="2027">2027 (Sophomores)</option>
+                    </select>
+                </div>
+                <div id="recruitingBoardList" class="athlete-grid"></div>
+            </div>
         </div>
     </div>
 
@@ -832,13 +844,12 @@
 
 <script>
     // ============================================
-    // VANTAGE - FULL FEATURE VERSION (COMPLETE)
-    // BACKEND URL: https://vantage-backend-production-6d44.up.railway.app
+    // VANTAGE - FULLY FUNCTIONAL SCOUT PORTAL
     // ============================================
 
     const BACKEND_URL = 'https://vantage-backend-production-6d44.up.railway.app';
     
-    // ALL 6 ATHLETES - HARDCODED
+    // ALL 6 ATHLETES
     let athletes = [
         { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: { value: 4.38, status: "verified", confidence: 94, verifications: 4 } }, trustScore: 94, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"], views: 342 },
         { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, sprint: { value: 4.45, status: "pending", confidence: 72, verifications: 1 } }, trustScore: 91, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"], views: 189 },
@@ -848,20 +859,18 @@
         { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, flagged: false, hasClip: false, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: { value: 4.35, status: "pending", confidence: 74, verifications: 0 } }, trustScore: 0, confirmations: [], views: 28 }
     ];
 
-    let currentUser = { name: "Demo User", trustScore: 85, email: null, confirmationsMade: 0, streak: 3, watchlist: [], confirmedAthleteIds: [], challengedAthleteIds: [] };
+    let currentUser = { name: "Demo User", trustScore: 85, email: null, confirmationsMade: 0, streak: 3, watchlist: [1, 3], confirmedAthleteIds: [], challengedAthleteIds: [] };
     let currentFilter = "all";
     let currentSort = "default";
     let currentSearch = "";
     let currentDetailAthlete = null;
-    let compareSelectedIds = [];
+    let compareSelectedIds = [1, 3];
     let mediaStream = null;
     let mediaRecorder = null;
     let recordedChunks = [];
     let videoUrls = {};
 
-    // ============================================
-    // HELPER FUNCTIONS
-    // ============================================
+    // Helper Functions
     function showToast(message, type = 'info', undoCallback = null) {
         const existing = document.querySelector('.toast');
         if (existing) existing.remove();
@@ -999,7 +1008,7 @@
         closeModal('videoPlayerModal');
     }
 
-    // Tab switching
+    // Tab switching for video upload
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1073,7 +1082,7 @@
         if (savedUser) Object.assign(currentUser, JSON.parse(savedUser));
         if (!currentUser.confirmedAthleteIds) currentUser.confirmedAthleteIds = [];
         if (!currentUser.challengedAthleteIds) currentUser.challengedAthleteIds = [];
-        if (!currentUser.watchlist) currentUser.watchlist = [];
+        if (!currentUser.watchlist) currentUser.watchlist = [1, 3];
         const savedCompare = localStorage.getItem('vantage_compare');
         if (savedCompare) compareSelectedIds = JSON.parse(savedCompare);
         generateAllVideos();
@@ -1122,10 +1131,7 @@
         const cIdx = compareSelectedIds.indexOf(currentDetailAthlete.id);
         if (cIdx !== -1) compareSelectedIds.splice(cIdx, 1);
         saveData();
-        renderAthleteGrid();
-        renderWatchlist();
-        renderComparison();
-        updateStats();
+        renderAll();
         closeModal('detailModal');
         showToast(`🚩 ${currentDetailAthlete.name} flagged`, 'warning');
     }
@@ -1137,27 +1143,13 @@
         const idx = currentUser.watchlist.indexOf(id);
         if (idx === -1) {
             currentUser.watchlist.push(id);
-            showToast('⭐ Added to watchlist', 'success', () => { 
-                currentUser.watchlist = currentUser.watchlist.filter(i => i !== id); 
-                showToast('Undid', 'info'); 
-                renderAthleteGrid(); 
-                renderWatchlist(); 
-                updateStats(); 
-            });
+            showToast('⭐ Added to watchlist', 'success');
         } else {
             currentUser.watchlist.splice(idx, 1);
-            showToast('☆ Removed', 'info', () => { 
-                currentUser.watchlist.push(id); 
-                showToast('Undid', 'success'); 
-                renderAthleteGrid(); 
-                renderWatchlist(); 
-                updateStats(); 
-            });
+            showToast('☆ Removed from watchlist', 'info');
         }
         saveData();
-        renderAthleteGrid();
-        renderWatchlist();
-        updateStats();
+        renderAll();
         if (currentDetailAthlete?.id === id) document.getElementById('watchlistDetailBtn').innerText = currentUser.watchlist.includes(id) ? '⭐ Remove' : '⭐ Save';
     }
 
@@ -1169,23 +1161,11 @@
         if (idx === -1) {
             if (compareSelectedIds.length < 4) {
                 compareSelectedIds.push(id);
-                showToast(`✓ Added (${compareSelectedIds.length}/4)`, 'success', () => { 
-                    compareSelectedIds = compareSelectedIds.filter(i => i !== id); 
-                    showToast('Undid', 'info'); 
-                    renderAthleteGrid(); 
-                    renderComparison(); 
-                });
+                showToast(`✓ Added to compare (${compareSelectedIds.length}/4)`, 'success');
             } else showToast('Max 4 athletes', 'error');
         } else {
             compareSelectedIds.splice(idx, 1);
-            showToast('Removed', 'info', () => { 
-                if (compareSelectedIds.length < 4) { 
-                    compareSelectedIds.push(id); 
-                    showToast('Undid', 'success'); 
-                    renderAthleteGrid(); 
-                    renderComparison(); 
-                } 
-            });
+            showToast('Removed from compare', 'info');
         }
         saveData();
         renderAthleteGrid();
@@ -1219,12 +1199,13 @@
                         <div class="metric-item"><div class="metric-value">${a.metrics.vertical?.value || '?'}"</div><div class="metric-label">Vert ${isVerified ? '✓' : '⏳'}</div></div>
                         <div class="metric-item"><div class="metric-value">${a.metrics.sprint?.value ? a.metrics.sprint.value + 's' : '—'}</div><div class="metric-label">Sprint ${a.metrics.sprint?.status === 'verified' ? '✓' : (a.metrics.sprint?.status === 'pending' ? '⏳' : '')}</div></div>
                     </div>
-                    ${isFlagged ? '<span class="flagged-badge">🚩 Flagged</span>' : (isVerified && a.metrics.sprint?.status === 'verified' ? '<span class="verified-badge">✓ Verified</span>' : '<span class="pending-badge">⏳ Pending</span>')}
+                    ${isFlagged ? '<span class="flagged-badge">🚩 Flagged</span>' : (isVerified ? '<span class="verified-badge">✓ Verified</span>' : '<span class="pending-badge">⏳ Pending</span>')}
                     <div class="verification-count">👁️ ${a.views} views</div>
                     ${a.trustScore > 0 ? `<div class="trust-score">⭐ Trust: ${a.trustScore}</div>` : ''}
                 </div>
             </div>`;
         }).join('');
+        
         document.querySelectorAll('[data-watchlist]').forEach(el => { el.addEventListener('click', (e) => { e.stopPropagation(); toggleWatchlist(parseInt(el.dataset.watchlist), e); }); });
         document.querySelectorAll('[data-compare]').forEach(el => { el.addEventListener('click', (e) => { e.stopPropagation(); toggleCompare(parseInt(el.dataset.compare), e); }); });
         document.querySelectorAll('[data-play]').forEach(el => { el.addEventListener('click', (e) => { e.stopPropagation(); playHighlight(parseInt(el.dataset.play), e); }); });
@@ -1244,19 +1225,17 @@
         const grid = document.getElementById('watchlistGrid');
         if (!grid) return;
         const wl = athletes.filter(a => currentUser.watchlist.includes(a.id) && !a.flagged);
-        if (!wl.length) { grid.innerHTML = '<div class="empty-state">Watchlist empty<br>⭐ Tap star on any athlete</div>'; return; }
+        if (!wl.length) { grid.innerHTML = '<div class="empty-state">📋 Watchlist empty<br>⭐ Tap the star icon on any athlete to save them here</div>'; return; }
         grid.innerHTML = wl.map(a => {
-            const hasClip = a.hasClip && videoUrls[a.id];
             const stockAvatar = generateStockAvatar(a.name, a.position);
             return `<div class="athlete-card" data-id="${a.id}">
-                <div class="athlete-avatar ${a.avatarBg}" style="position:relative;">
+                <div class="athlete-avatar" style="position:relative;">
                     <img src="${stockAvatar}" style="width:100%; height:100%; object-fit:cover;">
-                    ${hasClip ? `<div class="play-icon-overlay" data-play="${a.id}">▶</div>` : ''}
                     <div class="jersey-number">${a.jerseyNum}</div>
                 </div>
                 <div class="athlete-info">
                     <div class="athlete-name">${a.name}</div>
-                    <div class="athlete-school">${a.school}</div>
+                    <div class="athlete-school">${a.school} · ${a.position}</div>
                     <div class="metrics-container">
                         <div class="metric-item"><div class="metric-value">${a.metrics.vertical?.value || '?'}"</div><div class="metric-label">Vertical</div></div>
                         <div class="metric-item"><div class="metric-value">${a.metrics.sprint?.value ? a.metrics.sprint.value + 's' : '—'}</div><div class="metric-label">Sprint</div></div>
@@ -1266,21 +1245,21 @@
             </div>`;
         }).join('');
         document.querySelectorAll('#watchlistGrid .athlete-card').forEach(card => { card.addEventListener('click', () => showAthleteDetail(parseInt(card.dataset.id))); });
-        document.querySelectorAll('[data-play]').forEach(el => { el.addEventListener('click', (e) => { e.stopPropagation(); playHighlight(parseInt(el.dataset.play), e); }); });
     }
 
     function renderComparison() {
         const list = document.getElementById('compareList');
         if (!list) return;
         const compare = athletes.filter(a => compareSelectedIds.includes(a.id) && !a.flagged);
-        if (!compare.length) { list.innerHTML = '<div class="empty-state">Select athletes to compare using checkboxes on Discover page</div>'; return; }
+        if (!compare.length) { list.innerHTML = '<div class="empty-state">📊 No athletes selected for comparison<br>Go to Discover page and tap the checkbox on athlete cards (top-left corner)</div>'; return; }
         list.innerHTML = compare.map(a => `<div class="comparison-card">
             <div class="athlete-name" style="font-weight:700;">${a.name}</div>
-            <div style="font-size:0.8rem;">${a.school}</div>
-            <div>🏀 Vertical: <strong>${a.metrics.vertical?.value || 'N/A'}"</strong></div>
+            <div style="font-size:0.8rem; color:var(--gray-light);">${a.school} · ${a.position}</div>
+            <div style="margin-top:0.75rem;"><div>🏀 Vertical: <strong>${a.metrics.vertical?.value || 'N/A'}"</strong></div>
             <div>🏃 Sprint: <strong>${a.metrics.sprint?.value || 'N/A'}s</strong></div>
-            <div>⭐ Trust: ${a.trustScore || 'Pending'}</div>
-            <button class="btn-outline" style="margin-top:0.5rem;" onclick="showAthleteDetail(${a.id})">View Profile</button>
+            <div>⭐ Trust Score: <strong>${a.trustScore || 'Pending'}</strong></div>
+            <div>👁️ ${a.views} views</div></div>
+            <button class="btn-outline" style="margin-top:0.75rem;" onclick="showAthleteDetail(${a.id})">View Full Profile</button>
         </div>`).join('');
     }
 
@@ -1297,29 +1276,27 @@
         if (!grid) return;
         const year = document.getElementById('classYear')?.value || '2025';
         const filtered = athletes.filter(a => !a.flagged && a.classYear == year);
-        if (!filtered.length) { grid.innerHTML = '<div class="empty-state">No athletes in this class year</div>'; return; }
+        if (!filtered.length) { grid.innerHTML = '<div class="empty-state">🎓 No athletes in Class of ' + year + '<br>Check back later for new recruits</div>'; return; }
         grid.innerHTML = filtered.map(a => {
-            const hasClip = a.hasClip && videoUrls[a.id];
             const stockAvatar = generateStockAvatar(a.name, a.position);
             return `<div class="athlete-card" data-id="${a.id}">
-                <div class="athlete-avatar ${a.avatarBg}" style="position:relative;">
+                <div class="athlete-avatar" style="position:relative;">
                     <img src="${stockAvatar}" style="width:100%; height:100%; object-fit:cover;">
-                    ${hasClip ? `<div class="play-icon-overlay" data-play="${a.id}">▶</div>` : ''}
                     <div class="jersey-number">${a.jerseyNum}</div>
                 </div>
                 <div class="athlete-info">
                     <div class="athlete-name">${a.name}</div>
-                    <div class="athlete-school">${a.school}</div>
+                    <div class="athlete-school">${a.school} · ${a.position}</div>
                     <div class="metrics-container">
                         <div class="metric-item"><div class="metric-value">${a.metrics.vertical?.value || '?'}"</div><div class="metric-label">Vertical</div></div>
                         <div class="metric-item"><div class="metric-value">${a.metrics.sprint?.value ? a.metrics.sprint.value + 's' : '—'}</div><div class="metric-label">Sprint</div></div>
                     </div>
+                    <div class="verification-count">🎓 Class of ${a.classYear}</div>
                     ${a.trustScore > 0 ? `<div class="trust-score">⭐ Trust: ${a.trustScore}</div>` : ''}
                 </div>
             </div>`;
         }).join('');
         document.querySelectorAll('#recruitingBoardList .athlete-card').forEach(card => { card.addEventListener('click', () => showAthleteDetail(parseInt(card.dataset.id))); });
-        document.querySelectorAll('[data-play]').forEach(el => { el.addEventListener('click', (e) => { e.stopPropagation(); playHighlight(parseInt(el.dataset.play), e); }); });
     }
 
     function exportToCSV() {
@@ -1334,7 +1311,7 @@
         link.download = `vantage_watchlist_${new Date().toISOString().slice(0,10)}.csv`;
         link.click();
         URL.revokeObjectURL(url);
-        showToast('CSV downloaded', 'success');
+        showToast('CSV exported!', 'success');
     }
 
     async function submitVideo() {
@@ -1347,11 +1324,11 @@
         const resultDiv = document.getElementById('submitResult');
         const btn = document.getElementById('submitBtn');
 
-        if (!videoSource) { resultDiv.innerHTML = '<div class="alert-error">Enter video URL or upload</div>'; return; }
-        if (!name) { resultDiv.innerHTML = '<div class="alert-error">Enter name</div>'; return; }
+        if (!videoSource) { resultDiv.innerHTML = '<div class="alert-error">❌ Enter video URL or upload</div>'; return; }
+        if (!name) { resultDiv.innerHTML = '<div class="alert-error">❌ Enter athlete name</div>'; return; }
 
         btn.disabled = true;
-        btn.innerText = 'Analyzing...';
+        btn.innerText = '🔬 Analyzing...';
 
         try {
             const newId = Math.max(...athletes.map(a => a.id), 0) + 1;
@@ -1391,13 +1368,11 @@
             document.getElementById('claimedSprint').value = '';
             
             saveData();
-            renderAthleteGrid();
-            renderWatchlist();
-            updateStats();
+            renderAll();
             showPage('discover');
-            showToast('Athlete submitted!', 'success');
+            showToast('Athlete submitted successfully!', 'success');
         } catch (error) {
-            resultDiv.innerHTML = `<div class="alert-error">Error: ${error.message}</div>`;
+            resultDiv.innerHTML = `<div class="alert-error">❌ Error: ${error.message}</div>`;
         } finally {
             btn.disabled = false;
             btn.innerText = 'Submit for AI Analysis';
@@ -1407,8 +1382,8 @@
 
     function confirmVerification() {
         if (!currentDetailAthlete) return;
-        if (currentDetailAthlete.flagged) { showToast('Cannot confirm flagged', 'error'); return; }
-        if (currentUser.confirmedAthleteIds.includes(currentDetailAthlete.id)) { showToast('Already confirmed', 'error'); return; }
+        if (currentDetailAthlete.flagged) { showToast('Cannot confirm flagged athlete', 'error'); return; }
+        if (currentUser.confirmedAthleteIds.includes(currentDetailAthlete.id)) { showToast('Already confirmed this athlete', 'error'); return; }
         
         currentUser.confirmedAthleteIds.push(currentDetailAthlete.id);
         currentUser.confirmationsMade++;
@@ -1432,11 +1407,9 @@
         currentDetailAthlete.confirmations.push(currentUser.name);
         
         saveData();
-        renderAthleteGrid();
-        renderWatchlist();
-        updateStats();
+        renderAll();
         if (currentDetailAthlete) showAthleteDetail(currentDetailAthlete.id);
-        showToast(`✓ Verified! +2 trust. Streak: ${currentUser.streak}`, 'success');
+        showToast(`✓ Verified ${currentDetailAthlete.name}! +2 trust. Streak: ${currentUser.streak} days`, 'success');
     }
 
     function undoConfirmation() {
@@ -1462,17 +1435,15 @@
         const confirmIdx = currentDetailAthlete.confirmations.indexOf(currentUser.name);
         if (confirmIdx !== -1) currentDetailAthlete.confirmations.splice(confirmIdx, 1);
         saveData();
-        renderAthleteGrid();
-        renderWatchlist();
-        updateStats();
+        renderAll();
         if (currentDetailAthlete) showAthleteDetail(currentDetailAthlete.id);
-        showToast(`↩️ Undone. Trust: ${currentUser.trustScore}`, 'info');
+        showToast(`↩️ Undone confirmation. Trust: ${currentUser.trustScore}`, 'info');
     }
 
     function challengeVerification() {
         if (!currentDetailAthlete) return;
-        if (currentDetailAthlete.flagged) { showToast('Cannot challenge flagged', 'error'); return; }
-        if (currentUser.challengedAthleteIds?.includes(currentDetailAthlete.id)) { showToast('Already challenged', 'error'); return; }
+        if (currentDetailAthlete.flagged) { showToast('Cannot challenge flagged athlete', 'error'); return; }
+        if (currentUser.challengedAthleteIds?.includes(currentDetailAthlete.id)) { showToast('Already challenged this athlete', 'error'); return; }
         if (!currentUser.challengedAthleteIds) currentUser.challengedAthleteIds = [];
         currentUser.challengedAthleteIds.push(currentDetailAthlete.id);
         if (!currentDetailAthlete.challenges) currentDetailAthlete.challenges = [];
@@ -1493,31 +1464,30 @@
         const hasChallenged = currentUser.challengedAthleteIds?.includes(athlete.id);
         const inWatchlist = currentUser.watchlist.includes(athlete.id);
         const needVert = athlete.metrics.vertical?.status === 'pending' ? (3 - (athlete.metrics.vertical.verifications || 0)) : 0;
-        const canUnverify = currentUser.trustScore >= 90 && isVerified;
         const hasClip = athlete.hasClip && videoUrls[athlete.id];
         const stockAvatar = generateStockAvatar(athlete.name, athlete.position);
         
         document.getElementById('detailContent').innerHTML = `
-            <div class="athlete-detail-avatar ${athlete.avatarBg}" style="position:relative;">
-                <img src="${stockAvatar}" style="width:100%; height:100%; object-fit:cover;">
-                ${hasClip ? `<div class="play-icon-overlay" style="bottom: auto; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; font-size: 1.5rem;" data-play-detail="${athlete.id}">▶</div>` : ''}
-                <div class="jersey-number" style="bottom: 8px; right: 12px; top: auto;">#${athlete.jerseyNum}</div>
+            <div style="position:relative;">
+                <img src="${stockAvatar}" style="width:100%; border-radius:16px; margin-bottom:1rem;">
+                ${hasClip ? `<div class="play-icon-overlay" style="bottom: auto; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; font-size: 1.5rem; cursor: pointer;" data-play-detail="${athlete.id}">▶</div>` : ''}
+                <div style="position: absolute; bottom: 16px; right: 16px; background: rgba(0,0,0,0.6); padding: 4px 12px; border-radius: 20px; font-weight: bold;">#${athlete.jerseyNum}</div>
             </div>
             <h2 style="text-align:center;">${athlete.name}</h2>
             <p style="color:var(--gray-light); text-align:center;">${athlete.school} · ${athlete.position}</p>
-            <div class="metrics-detail">
-                <div class="metric-detail-item"><span>🏀 Vertical Leap</span><span><strong>${athlete.metrics.vertical?.value || '?'}"</strong> AI: ${athlete.metrics.vertical?.confidence || 0}% ${athlete.metrics.vertical?.status === 'verified' ? '✓' : `⏳ (${athlete.metrics.vertical?.verifications || 0}/3)`}</span></div>
-                <div class="metric-detail-item"><span>🏃 40-Yard Sprint</span><span><strong>${athlete.metrics.sprint?.value || '?'}s</strong> AI: ${athlete.metrics.sprint?.confidence || 0}% ${athlete.metrics.sprint?.status === 'verified' ? '✓' : `⏳ (${athlete.metrics.sprint?.verifications || 0}/3)`}</span></div>
+            <div style="background:rgba(0,0,0,0.3); border-radius:12px; padding:1rem; margin:1rem 0;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;"><span>🏀 Vertical Leap</span><span><strong>${athlete.metrics.vertical?.value || '?'}"</strong> AI: ${athlete.metrics.vertical?.confidence || 0}% ${athlete.metrics.vertical?.status === 'verified' ? '✅' : `⏳ (${athlete.metrics.vertical?.verifications || 0}/3)`}</span></div>
+                <div style="display:flex; justify-content:space-between;"><span>🏃 40-Yard Sprint</span><span><strong>${athlete.metrics.sprint?.value || '?'}s</strong> AI: ${athlete.metrics.sprint?.confidence || 0}% ${athlete.metrics.sprint?.status === 'verified' ? '✅' : `⏳ (${athlete.metrics.sprint?.verifications || 0}/3)`}</span></div>
             </div>
-            <div><div>🔒 Verified by ${athlete.confirmations.length} members</div><div>⭐ Trust: ${athlete.trustScore || 'Pending'}</div>${(!isVerified && needVert > 0) ? `<div class="progress-container"><div class="progress-bar" style="width: ${((3-needVert)/3)*100}%;"></div></div><div>Needs ${needVert} confirmations</div>` : ''}</div>
-            <button class="btn-outline" id="shareBadgeBtn" style="width:100%; margin-top:1rem;">🏅 Share Badge</button>
-            ${hasClip ? `<button class="btn-outline" id="watchClipBtn" style="width:100%; margin-top:0.5rem;">🎬 Watch Clip</button>` : ''}`;
+            <div style="margin-top:0.5rem;"><div>🔒 Verified by ${athlete.confirmations.length} community members</div><div>⭐ Trust Score: ${athlete.trustScore || 'Pending'}</div>${(!isVerified && needVert > 0) ? `<div class="progress-container" style="margin-top:0.5rem;"><div class="progress-bar" style="width: ${((3-needVert)/3)*100}%;"></div></div><div style="font-size:0.7rem; margin-top:0.25rem;">Needs ${needVert} more confirmations for Verified badge</div>` : ''}</div>
+            <button class="btn-outline" id="shareBadgeBtn" style="width:100%; margin-top:1rem;">🏅 Share Verified Badge</button>
+            ${hasClip ? `<button class="btn-outline" id="watchClipBtn" style="width:100%; margin-top:0.5rem;">🎬 Watch Highlight Clip</button>` : ''}`;
         
         document.getElementById('confirmBtn').style.display = (!hasConfirmed && !isVerified) ? 'block' : 'none';
         document.getElementById('undoConfirmBtn').style.display = hasConfirmed ? 'block' : 'none';
         document.getElementById('challengeBtn').style.display = (!hasChallenged && !isVerified) ? 'block' : 'none';
         document.getElementById('flagBtn').style.display = 'block';
-        document.getElementById('watchlistDetailBtn').innerText = inWatchlist ? '⭐ Remove' : '⭐ Save';
+        document.getElementById('watchlistDetailBtn').innerText = inWatchlist ? '⭐ Remove from Watchlist' : '⭐ Save to Watchlist';
         
         document.getElementById('shareBadgeBtn')?.addEventListener('click', () => showEmbedModal(athlete));
         document.getElementById('watchClipBtn')?.addEventListener('click', () => playHighlight(athlete.id));
@@ -1531,7 +1501,7 @@
     function toggleWatchlistFromDetail() {
         if (!currentDetailAthlete) return;
         toggleWatchlist(currentDetailAthlete.id);
-        document.getElementById('watchlistDetailBtn').innerText = currentUser.watchlist.includes(currentDetailAthlete.id) ? '⭐ Remove' : '⭐ Save';
+        document.getElementById('watchlistDetailBtn').innerText = currentUser.watchlist.includes(currentDetailAthlete.id) ? '⭐ Remove from Watchlist' : '⭐ Save to Watchlist';
     }
 
     function showEmbedModal(athlete) {
@@ -1542,7 +1512,7 @@
 
     function copyEmbedCode() {
         const code = document.getElementById('embedCode')?.innerText;
-        if (code) { navigator.clipboard.writeText(code); showToast('Copied!', 'success'); }
+        if (code) { navigator.clipboard.writeText(code); showToast('Copied to clipboard!', 'success'); }
         closeModal('embedModal');
     }
 
@@ -1554,7 +1524,11 @@
         const nav = document.querySelector(`.nav-item[data-page="${pageId}"]`);
         if (nav) nav.classList.add('active');
         if (pageId === 'discover') renderAthleteGrid();
-        if (pageId === 'scout') { renderWatchlist(); renderComparison(); renderRecruitingBoard(); }
+        if (pageId === 'scout') { 
+            renderWatchlist(); 
+            renderComparison(); 
+            renderRecruitingBoard(); 
+        }
         if (pageId === 'leaderboard') updateStats();
     }
 
@@ -1578,33 +1552,58 @@
             showToast(`Welcome ${currentUser.name}!`, 'success');
             closeModal('loginModal');
             updateStats();
-        } else showToast('Enter email', 'error');
+        } else showToast('Enter email address', 'error');
     }
 
+    // ========== FIXED SCOUT MODE TOGGLING ==========
     function initScoutModes() {
-        const watchlistMode = document.getElementById('watchlistMode');
-        const compareMode = document.getElementById('compareMode');
-        const recruitingMode = document.getElementById('recruitingMode');
+        const watchlistModeDiv = document.getElementById('watchlistMode');
+        const compareModeDiv = document.getElementById('compareMode');
+        const recruitingModeDiv = document.getElementById('recruitingMode');
+        
         document.querySelectorAll('.mode-btn').forEach(btn => {
             btn.addEventListener('click', () => {
+                // Update active state on buttons
                 document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
+                
                 const mode = btn.dataset.mode;
-                if (watchlistMode) watchlistMode.style.display = mode === 'watchlist' ? 'block' : 'none';
-                if (compareMode) compareMode.style.display = mode === 'compare' ? 'block' : 'none';
-                if (recruitingMode) recruitingMode.style.display = mode === 'recruiting' ? 'block' : 'none';
-                if (mode === 'compare') renderComparison();
-                if (mode === 'recruiting') renderRecruitingBoard();
+                
+                // Show/hide the appropriate mode divs
+                if (mode === 'watchlist') {
+                    watchlistModeDiv.style.display = 'block';
+                    compareModeDiv.style.display = 'none';
+                    recruitingModeDiv.style.display = 'none';
+                    renderWatchlist(); // Refresh watchlist when switching to it
+                } else if (mode === 'compare') {
+                    watchlistModeDiv.style.display = 'none';
+                    compareModeDiv.style.display = 'block';
+                    recruitingModeDiv.style.display = 'none';
+                    renderComparison(); // Refresh comparison when switching to it
+                } else if (mode === 'recruiting') {
+                    watchlistModeDiv.style.display = 'none';
+                    compareModeDiv.style.display = 'none';
+                    recruitingModeDiv.style.display = 'block';
+                    renderRecruitingBoard(); // Refresh recruiting board when switching to it
+                }
             });
         });
+    }
+
+    function renderAll() {
+        renderAthleteGrid();
+        renderWatchlist();
+        renderComparison();
+        renderRecruitingBoard();
+        updateStats();
     }
 
     // Event Listeners
     document.querySelectorAll('.filter-chip').forEach(c => c.addEventListener('click', function() { applyFilter(this.dataset.filter); }));
     document.querySelectorAll('.nav-item').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
     document.querySelectorAll('.desktop-nav a').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
-    document.querySelectorAll('.sort-chip').forEach(c => c.addEventListener('click', function() { currentSort = this.dataset.sort; document.querySelectorAll('.sort-chip').forEach(c => c.classList.remove('active')); this.classList.add('active'); renderAthleteGrid(); }));
-    document.getElementById('searchInput')?.addEventListener('input', (e) => { currentSearch = e.target.value; renderAthleteGrid(); });
+    document.querySelectorAll('.sort-chip').forEach(c => c.addEventListener('click', function() { currentSort = this.dataset.sort; document.querySelectorAll('.sort-chip').forEach(s => s.classList.remove('active')); this.classList.add('active'); renderAthleteGrid(); }));
+    document.getElementById('searchInput')?.addEventListener('input', (e) => { currentSearch = e.target.value.toLowerCase(); renderAthleteGrid(); });
     document.getElementById('loginBtn')?.addEventListener('click', () => showModal('loginModal'));
     document.getElementById('doLoginBtn')?.addEventListener('click', handleLogin);
     document.getElementById('submitBtn')?.addEventListener('click', submitVideo);
@@ -1616,7 +1615,7 @@
     document.getElementById('refreshCompareBtn')?.addEventListener('click', refreshComparison);
     document.getElementById('classYear')?.addEventListener('change', renderRecruitingBoard);
     
-    // Fixed window onclick - only close modals when clicking backdrop, not interfering with other clicks
+    // Modal close on backdrop click
     window.addEventListener('click', (e) => { 
         if (e.target.classList && e.target.classList.contains('modal')) {
             closeModal(e.target.id);
@@ -1626,11 +1625,7 @@
     // Initialize
     loadData();
     initScoutModes();
-    renderAthleteGrid();
-    renderWatchlist();
-    renderComparison();
-    renderRecruitingBoard();
-    updateStats();
+    renderAll();
 </script>
 </body>
 </html>
