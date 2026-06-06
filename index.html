@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
     <title>VANTAGE | Verified Vertical Leap</title>
     <style>
-        /* ============================================ */
-        /* CHECKPOINT 1: LINES 0-100 - BASE STYLES     */
-        /* ============================================ */
         * {
             margin: 0;
             padding: 0;
@@ -41,7 +38,7 @@
             border-bottom: 0.5px solid var(--glass-border);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index:100;
             padding: 0.75rem 1.25rem;
         }
 
@@ -166,9 +163,6 @@
             font-size: 1.3rem;
         }
 
-        /* ============================================ */
-        /* CHECKPOINT 2: LINES 100-200 - TOAST & CARDS  */
-        /* ============================================ */
         .toast {
             position: fixed;
             bottom: 80px;
@@ -273,9 +267,6 @@
         }
         .filter-chip.active { background: var(--primary-blue); color: white; }
 
-        /* ============================================ */
-        /* CHECKPOINT 3: LINES 200-300 - ATHLETE GRID  */
-        /* ============================================ */
         .athlete-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -393,9 +384,6 @@
         .athlete-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
         .athlete-school { font-size: 0.7rem; color: var(--gray-light); margin-bottom: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* ============================================ */
-        /* CHECKPOINT 4: LINES 300-400 - METRICS BOX   */
-        /* ============================================ */
         .metrics-container {
             display: flex;
             gap: 0.5rem;
@@ -515,9 +503,6 @@
             font-size: 0.8rem;
         }
 
-        /* ============================================ */
-        /* CHECKPOINT 5: LINES 400-500 - FORMS & BTNS   */
-        /* ============================================ */
         .form-group { margin-bottom: 1rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--gray-light); }
         .form-input, .form-select {
@@ -689,9 +674,9 @@
 </div>
 
 <div class="container" id="app">
-    <!-- ============================================ -->
-    <!-- CHECKPOINT 6: DISCOVER PAGE                  -->
-    <!-- ============================================ -->
+    <!-- ========================================== -->
+    <!-- DISCOVER PAGE                              -->
+    <!-- ========================================== -->
     <div id="discoverPage" class="page active">
         <div class="page-header"><h1>Verified Vertical Leap</h1><p>AI-measured vertical · Community verified · Prove your bounce</p></div>
         <div class="stats-grid">
@@ -716,9 +701,9 @@
         <div class="athlete-grid" id="athleteGrid"></div>
     </div>
 
-    <!-- ============================================ -->
-    <!-- CHECKPOINT 7: SUBMIT PAGE                    -->
-    <!-- ============================================ -->
+    <!-- ========================================== -->
+    <!-- SUBMIT PAGE                                -->
+    <!-- ========================================== -->
     <div id="submitPage" class="page">
         <div class="page-header"><h1>Get Verified</h1><p>Upload your vertical leap video for AI analysis</p></div>
         <div class="card">
@@ -760,9 +745,9 @@
         </div>
     </div>
 
-    <!-- ============================================ -->
-    <!-- CHECKPOINT 8: SCOUT PORTAL PAGE              -->
-    /* ============================================ */
+    <!-- ========================================== -->
+    <!-- SCOUT PORTAL PAGE                          -->
+    <!-- ========================================== -->
     <div id="scoutPage" class="page">
         <div class="page-header"><h1>Scout Portal</h1><p>Find athletes by verified vertical leap</p></div>
         <div class="mode-toggle" id="scoutModeToggle">
@@ -805,18 +790,18 @@
         </div>
     </div>
 
-    <!-- ============================================ -->
-    <!-- CHECKPOINT 9: LEADERBOARD PAGE               -->
-    <!-- ============================================ -->
+    <!-- ========================================== -->
+    <!-- LEADERBOARD PAGE                           -->
+    <!-- ========================================== -->
     <div id="leaderboardPage" class="page">
         <div class="page-header"><h1>Trust Leaderboard</h1><p>Top verifiers earn scout access</p></div>
         <div class="card" id="leaderboardList"></div>
         <div class="card"><h3>Your Stats</h3><div>Confirmations: <strong id="userConfirmCount">0</strong></div><div>Streak: <strong id="userStreak">0</strong> days</div><div>Trust: <strong id="userTrustDisplay">85</strong></div><div class="progress-container"><div class="progress-bar" id="trustProgress" style="width:85%"></div></div></div>
     </div>
 
-    <!-- ============================================ -->
-    /* CHECKPOINT 10: HOW IT WORKS & PRICING         */
-    /* ============================================ */
+    <!-- ========================================== -->
+    <!-- HOW IT WORKS PAGE                          -->
+    <!-- ========================================== -->
     <div id="howitworksPage" class="page">
         <div class="page-header"><h1>How VANTAGE Works</h1><p>AI-powered vertical leap verification</p></div>
         <div class="card">
@@ -843,6 +828,9 @@
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- PRICING PAGE                               -->
+    <!-- ========================================== -->
     <div id="pricingPage" class="page">
         <div class="page-header"><h1>Simple Pricing</h1><p>Free for athletes · $500/year for scouts</p></div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
@@ -852,9 +840,9 @@
     </div>
 </div>
 
-<!-- ============================================ -->
-/* CHECKPOINT 11: MODALS                         */
-/* ============================================ */
+<!-- ========================================== -->
+<!-- MODALS                                     -->
+<!-- ========================================== -->
 <div id="loginModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('loginModal')">&times;</span><h2>Sign In</h2><input type="email" class="form-input" id="loginEmail" placeholder="Email"><input type="password" class="form-input" id="loginPassword" placeholder="Password"><button class="btn-primary" id="doLoginBtn">Sign In</button><p style="margin-top:1rem; font-size:0.75rem;">Demo: Any email works</p></div></div>
 
 <div id="detailModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('detailModal')">&times;</span><div id="detailContent"></div><div class="button-group" id="actionButtons">
@@ -870,9 +858,9 @@
 <div id="videoPlayerModal" class="modal"><div class="modal-content video-modal"><span class="close-modal" onclick="closeVideoPlayer()">&times;</span><div class="video-player-container"><video id="highlightVideo" controls style="width:100%; max-height:60vh;"><source id="videoSource" src="" type="video/mp4"></video><div class="video-metrics-overlay" id="videoMetricsOverlay"></div></div></div></div>
 
 <script>
-    // ============================================ */
-    /* CHECKPOINT 12: ATHLETE DATA                 */
-    /* ============================================ */
+    // ==========================================
+    // ATHLETE DATA (VERTICAL ONLY)
+    // ==========================================
     const BACKEND_URL = 'https://vantage-backend-production-6d44.up.railway.app';
     
     let athletes = [
@@ -907,9 +895,9 @@
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFunflies.mp4"
     ];
 
-    // ============================================ */
-    /* CHECKPOINT 13: VIDEO FUNCTIONS               */
-    /* ============================================ */
+    // ==========================================
+    // VIDEO FUNCTIONS
+    // ==========================================
     function generateDemoVideo(athleteId) {
         const videoIndex = athleteId % SAMPLE_VIDEOS.length;
         videoUrls[athleteId] = SAMPLE_VIDEOS[videoIndex];
@@ -962,9 +950,9 @@
         closeModal('videoPlayerModal');
     }
 
-    // ============================================ */
-    /* CHECKPOINT 14: TAB FUNCTIONS                 */
-    /* ============================================ */
+    // ==========================================
+    // TAB FUNCTIONS
+    // ==========================================
     function initVideoTabs() {
         const tabs = document.querySelectorAll('#videoTabs .tab-btn');
         const urlTab = document.getElementById('urlTab');
@@ -1006,9 +994,9 @@
             .catch(err => showToast('Camera access denied', 'error'));
     }
 
-    // ============================================ */
-    /* CHECKPOINT 15: SCOUT MODE FUNCTIONS          */
-    /* ============================================ */
+    // ==========================================
+    // SCOUT MODE FUNCTIONS
+    // ==========================================
     function initScoutModes() {
         const watchlistDiv = document.getElementById('watchlistMode');
         const compareDiv = document.getElementById('compareMode');
@@ -1043,9 +1031,9 @@
         });
     }
 
-    // ============================================ */
-    /* CHECKPOINT 16: HELPER FUNCTIONS              */
-    /* ============================================ */
+    // ==========================================
+    // HELPER FUNCTIONS
+    // ==========================================
     function showToast(message, type = 'info') {
         const existing = document.querySelector('.toast');
         if (existing) existing.remove();
@@ -1056,30 +1044,25 @@
         setTimeout(() => toast.remove(), 3000);
     }
 
-    // Anti-collusion: Check if user can verify
     function canVerify(athleteId) {
         const now = Date.now();
         
-        // Cooldown: Can't verify more than once per minute
         if (now - lastConfirmTime < 60000) {
             showToast('Please wait before verifying another athlete', 'warning');
             return false;
         }
         
-        // Daily limit: Max 10 verifications per day
         const today = new Date().toDateString();
         if (confirmHistory[today] && confirmHistory[today] >= 10) {
             showToast('Daily verification limit reached. Come back tomorrow!', 'warning');
             return false;
         }
         
-        // Trust check: Need minimum trust to verify others
         if (currentUser.trustScore < 50) {
             showToast('Your trust score is too low to verify others. Build trust by getting your own jumps verified first.', 'warning');
             return false;
         }
         
-        // Can't verify same athlete twice
         if (currentUser.confirmedAthleteIds.includes(athleteId)) {
             showToast('You have already verified this athlete', 'error');
             return false;
@@ -1140,9 +1123,9 @@
         generateAllVideos();
     }
 
-    // ============================================ */
-    /* CHECKPOINT 17: STATS & FILTERING             */
-    /* ============================================ */
+    // ==========================================
+    // STATS & FILTERING
+    // ==========================================
     function updateStats() {
         const active = athletes.filter(a => !a.flagged).length;
         document.getElementById('statTotal').innerText = active;
@@ -1177,9 +1160,9 @@
         return filtered;
     }
 
-    // ============================================ */
-    /* CHECKPOINT 18: TOGGLE FUNCTIONS              */
-    /* ============================================ */
+    // ==========================================
+    // TOGGLE FUNCTIONS
+    // ==========================================
     function toggleWatchlist(id, event) {
         if (event) event.stopPropagation();
         const idx = currentUser.watchlist.indexOf(id);
@@ -1211,9 +1194,9 @@
         renderComparison();
     }
 
-    // ============================================ */
-    /* CHECKPOINT 19: RENDER FUNCTIONS              */
-    /* ============================================ */
+    // ==========================================
+    // RENDER FUNCTIONS
+    // ==========================================
     function renderAthleteGrid() {
         const grid = document.getElementById('athleteGrid');
         if (!grid) return;
@@ -1303,9 +1286,9 @@
         showToast('CSV exported!', 'success');
     }
 
-    // ============================================ */
-    /* CHECKPOINT 20: DETAIL MODAL & VERIFICATION   */
-    /* ============================================ */
+    // ==========================================
+    // DETAIL MODAL & VERIFICATION
+    // ==========================================
     function showAthleteDetail(id) {
         const athlete = athletes.find(a => a.id === id);
         if (!athlete || athlete.flagged) return;
@@ -1329,7 +1312,6 @@
             <button class="btn-outline" id="shareBadgeBtn" style="width:100%; margin-top:1rem;">🏅 Share Verified Badge</button>
             ${athlete.hasClip ? `<button class="btn-outline" id="watchClipBtn" style="width:100%; margin-top:0.5rem;">🎬 Watch Highlight Clip</button>` : ''}`;
         
-        // Show confirm button only if athlete is not suspicious and not already verified
         const showConfirm = (!currentUser.confirmedAthleteIds.includes(athlete.id) && athlete.vertical?.status !== 'verified' && !athlete.suspicious);
         document.getElementById('confirmBtn').style.display = showConfirm ? 'block' : 'none';
         document.getElementById('undoConfirmBtn').style.display = currentUser.confirmedAthleteIds.includes(athlete.id) ? 'block' : 'none';
@@ -1367,7 +1349,6 @@
     function confirmVerification() {
         if (!currentDetailAthlete) return;
         
-        // Anti-collusion checks
         if (!canVerify(currentDetailAthlete.id)) return;
         
         if (currentDetailAthlete.vertical?.status === 'verified') {
@@ -1383,23 +1364,18 @@
         currentUser.confirmedAthleteIds.push(currentDetailAthlete.id);
         currentUser.confirmationsMade++;
         
-        // Trust adjustment: +2 for confirmation
         let trustGain = 2;
         currentUser.trustScore = Math.min(100, currentUser.trustScore + trustGain);
         currentUser.streak++;
         
-        // Update athlete verification count
         if (currentDetailAthlete.vertical?.status === 'pending') {
             currentDetailAthlete.vertical.verifications = (currentDetailAthlete.vertical.verifications || 0) + 1;
             
-            // Check if athlete becomes verified (3 verifications)
             if (currentDetailAthlete.vertical.verifications >= 3) {
                 currentDetailAthlete.vertical.status = 'verified';
-                // Athlete gets base trust score
                 currentDetailAthlete.trustScore = Math.max(currentDetailAthlete.trustScore, 85);
                 showToast(`🎉 ${currentDetailAthlete.name} is now VERIFIED!`, 'success');
                 
-                // Bonus trust for scouts who verified early (first 3 verifiers)
                 if (currentDetailAthlete.vertical.verifications <= 3) {
                     const bonusTrust = 3;
                     currentUser.trustScore = Math.min(100, currentUser.trustScore + bonusTrust);
@@ -1411,7 +1387,6 @@
         if (!currentDetailAthlete.confirmations) currentDetailAthlete.confirmations = [];
         currentDetailAthlete.confirmations.push(currentUser.name);
         
-        // Record this verification for anti-collusion
         recordVerification(currentDetailAthlete.id);
         
         saveData();
@@ -1451,13 +1426,11 @@
         if (!currentUser.challengedAthleteIds) currentUser.challengedAthleteIds = [];
         currentUser.challengedAthleteIds.push(currentDetailAthlete.id);
         
-        // Flag athlete for review
         currentDetailAthlete.suspicious = true;
         
         if (!currentDetailAthlete.challenges) currentDetailAthlete.challenges = [];
         currentDetailAthlete.challenges.push({ by: currentUser.name, at: new Date().toISOString() });
         
-        // Trust reward for correctly challenging
         currentUser.trustScore = Math.min(100, currentUser.trustScore + 5);
         
         saveData();
@@ -1466,9 +1439,9 @@
         closeModal('detailModal');
     }
 
-    // ============================================ */
-    /* CHECKPOINT 21: UI NAVIGATION                 */
-    /* ============================================ */
+    // ==========================================
+    // UI NAVIGATION
+    // ==========================================
     function showPage(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(pageId + 'Page').classList.add('active');
@@ -1515,9 +1488,9 @@
         updateStats();
     }
 
-    // ============================================ */
-    /* CHECKPOINT 22: UPLOAD HANDLERS               */
-    /* ============================================ */
+    // ==========================================
+    // UPLOAD HANDLERS
+    // ==========================================
     const uploadArea = document.getElementById('uploadArea');
     const videoFile = document.getElementById('videoFile');
     
@@ -1627,9 +1600,9 @@
         }
     });
 
-    // ============================================ */
-    /* CHECKPOINT 23: EVENT LISTENERS               */
-    /* ============================================ */
+    // ==========================================
+    // EVENT LISTENERS
+    // ==========================================
     document.querySelectorAll('.filter-chip').forEach(c => c.addEventListener('click', function() { applyFilter(this.dataset.filter); }));
     document.querySelectorAll('.nav-item').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
     document.querySelectorAll('.desktop-nav a').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
@@ -1646,9 +1619,9 @@
     document.getElementById('classYear')?.addEventListener('change', renderRecruitingBoard);
     window.addEventListener('click', (e) => { if (e.target.classList && e.target.classList.contains('modal')) closeModal(e.target.id); });
 
-    // ============================================ */
-    /* CHECKPOINT 24: INITIALIZATION                */
-    /* ============================================ */
+    // ==========================================
+    // INITIALIZATION
+    // ==========================================
     loadData();
     initVideoTabs();
     initScoutModes();
