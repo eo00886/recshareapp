@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <title>VANTAGE | Verified Athletic Intelligence</title>
+    <title>VANTAGE | Verified Vertical Leap</title>
     <style>
+        /* ============================================ */
+        /* CHECKPOINT 1: LINES 0-100 - BASE STYLES     */
+        /* ============================================ */
         * {
             margin: 0;
             padding: 0;
@@ -163,6 +166,9 @@
             font-size: 1.3rem;
         }
 
+        /* ============================================ */
+        /* CHECKPOINT 2: LINES 100-200 - TOAST & CARDS  */
+        /* ============================================ */
         .toast {
             position: fixed;
             bottom: 80px;
@@ -266,6 +272,9 @@
         }
         .filter-chip.active { background: var(--primary-blue); color: white; }
 
+        /* ============================================ */
+        /* CHECKPOINT 3: LINES 200-300 - ATHLETE GRID  */
+        /* ============================================ */
         .athlete-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -380,6 +389,9 @@
         .athlete-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
         .athlete-school { font-size: 0.7rem; color: var(--gray-light); margin-bottom: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
+        /* ============================================ */
+        /* CHECKPOINT 4: LINES 300-400 - METRICS BOX   */
+        /* ============================================ */
         .metrics-container {
             display: flex;
             gap: 0.5rem;
@@ -498,6 +510,9 @@
             font-size: 0.8rem;
         }
 
+        /* ============================================ */
+        /* CHECKPOINT 5: LINES 400-500 - FORMS & BTNS   */
+        /* ============================================ */
         .form-group { margin-bottom: 1rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--gray-light); }
         .form-input, .form-select {
@@ -569,15 +584,6 @@
         .alert-success { background: rgba(16, 185, 129, 0.15); border: 0.5px solid var(--success-green); padding: 0.75rem; border-radius: 12px; color: var(--success-green); margin-top: 1rem; }
         .alert-error { background: rgba(239, 68, 68, 0.15); border: 0.5px solid var(--error-red); padding: 0.75rem; border-radius: 12px; color: #f87171; margin-top: 1rem; }
 
-        .sprint-tip {
-            background: rgba(59, 130, 246, 0.1);
-            border-left: 3px solid var(--primary-blue);
-            padding: 0.5rem;
-            margin-top: 0.5rem;
-            font-size: 0.7rem;
-            border-radius: 8px;
-        }
-
         .video-input-tabs {
             display: flex;
             gap: 0.5rem;
@@ -628,8 +634,6 @@
         .rule-positive { color: var(--success-green); }
         .rule-negative { color: var(--error-red); }
 
-        .footer { margin-top: 2rem; padding-top: 1rem; border-top: 0.5px solid var(--glass-border); text-align: center; font-size: 0.7rem; color: var(--gray-light); }
-
         @media (min-width: 768px) {
             .bottom-nav { display: none; }
             .desktop-nav { display: flex; }
@@ -654,7 +658,7 @@
             </div>
             <div>
                 <span class="logo-text">VANTAGE</span>
-                <span class="logo-tag">Verified Athletic Intelligence</span>
+                <span class="logo-tag">Verified Vertical Leap</span>
             </div>
         </div>
         <div class="desktop-nav">
@@ -679,9 +683,11 @@
 </div>
 
 <div class="container" id="app">
-    <!-- DISCOVER PAGE -->
+    <!-- ============================================ -->
+    <!-- CHECKPOINT 6: DISCOVER PAGE - VERTICAL ONLY  -->
+    <!-- ============================================ -->
     <div id="discoverPage" class="page active">
-        <div class="page-header"><h1>Verified Athletes</h1><p>AI-measured vertical leap + 40-yard sprint · Community verified</p></div>
+        <div class="page-header"><h1>Verified Vertical Leap</h1><p>AI-measured vertical · Community verified · Prove your bounce</p></div>
         <div class="stats-grid">
             <div class="stat-card" onclick="applyFilter('all')"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Athletes</div></div>
             <div class="stat-card" onclick="applyFilter('verified')"><div class="stat-value" id="statVerified">0</div><div class="stat-label">Verified</div></div>
@@ -704,9 +710,11 @@
         <div class="athlete-grid" id="athleteGrid"></div>
     </div>
 
-    <!-- SUBMIT PAGE - FIXED TABS -->
+    <!-- ============================================ -->
+    <!-- CHECKPOINT 7: SUBMIT PAGE - VERTICAL ONLY    -->
+    <!-- ============================================ -->
     <div id="submitPage" class="page">
-        <div class="page-header"><h1>Get Verified</h1><p>Upload or paste video from any platform</p></div>
+        <div class="page-header"><h1>Get Verified</h1><p>Upload your vertical leap video for AI analysis</p></div>
         <div class="card">
             <div class="video-input-tabs" id="videoTabs">
                 <button class="tab-btn active" data-tab="url">URL</button>
@@ -723,36 +731,38 @@
             <div id="uploadTab" class="tab-content" style="display:none;">
                 <div class="upload-area" id="uploadArea">
                     <div class="upload-icon">📤</div>
-                    <p>Drag & drop video file</p>
+                    <p>Drag & drop vertical leap video</p>
                     <p class="upload-subtitle">or click to browse</p>
                     <input type="file" id="videoFile" accept="video/*" style="display:none;">
-                    <div id="uploadProgress" style="display:none;"><span>Uploading...</span></div>
                 </div>
             </div>
             <div id="cameraTab" class="tab-content" style="display:none;">
                 <div class="camera-container">
                     <video id="cameraPreview" autoplay playsinline style="width:100%; border-radius:12px;"></video>
-                    <button type="button" class="btn-secondary" id="captureBtn">📸 Record 5 Seconds</button>
+                    <button type="button" class="btn-secondary" id="captureBtn">📸 Record Vertical Jump (5 sec)</button>
                 </div>
             </div>
             <div class="form-group"><label>Full Name</label><input type="text" class="form-input" id="athleteName" placeholder="Marcus Thompson"></div>
             <div class="form-group"><label>School/Team</label><input type="text" class="form-input" id="athleteSchool" placeholder="Westlake High"></div>
             <div class="form-group"><label>Position</label><select class="form-select" id="athletePosition"><option value="PG">PG</option><option value="SG">SG</option><option value="SF">SF</option><option value="PF">PF</option><option value="C">C</option></select></div>
             <div class="form-group"><label>Claimed Vertical (inches)</label><input type="number" class="form-input" id="claimedVertical" placeholder="e.g., 40"></div>
-            <div class="form-group"><label>Claimed 40-Yard Sprint (seconds)</label><input type="number" class="form-input" id="claimedSprint" placeholder="e.g., 4.5" step="0.01"></div>
-            <div class="sprint-tip">🏃 For accurate sprint measurement, film from baseline to baseline with court lines visible.</div>
+            <div class="sprint-tip" style="background: rgba(59,130,246,0.1); border-left: 3px solid var(--primary-blue); padding: 0.5rem; margin-top: 0.5rem; font-size: 0.7rem; border-radius: 8px;">
+                🏀 Tip: Film your full jump from takeoff to landing. Show the rim or measuring device clearly.
+            </div>
             <button class="btn-primary" id="submitBtn">Submit for AI Analysis</button>
             <div id="submitResult"></div>
         </div>
     </div>
 
-    <!-- SCOUT PORTAL PAGE -->
+    <!-- ============================================ -->
+    <!-- CHECKPOINT 8: SCOUT PORTAL PAGE              -->
+    <!-- ============================================ -->
     <div id="scoutPage" class="page">
-        <div class="page-header"><h1>Scout Portal</h1><p>Advanced tools for talent evaluation</p></div>
+        <div class="page-header"><h1>Scout Portal</h1><p>Find athletes by verified vertical leap</p></div>
         <div class="mode-toggle" id="scoutModeToggle">
-            <button class="mode-btn active" data-mode="watchlist">My Watchlist</button>
-            <button class="mode-btn" data-mode="compare">Compare</button>
-            <button class="mode-btn" data-mode="recruiting">Recruiting Board</button>
+            <button class="mode-btn active" data-mode="watchlist">📋 My Watchlist</button>
+            <button class="mode-btn" data-mode="compare">📊 Compare</button>
+            <button class="mode-btn" data-mode="recruiting">🎓 Recruiting Board</button>
         </div>
         
         <div id="watchlistMode" class="scout-mode" style="display: block;">
@@ -789,22 +799,26 @@
         </div>
     </div>
 
-    <!-- LEADERBOARD PAGE -->
+    <!-- ============================================ -->
+    <!-- CHECKPOINT 9: LEADERBOARD PAGE               -->
+    <!-- ============================================ -->
     <div id="leaderboardPage" class="page">
         <div class="page-header"><h1>Trust Leaderboard</h1><p>Top verifiers earn scout access</p></div>
         <div class="card" id="leaderboardList"></div>
         <div class="card"><h3>Your Stats</h3><div>Confirmations: <strong id="userConfirmCount">0</strong></div><div>Streak: <strong id="userStreak">0</strong> days</div><div>Trust: <strong id="userTrustDisplay">85</strong></div><div class="progress-container"><div class="progress-bar" id="trustProgress" style="width:85%"></div></div></div>
     </div>
 
-    <!-- HOW IT WORKS PAGE -->
+    <!-- ============================================ -->
+    <!-- CHECKPOINT 10: HOW IT WORKS & PRICING        -->
+    <!-- ============================================ -->
     <div id="howitworksPage" class="page">
-        <div class="page-header"><h1>How VANTAGE Works</h1><p>AI-powered athletic verification</p></div>
+        <div class="page-header"><h1>How VANTAGE Works</h1><p>AI-powered vertical leap verification</p></div>
         <div class="card">
             <h3>🔍 The Verification Process</h3>
             <div class="step-container">
-                <div class="step"><div class="step-number">1</div><div class="step-content"><h4>Submit Video</h4><p>Paste a link or upload directly from any platform.</p></div></div>
-                <div class="step"><div class="step-number">2</div><div class="step-content"><h4>AI Analysis</h4><p>Our AI measures vertical leap and sprint speed from video frames.</p></div></div>
-                <div class="step"><div class="step-number">3</div><div class="step-content"><h4>Community Verification</h4><p>Other users confirm your measurements. After 3 confirmations, you earn the Verified badge.</p></div></div>
+                <div class="step"><div class="step-number">1</div><div class="step-content"><h4>Submit Video</h4><p>Paste a link or upload your vertical jump video.</p></div></div>
+                <div class="step"><div class="step-number">2</div><div class="step-content"><h4>AI Analysis</h4><p>Our AI measures your vertical leap from video frames.</p></div></div>
+                <div class="step"><div class="step-number">3</div><div class="step-content"><h4>Community Verification</h4><p>Other users confirm your measurement. After 3 confirmations, you earn the Verified badge.</p></div></div>
             </div>
         </div>
         <div class="card">
@@ -818,7 +832,6 @@
         </div>
     </div>
 
-    <!-- PRICING PAGE -->
     <div id="pricingPage" class="page">
         <div class="page-header"><h1>Simple Pricing</h1><p>Free for athletes · $500/year for scouts</p></div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
@@ -828,7 +841,9 @@
     </div>
 </div>
 
-<!-- MODALS -->
+<!-- ============================================ -->
+<!-- CHECKPOINT 11: MODALS                        -->
+<!-- ============================================ -->
 <div id="loginModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('loginModal')">&times;</span><h2>Sign In</h2><input type="email" class="form-input" id="loginEmail" placeholder="Email"><input type="password" class="form-input" id="loginPassword" placeholder="Password"><button class="btn-primary" id="doLoginBtn">Sign In</button><p style="margin-top:1rem; font-size:0.75rem;">Demo: Any email works</p></div></div>
 
 <div id="detailModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('detailModal')">&times;</span><div id="detailContent"></div><div class="button-group" id="actionButtons">
@@ -844,20 +859,18 @@
 <div id="videoPlayerModal" class="modal"><div class="modal-content video-modal"><span class="close-modal" onclick="closeVideoPlayer()">&times;</span><div class="video-player-container"><video id="highlightVideo" controls style="width:100%; max-height:60vh;"><source id="videoSource" src="" type="video/mp4"></video><div class="video-metrics-overlay" id="videoMetricsOverlay"></div></div></div></div>
 
 <script>
-    // ============================================
-    // VANTAGE - FULLY FUNCTIONAL
-    // ============================================
-
+    // ============================================ */
+    // CHECKPOINT 12: ATHLETE DATA (VERTICAL ONLY) */
+    // ============================================ */
     const BACKEND_URL = 'https://vantage-backend-production-6d44.up.railway.app';
     
-    // ALL 6 ATHLETES
     let athletes = [
-        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", avatarBg: "avatar-bg-1", jerseyNum: "23", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, sprint: { value: 4.38, status: "verified", confidence: 94, verifications: 4 } }, trustScore: 94, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"], views: 342 },
-        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", avatarBg: "avatar-bg-2", jerseyNum: "11", classYear: 2025, flagged: false, hasClip: true, metrics: { vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, sprint: { value: 4.45, status: "pending", confidence: 72, verifications: 1 } }, trustScore: 91, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"], views: 189 },
-        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", avatarBg: "avatar-bg-3", jerseyNum: "7", classYear: 2026, flagged: false, hasClip: true, metrics: { vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, sprint: { value: 4.28, status: "verified", confidence: 96, verifications: 6 } }, trustScore: 96, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson", "Mike Ross", "Lisa Wong"], views: 567 },
-        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", avatarBg: "avatar-bg-4", jerseyNum: "34", classYear: 2026, flagged: false, hasClip: false, metrics: { vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, sprint: { value: null, status: null } }, trustScore: 0, confirmations: ["Coach Miller"], views: 45 },
-        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", avatarBg: "avatar-bg-5", jerseyNum: "5", classYear: 2025, flagged: false, hasClip: false, metrics: { vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, sprint: { value: 4.42, status: "pending", confidence: 68, verifications: 0 } }, trustScore: 0, confirmations: [], views: 34 },
-        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", avatarBg: "avatar-bg-6", jerseyNum: "1", classYear: 2026, flagged: false, hasClip: false, metrics: { vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, sprint: { value: 4.35, status: "pending", confidence: 74, verifications: 0 } }, trustScore: 0, confirmations: [], views: 28 }
+        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", jerseyNum: "23", classYear: 2025, flagged: false, hasClip: true, vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, trustScore: 94, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"], views: 342 },
+        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", jerseyNum: "11", classYear: 2025, flagged: false, hasClip: true, vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, trustScore: 91, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"], views: 189 },
+        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", jerseyNum: "7", classYear: 2026, flagged: false, hasClip: true, vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, trustScore: 96, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson", "Mike Ross", "Lisa Wong"], views: 567 },
+        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", jerseyNum: "34", classYear: 2026, flagged: false, hasClip: false, vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, trustScore: 0, confirmations: ["Coach Miller"], views: 45 },
+        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", jerseyNum: "5", classYear: 2025, flagged: false, hasClip: false, vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, trustScore: 0, confirmations: [], views: 34 },
+        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", jerseyNum: "1", classYear: 2026, flagged: false, hasClip: false, vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, trustScore: 0, confirmations: [], views: 28 }
     ];
 
     let currentUser = { name: "Demo User", trustScore: 85, email: null, confirmationsMade: 0, streak: 3, watchlist: [1, 3], confirmedAthleteIds: [], challengedAthleteIds: [] };
@@ -878,7 +891,9 @@
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFunflies.mp4"
     ];
 
-    // ========== VIDEO FUNCTIONS ==========
+    // ============================================ */
+    // CHECKPOINT 13: VIDEO FUNCTIONS               */
+    // ============================================ */
     function generateDemoVideo(athleteId) {
         const videoIndex = athleteId % SAMPLE_VIDEOS.length;
         videoUrls[athleteId] = SAMPLE_VIDEOS[videoIndex];
@@ -913,8 +928,7 @@
         
         overlay.innerHTML = `
             <div class="metric-badge">🏀 ${athlete.name}</div>
-            <div class="metric-badge">Vertical: ${athlete.metrics.vertical?.value || '?'}"</div>
-            <div class="metric-badge">Sprint: ${athlete.metrics.sprint?.value || '?'}s</div>
+            <div class="metric-badge">Vertical: ${athlete.vertical?.value || '?'}"</div>
             <div class="trust-badge">⭐ Trust: ${athlete.trustScore || 'Pending'}</div>
         `;
         
@@ -931,28 +945,29 @@
         closeModal('videoPlayerModal');
     }
 
-    // ========== TAB FUNCTIONS - FIXED ==========
+    // ============================================ */
+    // CHECKPOINT 14: TAB FUNCTIONS                 */
+    // ============================================ */
     function initVideoTabs() {
         const tabs = document.querySelectorAll('#videoTabs .tab-btn');
         const urlTab = document.getElementById('urlTab');
         const uploadTab = document.getElementById('uploadTab');
         const cameraTab = document.getElementById('cameraTab');
         
+        if (!tabs.length) return;
+        
         tabs.forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 const tabName = this.getAttribute('data-tab');
                 
-                // Update active state
                 tabs.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 
-                // Hide all tabs
                 urlTab.style.display = 'none';
                 uploadTab.style.display = 'none';
                 cameraTab.style.display = 'none';
                 
-                // Show selected tab
                 if (tabName === 'url') urlTab.style.display = 'block';
                 else if (tabName === 'upload') uploadTab.style.display = 'block';
                 else if (tabName === 'camera') {
@@ -974,12 +989,16 @@
             .catch(err => showToast('Camera access denied', 'error'));
     }
 
-    // ========== SCOUT MODE FUNCTIONS - FIXED ==========
+    // ============================================ */
+    // CHECKPOINT 15: SCOUT MODE FUNCTIONS          */
+    // ============================================ */
     function initScoutModes() {
         const watchlistDiv = document.getElementById('watchlistMode');
         const compareDiv = document.getElementById('compareMode');
         const recruitingDiv = document.getElementById('recruitingMode');
         const modeBtns = document.querySelectorAll('#scoutModeToggle .mode-btn');
+        
+        if (!modeBtns.length) return;
         
         modeBtns.forEach(btn => {
             btn.addEventListener('click', function(e) {
@@ -1007,7 +1026,9 @@
         });
     }
 
-    // ========== HELPER FUNCTIONS ==========
+    // ============================================ */
+    // CHECKPOINT 16: HELPER FUNCTIONS              */
+    // ============================================ */
     function showToast(message, type = 'info') {
         const existing = document.querySelector('.toast');
         if (existing) existing.remove();
@@ -1061,14 +1082,17 @@
         generateAllVideos();
     }
 
+    // ============================================ */
+    // CHECKPOINT 17: STATS & FILTERING             */
+    // ============================================ */
     function updateStats() {
         const active = athletes.filter(a => !a.flagged).length;
         document.getElementById('statTotal').innerText = active;
-        const verified = athletes.filter(a => !a.flagged && a.metrics.vertical?.status === 'verified').length;
+        const verified = athletes.filter(a => !a.flagged && a.vertical?.status === 'verified').length;
         document.getElementById('statVerified').innerText = verified;
         document.getElementById('statPending').innerText = active - verified;
         let sum = 0, cnt = 0;
-        athletes.forEach(a => { if (!a.flagged && a.metrics.vertical?.value) { sum += a.metrics.vertical.value; cnt++; } });
+        athletes.forEach(a => { if (!a.flagged && a.vertical?.value) { sum += a.vertical.value; cnt++; } });
         document.getElementById('statAvgVert').innerText = cnt ? Math.round(sum / cnt) : 0;
         document.getElementById('watchlistCount').innerText = currentUser.watchlist.length;
         document.getElementById('userConfirmCount').innerText = currentUser.confirmationsMade;
@@ -1076,25 +1100,28 @@
         document.getElementById('userTrustDisplay').innerText = currentUser.trustScore;
         document.getElementById('trustProgress').style.width = currentUser.trustScore + '%';
         const top = [...athletes].filter(a => a.trustScore > 0).sort((a,b) => b.trustScore - a.trustScore).slice(0,5);
-        document.getElementById('leaderboardList').innerHTML = top.length ? top.map((a,i) => `<div style="padding:0.75rem; border-bottom:0.5px solid rgba(59,130,246,0.15); display:flex; justify-content:space-between;"><span><strong>${i+1}.</strong> ${a.name}</span><span>⭐ ${a.trustScore}</span></div>`).join('') : '<div class="empty-state">No verifiers yet</div>';
+        document.getElementById('leaderboardList').innerHTML = top.length ? top.map((a,i) => `<div style="padding:0.75rem; border-bottom:0.5px solid rgba(59,130,246,0.15); display:flex; justify-content:space-between;"><span><strong>${i+1}.</strong> ${a.name}</span><span>⭐ ${a.trustScore}</span><span>🏀 ${a.vertical?.value || '?'}"</span></div>`).join('') : '<div class="empty-state">No verifiers yet</div>';
         saveData();
     }
 
     function getFiltered() {
         let filtered = athletes.filter(a => !a.flagged);
-        if (currentFilter === 'verified') filtered = filtered.filter(a => a.metrics.vertical?.status === 'verified');
-        else if (currentFilter === 'pending') filtered = filtered.filter(a => a.metrics.vertical?.status === 'pending');
+        if (currentFilter === 'verified') filtered = filtered.filter(a => a.vertical?.status === 'verified');
+        else if (currentFilter === 'pending') filtered = filtered.filter(a => a.vertical?.status === 'pending');
         else if (currentFilter === 'trending') filtered = [...athletes].sort((a,b) => b.views - a.views).slice(0,3);
         if (currentSearch) {
             const s = currentSearch.toLowerCase();
             filtered = filtered.filter(a => a.name.toLowerCase().includes(s) || a.school.toLowerCase().includes(s));
         }
-        if (currentSort === 'vertical') filtered.sort((a,b) => (b.metrics.vertical?.value || 0) - (a.metrics.vertical?.value || 0));
+        if (currentSort === 'vertical') filtered.sort((a,b) => (b.vertical?.value || 0) - (a.vertical?.value || 0));
         else if (currentSort === 'trust') filtered.sort((a,b) => (b.trustScore || 0) - (a.trustScore || 0));
         else if (currentSort === 'views') filtered.sort((a,b) => (b.views || 0) - (a.views || 0));
         return filtered;
     }
 
+    // ============================================ */
+    // CHECKPOINT 18: TOGGLE FUNCTIONS              */
+    // ============================================ */
     function toggleWatchlist(id, event) {
         if (event) event.stopPropagation();
         const idx = currentUser.watchlist.indexOf(id);
@@ -1126,6 +1153,9 @@
         renderComparison();
     }
 
+    // ============================================ */
+    // CHECKPOINT 19: RENDER FUNCTIONS              */
+    // ============================================ */
     function renderAthleteGrid() {
         const grid = document.getElementById('athleteGrid');
         if (!grid) return;
@@ -1143,10 +1173,9 @@
                     <div class="athlete-name">${a.name}</div>
                     <div class="athlete-school">${a.school} · ${a.position}</div>
                     <div class="metrics-container">
-                        <div class="metric-item"><div class="metric-value">${a.metrics.vertical?.value || '?'}"</div><div class="metric-label">Vert ${a.metrics.vertical?.status === 'verified' ? '✓' : '⏳'}</div></div>
-                        <div class="metric-item"><div class="metric-value">${a.metrics.sprint?.value ? a.metrics.sprint.value + 's' : '—'}</div><div class="metric-label">Sprint</div></div>
+                        <div class="metric-item"><div class="metric-value">${a.vertical?.value || '?'}"</div><div class="metric-label">Vertical ${a.vertical?.status === 'verified' ? '✓' : '⏳'}</div></div>
                     </div>
-                    ${a.metrics.vertical?.status === 'verified' ? '<span class="verified-badge">✓ Verified</span>' : '<span class="pending-badge">⏳ Pending</span>'}
+                    ${a.vertical?.status === 'verified' ? '<span class="verified-badge">✓ Verified</span>' : '<span class="pending-badge">⏳ Pending</span>'}
                     <div class="verification-count">👁️ ${a.views} views</div>
                     ${a.trustScore > 0 ? `<div class="trust-score">⭐ Trust: ${a.trustScore}</div>` : ''}
                 </div>
@@ -1170,7 +1199,7 @@
         if (!grid) return;
         const wl = athletes.filter(a => currentUser.watchlist.includes(a.id) && !a.flagged);
         if (!wl.length) { grid.innerHTML = '<div class="empty-state">Watchlist empty<br>⭐ Tap star on any athlete</div>'; return; }
-        grid.innerHTML = wl.map(a => `<div class="athlete-card" data-id="${a.id}" style="padding:0.75rem;"><div class="athlete-name">${a.name}</div><div class="athlete-school">${a.school}</div><div>🏀 ${a.metrics.vertical?.value || '?'}"  ⭐ ${a.trustScore || 'Pending'}</div></div>`).join('');
+        grid.innerHTML = wl.map(a => `<div class="athlete-card" data-id="${a.id}" style="padding:0.75rem;"><div class="athlete-name">${a.name}</div><div class="athlete-school">${a.school}</div><div>🏀 ${a.vertical?.value || '?'}"  ⭐ ${a.trustScore || 'Pending'}</div></div>`).join('');
         document.querySelectorAll('#watchlistGrid .athlete-card').forEach(card => card.addEventListener('click', () => showAthleteDetail(parseInt(card.dataset.id))));
     }
 
@@ -1179,7 +1208,7 @@
         if (!list) return;
         const compare = athletes.filter(a => compareSelectedIds.includes(a.id) && !a.flagged);
         if (!compare.length) { list.innerHTML = '<div class="empty-state">Select athletes to compare using checkboxes on Discover page</div>'; return; }
-        list.innerHTML = compare.map(a => `<div class="comparison-card"><strong>${a.name}</strong><div>Vertical: ${a.metrics.vertical?.value || '?'}"</div><div>Sprint: ${a.metrics.sprint?.value || '—'}s</div><div>Trust: ${a.trustScore || 0}</div><button class="btn-outline" onclick="showAthleteDetail(${a.id})">View Profile</button></div>`).join('');
+        list.innerHTML = compare.map(a => `<div class="comparison-card"><strong>${a.name}</strong><div>🏀 Vertical: <strong>${a.vertical?.value || '?'}"</strong></div><div>⭐ Trust: ${a.trustScore || 0}</div><div>👁️ ${a.views} views</div><button class="btn-outline" onclick="showAthleteDetail(${a.id})">View Profile</button></div>`).join('');
     }
 
     function renderRecruitingBoard() {
@@ -1188,7 +1217,7 @@
         const year = document.getElementById('classYear')?.value || '2025';
         const filtered = athletes.filter(a => !a.flagged && a.classYear == year);
         if (!filtered.length) { grid.innerHTML = '<div class="empty-state">No athletes in this class year</div>'; return; }
-        grid.innerHTML = filtered.map(a => `<div class="athlete-card" data-id="${a.id}" style="padding:0.75rem;"><div class="athlete-name">${a.name}</div><div class="athlete-school">${a.school}</div><div>🏀 ${a.metrics.vertical?.value || '?'}"  Class of ${a.classYear}</div></div>`).join('');
+        grid.innerHTML = filtered.map(a => `<div class="athlete-card" data-id="${a.id}" style="padding:0.75rem;"><div class="athlete-name">${a.name}</div><div class="athlete-school">${a.school}</div><div>🏀 ${a.vertical?.value || '?'}"  Class of ${a.classYear}</div></div>`).join('');
         document.querySelectorAll('#recruitingBoardList .athlete-card').forEach(card => card.addEventListener('click', () => showAthleteDetail(parseInt(card.dataset.id))));
     }
 
@@ -1203,8 +1232,8 @@
     function exportToCSV() {
         const wl = athletes.filter(a => currentUser.watchlist.includes(a.id) && !a.flagged);
         if (!wl.length) { showToast('Watchlist empty', 'error'); return; }
-        let csv = 'Name,School,Position,Vertical (in),Sprint (s),Trust Score,Views\n';
-        wl.forEach(a => csv += `"${a.name}","${a.school}",${a.position},${a.metrics.vertical?.value || 'N/A'},${a.metrics.sprint?.value || 'N/A'},${a.trustScore || 'Pending'},${a.views}\n`);
+        let csv = 'Name,School,Position,Vertical (in),Trust Score,Views\n';
+        wl.forEach(a => csv += `"${a.name}","${a.school}",${a.position},${a.vertical?.value || 'N/A'},${a.trustScore || 'Pending'},${a.views}\n`);
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -1215,6 +1244,9 @@
         showToast('CSV exported!', 'success');
     }
 
+    // ============================================ */
+    // CHECKPOINT 20: DETAIL MODAL & VERIFICATION   */
+    // ============================================ */
     function showAthleteDetail(id) {
         const athlete = athletes.find(a => a.id === id);
         if (!athlete || athlete.flagged) return;
@@ -1222,20 +1254,43 @@
         athlete.views = (athlete.views || 0) + 1;
         const inWatchlist = currentUser.watchlist.includes(athlete.id);
         const stockAvatar = generateStockAvatar(athlete.name, athlete.position);
+        const needVert = athlete.vertical?.status === 'pending' ? (3 - (athlete.vertical.verifications || 0)) : 0;
         document.getElementById('detailContent').innerHTML = `
             <img src="${stockAvatar}" style="width:100%; border-radius:16px; margin-bottom:1rem;">
             <h2>${athlete.name}</h2>
             <p style="color:var(--gray-light);">${athlete.school} · ${athlete.position} · #${athlete.jerseyNum}</p>
             <div style="background:rgba(0,0,0,0.3); border-radius:12px; padding:1rem; margin:1rem 0;">
-                <div>🏀 Vertical: <strong>${athlete.metrics.vertical?.value || '?'}"</strong> ${athlete.metrics.vertical?.status === 'verified' ? '✅ Verified' : `⏳ (${athlete.metrics.vertical?.verifications || 0}/3)`}</div>
-                <div>🏃 Sprint: <strong>${athlete.metrics.sprint?.value || '—'}s</strong></div>
-                <div>⭐ Trust: ${athlete.trustScore || 'Pending'}</div>
+                <div>🏀 Vertical Leap: <strong>${athlete.vertical?.value || '?'}"</strong> AI: ${athlete.vertical?.confidence || 0}% ${athlete.vertical?.status === 'verified' ? '✅' : `⏳ (${athlete.vertical?.verifications || 0}/3)`}</div>
+                <div>⭐ Trust Score: ${athlete.trustScore || 'Pending'}</div>
                 <div>👁️ ${athlete.views} views</div>
-            </div>`;
+                <div>🔒 Verified by ${athlete.confirmations.length} community members</div>
+                ${(!athlete.vertical?.status === 'verified' && needVert > 0) ? `<div class="progress-container" style="margin-top:0.5rem;"><div class="progress-bar" style="width: ${((3-needVert)/3)*100}%;"></div></div><div style="font-size:0.7rem;">Needs ${needVert} more confirmations for Verified badge</div>` : ''}
+            </div>
+            <button class="btn-outline" id="shareBadgeBtn" style="width:100%; margin-top:1rem;">🏅 Share Verified Badge</button>
+            ${athlete.hasClip ? `<button class="btn-outline" id="watchClipBtn" style="width:100%; margin-top:0.5rem;">🎬 Watch Highlight Clip</button>` : ''}`;
+        document.getElementById('confirmBtn').style.display = (!currentUser.confirmedAthleteIds.includes(athlete.id) && athlete.vertical?.status !== 'verified') ? 'block' : 'none';
+        document.getElementById('undoConfirmBtn').style.display = currentUser.confirmedAthleteIds.includes(athlete.id) ? 'block' : 'none';
+        document.getElementById('challengeBtn').style.display = (!currentUser.challengedAthleteIds?.includes(athlete.id) && athlete.vertical?.status !== 'verified') ? 'block' : 'none';
+        document.getElementById('flagBtn').style.display = 'block';
         document.getElementById('watchlistDetailBtn').innerText = inWatchlist ? '⭐ Remove' : '⭐ Save';
+        
+        document.getElementById('shareBadgeBtn')?.addEventListener('click', () => showEmbedModal(athlete));
+        document.getElementById('watchClipBtn')?.addEventListener('click', () => playHighlight(athlete.id));
+        document.getElementById('flagBtn')?.addEventListener('click', flagAthlete);
         showModal('detailModal');
         saveData();
         updateStats();
+    }
+
+    function flagAthlete() {
+        if (!currentDetailAthlete || currentDetailAthlete.flagged) return;
+        currentDetailAthlete.flagged = true;
+        currentUser.watchlist = currentUser.watchlist.filter(i => i !== currentDetailAthlete.id);
+        compareSelectedIds = compareSelectedIds.filter(i => i !== currentDetailAthlete.id);
+        saveData();
+        renderAll();
+        closeModal('detailModal');
+        showToast(`🚩 ${currentDetailAthlete.name} flagged for review`, 'warning');
     }
 
     function toggleWatchlistFromDetail() {
@@ -1252,19 +1307,59 @@
         currentUser.confirmationsMade++;
         currentUser.trustScore = Math.min(100, currentUser.trustScore + 2);
         currentUser.streak++;
-        if (currentDetailAthlete.metrics.vertical?.status === 'pending') {
-            currentDetailAthlete.metrics.vertical.verifications = (currentDetailAthlete.metrics.vertical.verifications || 0) + 1;
-            if (currentDetailAthlete.metrics.vertical.verifications >= 3) {
-                currentDetailAthlete.metrics.vertical.status = 'verified';
+        if (currentDetailAthlete.vertical?.status === 'pending') {
+            currentDetailAthlete.vertical.verifications = (currentDetailAthlete.vertical.verifications || 0) + 1;
+            if (currentDetailAthlete.vertical.verifications >= 3) {
+                currentDetailAthlete.vertical.status = 'verified';
                 currentDetailAthlete.trustScore = Math.floor(Math.random() * 30) + 70;
+                showToast(`🎉 ${currentDetailAthlete.name} is now VERIFIED!`, 'success');
             }
         }
+        if (!currentDetailAthlete.confirmations) currentDetailAthlete.confirmations = [];
+        currentDetailAthlete.confirmations.push(currentUser.name);
         saveData();
         renderAll();
         showAthleteDetail(currentDetailAthlete.id);
         showToast(`✓ Verified! +2 trust. Streak: ${currentUser.streak}`, 'success');
     }
 
+    function undoConfirmation() {
+        if (!currentDetailAthlete) return;
+        const idx = currentUser.confirmedAthleteIds.indexOf(currentDetailAthlete.id);
+        if (idx === -1) { showToast('No confirmation to undo', 'error'); return; }
+        currentUser.confirmedAthleteIds.splice(idx, 1);
+        currentUser.confirmationsMade = Math.max(0, currentUser.confirmationsMade - 1);
+        currentUser.trustScore = Math.max(0, currentUser.trustScore - 2);
+        if (currentDetailAthlete.vertical && currentDetailAthlete.vertical.verifications > 0) {
+            currentDetailAthlete.vertical.verifications--;
+            if (currentDetailAthlete.vertical.verifications < 3) {
+                currentDetailAthlete.vertical.status = 'pending';
+                currentDetailAthlete.trustScore = 0;
+            }
+        }
+        const confirmIdx = currentDetailAthlete.confirmations.indexOf(currentUser.name);
+        if (confirmIdx !== -1) currentDetailAthlete.confirmations.splice(confirmIdx, 1);
+        saveData();
+        renderAll();
+        showAthleteDetail(currentDetailAthlete.id);
+        showToast(`↩️ Undone. Trust: ${currentUser.trustScore}`, 'info');
+    }
+
+    function challengeVerification() {
+        if (!currentDetailAthlete) return;
+        if (currentDetailAthlete.flagged) { showToast('Cannot challenge flagged', 'error'); return; }
+        if (currentUser.challengedAthleteIds?.includes(currentDetailAthlete.id)) { showToast('Already challenged', 'error'); return; }
+        if (!currentUser.challengedAthleteIds) currentUser.challengedAthleteIds = [];
+        currentUser.challengedAthleteIds.push(currentDetailAthlete.id);
+        if (!currentDetailAthlete.challenges) currentDetailAthlete.challenges = [];
+        currentDetailAthlete.challenges.push({ by: currentUser.name, at: new Date().toISOString() });
+        saveData();
+        showToast(`⚠ Challenge submitted for ${currentDetailAthlete.name}`, 'warning');
+    }
+
+    // ============================================ */
+    // CHECKPOINT 21: UI NAVIGATION                 */
+    // ============================================ */
     function showPage(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(pageId + 'Page').classList.add('active');
@@ -1291,6 +1386,18 @@
     function showModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
+    function showEmbedModal(athlete) {
+        const code = `<a href="https://vantage.app/athlete/${athlete.id}"><img src="https://vantage.app/badge/${athlete.id}" alt="VANTAGE Verified Vertical: ${athlete.vertical?.value || '?'}\""></a>`;
+        document.getElementById('embedCode').innerText = code;
+        showModal('embedModal');
+    }
+
+    function copyEmbedCode() {
+        const code = document.getElementById('embedCode')?.innerText;
+        if (code) { navigator.clipboard.writeText(code); showToast('Copied!', 'success'); }
+        closeModal('embedModal');
+    }
+
     function renderAll() {
         renderAthleteGrid();
         renderWatchlist();
@@ -1299,7 +1406,9 @@
         updateStats();
     }
 
-    // ========== UPLOAD HANDLERS ==========
+    // ============================================ */
+    // CHECKPOINT 22: UPLOAD HANDLERS               */
+    // ============================================ */
     const uploadArea = document.getElementById('uploadArea');
     const videoFile = document.getElementById('videoFile');
     
@@ -1344,15 +1453,74 @@
         setTimeout(() => { if (mediaRecorder?.state === 'recording') mediaRecorder.stop(); }, 5000);
     });
 
-    document.getElementById('submitBtn')?.addEventListener('click', () => {
+    document.getElementById('submitBtn')?.addEventListener('click', async () => {
         const videoUrl = document.getElementById('videoUrl')?.value;
         const name = document.getElementById('athleteName')?.value;
+        const school = document.getElementById('athleteSchool')?.value;
+        const position = document.getElementById('athletePosition')?.value;
+        const claimedVertical = parseFloat(document.getElementById('claimedVertical')?.value);
+        
         if (!videoUrl) { showToast('Please add a video URL or upload a file', 'error'); return; }
         if (!name) { showToast('Please enter athlete name', 'error'); return; }
-        showToast('Demo mode - Ready for backend integration!', 'success');
+        
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerText = '🔬 Analyzing...';
+        
+        try {
+            const newId = Math.max(...athletes.map(a => a.id), 0) + 1;
+            const response = await fetch(`${BACKEND_URL}/verify`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    video_source: videoUrl,
+                    athlete_id: newId,
+                    athlete_name: name,
+                    athlete_school: school || "Not specified",
+                    athlete_position: position,
+                    claimed_vertical: claimedVertical || 36
+                })
+            });
+            const data = await response.json();
+            
+            const newAthlete = {
+                id: newId, name, school: school || "Not specified", position,
+                jerseyNum: Math.floor(Math.random() * 99).toString(),
+                classYear: 2026, flagged: false, hasClip: true,
+                vertical: { 
+                    value: data.vertical_inches, 
+                    status: data.vertical_needs_confirmations === 0 ? 'verified' : 'pending', 
+                    confidence: data.vertical_confidence, 
+                    verifications: 0 
+                },
+                trustScore: data.vertical_needs_confirmations === 0 ? Math.floor(Math.random() * 30) + 70 : 0,
+                confirmations: [], views: 0
+            };
+            athletes.push(newAthlete);
+            generateDemoVideo(newId);
+            
+            document.getElementById('submitResult').innerHTML = `<div class="alert-success">✅ AI Analysis Complete!<br>🏀 Vertical: ${data.vertical_inches}" (${data.vertical_confidence}% confidence)</div>`;
+            document.getElementById('videoUrl').value = '';
+            document.getElementById('athleteName').value = '';
+            document.getElementById('athleteSchool').value = '';
+            document.getElementById('claimedVertical').value = '';
+            
+            saveData();
+            renderAll();
+            showPage('discover');
+            showToast('Athlete submitted successfully!', 'success');
+        } catch (error) {
+            document.getElementById('submitResult').innerHTML = `<div class="alert-error">❌ Error: ${error.message}</div>`;
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'Submit for AI Analysis';
+            setTimeout(() => document.getElementById('submitResult').innerHTML = '', 5000);
+        }
     });
 
-    // ========== EVENT LISTENERS ==========
+    // ============================================ */
+    // CHECKPOINT 23: EVENT LISTENERS               */
+    // ============================================ */
     document.querySelectorAll('.filter-chip').forEach(c => c.addEventListener('click', function() { applyFilter(this.dataset.filter); }));
     document.querySelectorAll('.nav-item').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
     document.querySelectorAll('.desktop-nav a').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
@@ -1361,13 +1529,17 @@
     document.getElementById('loginBtn')?.addEventListener('click', () => showModal('loginModal'));
     document.getElementById('doLoginBtn')?.addEventListener('click', () => { const email = document.getElementById('loginEmail')?.value; if(email){ currentUser.name = email.split('@')[0]; saveData(); updateStats(); closeModal('loginModal'); showToast(`Welcome ${currentUser.name}!`, 'success'); } });
     document.getElementById('confirmBtn')?.addEventListener('click', confirmVerification);
+    document.getElementById('undoConfirmBtn')?.addEventListener('click', undoConfirmation);
+    document.getElementById('challengeBtn')?.addEventListener('click', challengeVerification);
     document.getElementById('watchlistDetailBtn')?.addEventListener('click', toggleWatchlistFromDetail);
     document.getElementById('exportCsvBtn')?.addEventListener('click', exportToCSV);
     document.getElementById('refreshCompareBtn')?.addEventListener('click', refreshComparison);
     document.getElementById('classYear')?.addEventListener('change', renderRecruitingBoard);
     window.addEventListener('click', (e) => { if (e.target.classList && e.target.classList.contains('modal')) closeModal(e.target.id); });
 
-    // Initialize everything
+    // ============================================ */
+    // CHECKPOINT 24: INITIALIZATION                */
+    // ============================================ */
     loadData();
     initVideoTabs();
     initScoutModes();
