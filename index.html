@@ -410,6 +410,12 @@
             color: var(--gray-light);
         }
 
+        .verification-score {
+            font-size: 0.65rem;
+            margin-top: 0.25rem;
+            color: var(--primary-gold);
+        }
+
         .verified-badge { background: linear-gradient(135deg, var(--success-green), #059669); font-size: 0.6rem; padding: 0.2rem 0.5rem; border-radius: 20px; display: inline-block; margin-top: 0.5rem; }
         .pending-badge { background: rgba(245, 158, 11, 0.2); color: var(--primary-gold); font-size: 0.6rem; padding: 0.2rem 0.5rem; border-radius: 20px; display: inline-block; }
         .suspicious-badge { background: rgba(239, 68, 68, 0.2); color: var(--error-red); font-size: 0.6rem; padding: 0.2rem 0.5rem; border-radius: 20px; display: inline-block; margin-top: 0.5rem; }
@@ -629,7 +635,6 @@
         .rule-positive { color: var(--success-green); }
         .rule-negative { color: var(--error-red); }
 
-        /* Verifier Tier Badges */
         .tier-platinum { background: linear-gradient(135deg, #E5E4E2, #B8B6B4); color: #1a1a1a; }
         .tier-gold { background: linear-gradient(135deg, #FFD700, #DAA520); color: #1a1a1a; }
         .tier-silver { background: linear-gradient(135deg, #C0C0C0, #A8A8A8); color: #1a1a1a; }
@@ -802,18 +807,19 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- LEADERBOARD PAGE - UPDATED WITH VERIFIERS  -->
+    <!-- LEADERBOARD PAGE - UPDATED                -->
     <!-- ========================================== -->
     <div id="leaderboardPage" class="page">
         <div class="page-header"><h1>Trust Leaderboard</h1><p>Top verifiers earn scout access</p></div>
         
-        <!-- Top Verified Athletes -->
+        <!-- Top Verified Athletes by Verification Score -->
         <div class="card">
-            <h3>🏆 Top Verified Athletes</h3>
+            <h3>🏆 Most Trusted Athletes</h3>
+            <p style="font-size:0.7rem; color:var(--gray-light); margin-bottom:0.75rem;">Ranked by Verification Score (AI + Community + Audits)</p>
             <div id="leaderboardList"></div>
         </div>
         
-        <!-- NEW: Top Verifiers Leaderboard -->
+        <!-- Top Verifiers Leaderboard -->
         <div class="card">
             <h3>⭐ Top Verifiers</h3>
             <p style="font-size:0.7rem; color:var(--gray-light); margin-bottom:0.75rem;">Scouts who find talent early earn higher status</p>
@@ -845,6 +851,7 @@
                 <div class="step"><div class="step-number">1</div><div class="step-content"><h4>Submit Video</h4><p>Paste a link or upload your vertical jump video.</p></div></div>
                 <div class="step"><div class="step-number">2</div><div class="step-content"><h4>AI Analysis</h4><p>Our AI measures your vertical leap from video frames.</p></div></div>
                 <div class="step"><div class="step-number">3</div><div class="step-content"><h4>Community Verification</h4><p>Other users confirm your measurement. After 3 confirmations, you earn the Verified badge.</p></div></div>
+                <div class="step"><div class="step-number">4</div><div class="step-content"><h4>Verification Score</h4><p>Each athlete gets a 0-100% trust score based on AI confidence, verifier quality, and audit results.</p></div></div>
             </div>
         </div>
         <div class="card">
@@ -857,18 +864,25 @@
                 <div class="rule-card"><span class="rule-positive">+5 points</span><br>Correctly challenging fraud</div>
             </div>
             <div style="margin-top:1rem;">
-                <p style="font-size:0.8rem;"><strong>Verifier Tiers:</strong></p>
+                <p style="font-size:0.8rem;"><strong>Verifier Tiers (Weighted Confirmations):</strong></p>
                 <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.5rem;">
-                    <span style="background:linear-gradient(135deg,#E5E4E2,#B8B6B4); color:#1a1a1a; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">🏅 Platinum (50+ verifications, 10+ verified athletes)</span>
-                    <span style="background:linear-gradient(135deg,#FFD700,#DAA520); color:#1a1a1a; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">🥇 Gold (25+ verifications, 5+ verified athletes)</span>
-                    <span style="background:linear-gradient(135deg,#C0C0C0,#A8A8A8); color:#1a1a1a; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">🥈 Silver (10+ verifications, 2+ verified athletes)</span>
-                    <span style="background:linear-gradient(135deg,#CD7F32,#B87333); color:#1a1a1a; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">🥉 Bronze (3+ verifications, 1+ verified athlete)</span>
+                    <span class="tier-platinum" style="padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">🏅 Platinum (1.5x weight)</span>
+                    <span class="tier-gold" style="padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">🥇 Gold (1.3x weight)</span>
+                    <span class="tier-silver" style="padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">🥈 Silver (1.1x weight)</span>
+                    <span class="tier-bronze" style="padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">🥉 Bronze (1.0x weight)</span>
+                    <span class="tier-rookie" style="padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">🔰 Rookie (0.8x weight)</span>
                 </div>
             </div>
         </div>
         <div class="card">
-            <h3>🛡️ Integrity Guarantee</h3>
-            <p style="font-size:0.85rem; color:var(--gray-light);">Multiple layers of fraud detection: 3-verification minimum, trust score decay, verification cooldowns, and random audits. Verified athletes represent genuine talent.</p>
+            <h3>🛡️ Verification Score (0-100%)</h3>
+            <p style="font-size:0.85rem; color:var(--gray-light);">Our proprietary algorithm combines:</p>
+            <ul style="font-size:0.8rem; color:var(--gray-light); margin-top:0.5rem; margin-left:1.5rem;">
+                <li>🔬 AI Confidence (40% of score)</li>
+                <li>👥 Community Verifications (35% of score)</li>
+                <li>⭐ Verifier Quality (15% of score)</li>
+                <li>🔍 Audit Results (10% of score)</li>
+            </ul>
         </div>
     </div>
 
@@ -878,8 +892,8 @@
     <div id="pricingPage" class="page">
         <div class="page-header"><h1>Simple Pricing</h1><p>Free for athletes · $500/year for scouts</p></div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-            <div class="card" style="text-align:center;"><h3>Athlete</h3><p style="font-size:2.5rem; font-weight:700;">$0</p><p style="color:var(--gray-light);">Forever free</p><div style="margin-top:1rem; text-align:left;"><div>✓ Unlimited verifications</div><div>✓ Public verified profile</div><div>✓ Instagram embed badge</div></div><button class="btn-primary" style="margin-top:1rem; background:linear-gradient(135deg,#10b981,#059669);" onclick="showPage('submit')">Get Started</button></div>
-            <div class="card" style="text-align:center; border-color:var(--primary-blue);"><div style="background:var(--primary-blue); display:inline-block; padding:0.2rem 0.75rem; border-radius:20px; font-size:0.7rem; margin-bottom:0.5rem;">MOST POPULAR</div><h3>Scout Pro</h3><p style="font-size:2.5rem; font-weight:700;">$500</p><p style="color:var(--gray-light);">Per year</p><div style="margin-top:1rem; text-align:left;"><div>✓ Full athlete database</div><div>✓ Advanced filters</div><div>✓ Save & compare athletes</div><div>✓ Export to CSV</div><div>✓ Fraud detection alerts</div></div><button class="btn-primary" style="margin-top:1rem;" onclick="showToast('Demo: Stripe integration', 'info')">Subscribe</button></div>
+            <div class="card" style="text-align:center;"><h3>Athlete</h3><p style="font-size:2.5rem; font-weight:700;">$0</p><p style="color:var(--gray-light);">Forever free</p><div style="margin-top:1rem; text-align:left;"><div>✓ Unlimited verifications</div><div>✓ Public verified profile</div><div>✓ Instagram embed badge</div><div>✓ Verification Score (0-100%)</div></div><button class="btn-primary" style="margin-top:1rem; background:linear-gradient(135deg,#10b981,#059669);" onclick="showPage('submit')">Get Started</button></div>
+            <div class="card" style="text-align:center; border-color:var(--primary-blue);"><div style="background:var(--primary-blue); display:inline-block; padding:0.2rem 0.75rem; border-radius:20px; font-size:0.7rem; margin-bottom:0.5rem;">MOST POPULAR</div><h3>Scout Pro</h3><p style="font-size:2.5rem; font-weight:700;">$500</p><p style="color:var(--gray-light);">Per year</p><div style="margin-top:1rem; text-align:left;"><div>✓ Full athlete database</div><div>✓ Advanced filters</div><div>✓ Save & compare athletes</div><div>✓ Export to CSV</div><div>✓ Fraud detection alerts</div><div>✓ Verifier tier status</div></div><button class="btn-primary" style="margin-top:1rem;" onclick="showToast('Demo: Stripe integration', 'info')">Subscribe</button></div>
         </div>
     </div>
 </div>
@@ -908,9 +922,9 @@
     const BACKEND_URL = 'https://vantage-backend-production-6d44.up.railway.app';
     
     let athletes = [
-        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", jerseyNum: "23", classYear: 2025, flagged: false, suspicious: false, hasClip: true, vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, trustScore: 94, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"], views: 342 },
-        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", jerseyNum: "11", classYear: 2025, flagged: false, suspicious: false, hasClip: true, vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, trustScore: 91, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"], views: 189 },
-        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", jerseyNum: "7", classYear: 2026, flagged: false, suspicious: false, hasClip: true, vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, trustScore: 96, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson", "Mike Ross", "Lisa Wong"], views: 567 },
+        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", jerseyNum: "23", classYear: 2025, flagged: false, suspicious: false, hasClip: true, vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, trustScore: 94, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"], views: 342, verifiedAt: new Date().toISOString(), auditPassed: true },
+        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", jerseyNum: "11", classYear: 2025, flagged: false, suspicious: false, hasClip: true, vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, trustScore: 91, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"], views: 189, verifiedAt: new Date().toISOString(), auditPassed: true },
+        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", jerseyNum: "7", classYear: 2026, flagged: false, suspicious: false, hasClip: true, vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, trustScore: 96, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson", "Mike Ross", "Lisa Wong"], views: 567, verifiedAt: new Date().toISOString(), auditPassed: true },
         { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", jerseyNum: "34", classYear: 2026, flagged: false, suspicious: false, hasClip: false, vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, trustScore: 0, confirmations: ["Coach Miller"], views: 45 },
         { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", jerseyNum: "5", classYear: 2025, flagged: false, suspicious: false, hasClip: false, vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, trustScore: 0, confirmations: [], views: 34 },
         { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", jerseyNum: "1", classYear: 2026, flagged: false, suspicious: false, hasClip: false, vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, trustScore: 0, confirmations: [], views: 28 }
@@ -938,6 +952,44 @@
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFunflies.mp4"
     ];
+
+    // ==========================================
+    // VERIFICATION SCORE CALCULATION (NEW)
+    // ==========================================
+    function calculateVerificationScore(athlete) {
+        if (!athlete.vertical) return 0;
+        
+        let score = 0;
+        
+        // AI Confidence (0-40 points)
+        const aiConfidence = athlete.vertical.confidence || 0;
+        score += aiConfidence * 0.4;
+        
+        // Community Verifications (0-35 points)
+        // Weighted by verifier quality (simulated)
+        const verifCount = athlete.vertical.verifications || 0;
+        // Simple weighting: assume verifications are from mixed tiers
+        const weightedCount = verifCount * 1.0; // Simplified for demo
+        score += Math.min(35, weightedCount * 11.7);
+        
+        // Verifier Diversity (0-15 points)
+        const uniqueVerifiers = new Set(athlete.confirmations || []).size;
+        score += Math.min(15, uniqueVerifiers * 5);
+        
+        // Audit Passed (0-10 points)
+        if (athlete.auditPassed) {
+            score += 10;
+        }
+        
+        return Math.min(100, Math.round(score));
+    }
+
+    function getVerificationScoreColor(score) {
+        if (score >= 90) return '#10B981';
+        if (score >= 75) return '#3B82F6';
+        if (score >= 60) return '#F59E0B';
+        return '#EF4444';
+    }
 
     // ==========================================
     // VIDEO FUNCTIONS
@@ -974,9 +1026,12 @@
         source.src = videoUrl;
         video.load();
         
+        const verificationScore = calculateVerificationScore(athlete);
+        
         overlay.innerHTML = `
             <div class="metric-badge">🏀 ${athlete.name}</div>
             <div class="metric-badge">Vertical: ${athlete.vertical?.value || '?'}"</div>
+            <div class="metric-badge">🔒 Verification: ${verificationScore}%</div>
             <div class="trust-badge">⭐ Trust: ${athlete.trustScore || 'Pending'}</div>
             ${athlete.suspicious ? '<div class="metric-badge" style="background:#EF4444;">⚠️ Under Review</div>' : ''}
         `;
@@ -1168,7 +1223,7 @@
     }
 
     // ==========================================
-    // VERIFIER STATISTICS & LEADERBOARD (NEW)
+    // VERIFIER STATISTICS & LEADERBOARD
     // ==========================================
     function getVerifierStats() {
         const stats = {};
@@ -1198,18 +1253,18 @@
 
     function getVerifierTier(totalVerifications, verifiedAthletes) {
         if (totalVerifications >= 50 && verifiedAthletes >= 10) {
-            return { name: '🏅 Platinum Verifier', color: 'var(--platinum)', class: 'tier-platinum', icon: '🏅', nextMilestone: null };
+            return { name: '🏅 Platinum Verifier', color: 'var(--platinum)', class: 'tier-platinum', icon: '🏅', weight: 1.5, nextMilestone: null };
         }
         if (totalVerifications >= 25 && verifiedAthletes >= 5) {
-            return { name: '🥇 Gold Verifier', color: 'var(--gold)', class: 'tier-gold', icon: '🥇', nextMilestone: { verifications: 50, athletes: 10 } };
+            return { name: '🥇 Gold Verifier', color: 'var(--gold)', class: 'tier-gold', icon: '🥇', weight: 1.3, nextMilestone: { verifications: 50, athletes: 10 } };
         }
         if (totalVerifications >= 10 && verifiedAthletes >= 2) {
-            return { name: '🥈 Silver Verifier', color: 'var(--silver)', class: 'tier-silver', icon: '🥈', nextMilestone: { verifications: 25, athletes: 5 } };
+            return { name: '🥈 Silver Verifier', color: 'var(--silver)', class: 'tier-silver', icon: '🥈', weight: 1.1, nextMilestone: { verifications: 25, athletes: 5 } };
         }
         if (totalVerifications >= 3 && verifiedAthletes >= 1) {
-            return { name: '🥉 Bronze Verifier', color: 'var(--bronze)', class: 'tier-bronze', icon: '🥉', nextMilestone: { verifications: 10, athletes: 2 } };
+            return { name: '🥉 Bronze Verifier', color: 'var(--bronze)', class: 'tier-bronze', icon: '🥉', weight: 1.0, nextMilestone: { verifications: 10, athletes: 2 } };
         }
-        return { name: '🔰 Rookie Verifier', color: 'var(--gray-light)', class: 'tier-rookie', icon: '🔰', nextMilestone: { verifications: 3, athletes: 1 } };
+        return { name: '🔰 Rookie Verifier', color: 'var(--gray-light)', class: 'tier-rookie', icon: '🔰', weight: 0.8, nextMilestone: { verifications: 3, athletes: 1 } };
     }
 
     function getStreakBadge(streakDays) {
@@ -1224,6 +1279,10 @@
         const stats = getVerifierStats();
         const sorted = Object.entries(stats)
             .sort((a, b) => {
+                const tierA = getVerifierTier(a[1].total, a[1].verifiedAthletes);
+                const tierB = getVerifierTier(b[1].total, b[1].verifiedAthletes);
+                // Sort by weight (higher tier first), then by total verifications
+                if (tierB.weight !== tierA.weight) return tierB.weight - tierA.weight;
                 const scoreA = (a[1].verifiedAthletes * 10) + a[1].total;
                 const scoreB = (b[1].verifiedAthletes * 10) + b[1].total;
                 return scoreB - scoreA;
@@ -1244,7 +1303,7 @@
                         <div>
                             <span style="color:var(--primary-blue); font-weight:500;">${name}</span>
                             <div style="margin-top:0.25rem;">
-                                <span class="${tier.class}" style="font-size:0.65rem; padding:0.15rem 0.5rem; border-radius:20px;">${tier.icon} ${tier.name}</span>
+                                <span class="${tier.class}" style="font-size:0.65rem; padding:0.15rem 0.5rem; border-radius:20px;">${tier.icon} ${tier.name} (${tier.weight}x)</span>
                                 ${data.earlyVerifications > 0 ? `<span style="background:var(--primary-gold); color:#000; font-size:0.6rem; padding:0.15rem 0.5rem; border-radius:20px; margin-left:0.5rem;">🏅 Early Scout x${data.earlyVerifications}</span>` : ''}
                             </div>
                         </div>
@@ -1271,17 +1330,17 @@
             const verifNeeded = Math.max(0, tier.nextMilestone.verifications - myStats.total);
             const athletesNeeded = Math.max(0, tier.nextMilestone.athletes - myStats.verifiedAthletes);
             nextMilestoneText = `<div style="margin-top:0.75rem; font-size:0.7rem; color:var(--gray-light);">
-                📊 ${verifNeeded > 0 ? `${verifNeeded} more verifications` : ''}${verifNeeded > 0 && athletesNeeded > 0 ? ' and ' : ''}${athletesNeeded > 0 ? `${athletesNeeded} more verified athletes` : ''} to reach next tier
+                📊 ${verifNeeded > 0 ? `${verifNeeded} more verifications` : ''}${verifNeeded > 0 && athletesNeeded > 0 ? ' and ' : ''}${athletesNeeded > 0 ? `${athletesNeeded} more verified athletes` : ''} to reach next tier (${tier.weight + 0.2}x weight)
             </div>`;
         } else if (myStats.total >= 50) {
-            nextMilestoneText = `<div style="margin-top:0.75rem; font-size:0.7rem; color:var(--success-green);">🏆 You've reached the highest verifier tier! Elite status unlocked.</div>`;
+            nextMilestoneText = `<div style="margin-top:0.75rem; font-size:0.7rem; color:var(--success-green);">🏆 You've reached the highest verifier tier! Your confirmations carry ${tier.weight}x weight.</div>`;
         }
         
         document.getElementById('verifierStatus').innerHTML = `
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <div>
                     <div style="display:inline-block; padding:0.25rem 0.75rem; border-radius:20px; font-weight:bold; ${tier.class ? `class="${tier.class}"` : `style="background:${tier.color}20; color:${tier.color};"`}">
-                        ${tier.icon} ${tier.name}
+                        ${tier.icon} ${tier.name} (${tier.weight}x weight)
                     </div>
                     ${streakBadge ? `<div style="margin-top:0.5rem;"><span style="background:rgba(59,130,246,0.2); padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">${streakBadge.emoji} ${streakBadge.text}</span></div>` : ''}
                 </div>
@@ -1298,7 +1357,6 @@
             ${nextMilestoneText}
         `;
         
-        // Update streak badge in stats section
         const streakBadgeEl = document.getElementById('streakBadge');
         if (streakBadgeEl) {
             if (streakBadge) {
@@ -1327,10 +1385,27 @@
         document.getElementById('userTrustDisplay').innerText = currentUser.trustScore;
         document.getElementById('trustProgress').style.width = currentUser.trustScore + '%';
         
-        const top = [...athletes].filter(a => a.trustScore > 0).sort((a,b) => b.trustScore - a.trustScore).slice(0,5);
-        document.getElementById('leaderboardList').innerHTML = top.length ? top.map((a,i) => `<div style="padding:0.75rem; border-bottom:0.5px solid rgba(59,130,246,0.15); display:flex; justify-content:space-between;"><span><strong>${i+1}.</strong> ${a.name}</span><span>⭐ ${a.trustScore}</span><span>🏀 ${a.vertical?.value || '?'}"</span></div>`).join('') : '<div class="empty-state">No verified athletes yet</div>';
+        // Sort by Verification Score (most trusted first)
+        const top = [...athletes].filter(a => a.trustScore > 0 && a.vertical?.status === 'verified').sort((a,b) => {
+            const scoreA = calculateVerificationScore(a);
+            const scoreB = calculateVerificationScore(b);
+            return scoreB - scoreA;
+        }).slice(0,5);
         
-        // Update verifier leaderboard and status
+        document.getElementById('leaderboardList').innerHTML = top.length ? top.map((a,i) => {
+            const score = calculateVerificationScore(a);
+            const scoreColor = getVerificationScoreColor(score);
+            return `<div style="padding:0.75rem; border-bottom:0.5px solid rgba(59,130,246,0.15);">
+                <div style="display:flex; justify-content:space-between;">
+                    <span><strong>${i+1}.</strong> ${a.name}</span>
+                    <span style="color:${scoreColor};">🔒 ${score}%</span>
+                </div>
+                <div style="font-size:0.7rem; color:var(--gray-light); margin-top:0.25rem;">
+                    ⭐ Trust: ${a.trustScore} | 🏀 ${a.vertical?.value || '?'}" | 👁️ ${a.views} views
+                </div>
+            </div>`;
+        }).join('') : '<div class="empty-state">No verified athletes yet</div>';
+        
         updateVerifierLeaderboard();
         updateVerifierStatus();
         
@@ -1399,6 +1474,9 @@
             const inCompare = compareSelectedIds.includes(a.id);
             const stockAvatar = generateStockAvatar(a.name, a.position);
             const suspiciousClass = a.suspicious ? 'suspicious' : '';
+            const verificationScore = calculateVerificationScore(a);
+            const scoreColor = getVerificationScoreColor(verificationScore);
+            
             return `<div class="athlete-card ${suspiciousClass}" data-id="${a.id}">
                 <div class="card-actions"><div class="action-icon ${inWatchlist ? 'watchlist-active' : ''}" data-watchlist="${a.id}">${inWatchlist ? '⭐' : '☆'}</div></div>
                 <div class="compare-checkbox ${inCompare ? 'selected' : ''}" data-compare="${a.id}"><span>${inCompare ? '✓' : ''}</span></div>
@@ -1409,6 +1487,7 @@
                     <div class="metrics-container">
                         <div class="metric-item"><div class="metric-value">${a.vertical?.value || '?'}"</div><div class="metric-label">Vertical ${a.vertical?.status === 'verified' ? '✓' : '⏳'}</div></div>
                     </div>
+                    <div class="verification-score">🔒 Verification Score: <span style="color:${scoreColor};">${verificationScore}%</span></div>
                     ${a.suspicious ? '<span class="suspicious-badge">⚠️ Under Review</span>' : (a.vertical?.status === 'verified' ? '<span class="verified-badge">✓ Verified</span>' : '<span class="pending-badge">⏳ Pending</span>')}
                     <div class="verification-count">👁️ ${a.views} views</div>
                     ${a.trustScore > 0 ? `<div class="trust-score">⭐ Trust: ${a.trustScore}</div>` : ''}
@@ -1433,7 +1512,16 @@
         if (!grid) return;
         const wl = athletes.filter(a => currentUser.watchlist.includes(a.id) && !a.flagged);
         if (!wl.length) { grid.innerHTML = '<div class="empty-state">Watchlist empty<br>⭐ Tap star on any athlete</div>'; return; }
-        grid.innerHTML = wl.map(a => `<div class="athlete-card" data-id="${a.id}" style="padding:0.75rem;"><div class="athlete-name">${a.name}</div><div class="athlete-school">${a.school}</div><div>🏀 ${a.vertical?.value || '?'}"  ⭐ ${a.trustScore || 'Pending'}</div>${a.suspicious ? '<div class="suspicious-badge" style="margin-top:0.5rem;">⚠️ Under Review</div>' : ''}</div>`).join('');
+        grid.innerHTML = wl.map(a => {
+            const verificationScore = calculateVerificationScore(a);
+            return `<div class="athlete-card" data-id="${a.id}" style="padding:0.75rem;">
+                <div class="athlete-name">${a.name}</div>
+                <div class="athlete-school">${a.school}</div>
+                <div>🏀 ${a.vertical?.value || '?'}"  ⭐ ${a.trustScore || 'Pending'}</div>
+                <div style="font-size:0.65rem; margin-top:0.25rem;">🔒 Verification: ${verificationScore}%</div>
+                ${a.suspicious ? '<div class="suspicious-badge" style="margin-top:0.5rem;">⚠️ Under Review</div>' : ''}
+            </div>`;
+        }).join('');
         document.querySelectorAll('#watchlistGrid .athlete-card').forEach(card => card.addEventListener('click', () => showAthleteDetail(parseInt(card.dataset.id))));
     }
 
@@ -1442,7 +1530,18 @@
         if (!list) return;
         const compare = athletes.filter(a => compareSelectedIds.includes(a.id) && !a.flagged);
         if (!compare.length) { list.innerHTML = '<div class="empty-state">Select athletes to compare using checkboxes on Discover page</div>'; return; }
-        list.innerHTML = compare.map(a => `<div class="comparison-card"><strong>${a.name}</strong><div>🏀 Vertical: <strong>${a.vertical?.value || '?'}"</strong></div><div>⭐ Trust: ${a.trustScore || 0}</div><div>👁️ ${a.views} views</div>${a.suspicious ? '<div class="suspicious-badge" style="margin-top:0.5rem;">⚠️ Under Review</div>' : ''}<button class="btn-outline" onclick="showAthleteDetail(${a.id})">View Profile</button></div>`).join('');
+        list.innerHTML = compare.map(a => {
+            const verificationScore = calculateVerificationScore(a);
+            return `<div class="comparison-card">
+                <strong>${a.name}</strong>
+                <div>🏀 Vertical: <strong>${a.vertical?.value || '?'}"</strong></div>
+                <div>🔒 Verification: <strong>${verificationScore}%</strong></div>
+                <div>⭐ Trust: ${a.trustScore || 0}</div>
+                <div>👁️ ${a.views} views</div>
+                ${a.suspicious ? '<div class="suspicious-badge" style="margin-top:0.5rem;">⚠️ Under Review</div>' : ''}
+                <button class="btn-outline" onclick="showAthleteDetail(${a.id})">View Profile</button>
+            </div>`;
+        }).join('');
     }
 
     function renderRecruitingBoard() {
@@ -1451,7 +1550,16 @@
         const year = document.getElementById('classYear')?.value || '2025';
         const filtered = athletes.filter(a => !a.flagged && a.classYear == year);
         if (!filtered.length) { grid.innerHTML = '<div class="empty-state">No athletes in this class year</div>'; return; }
-        grid.innerHTML = filtered.map(a => `<div class="athlete-card" data-id="${a.id}" style="padding:0.75rem;"><div class="athlete-name">${a.name}</div><div class="athlete-school">${a.school}</div><div>🏀 ${a.vertical?.value || '?'}"  Class of ${a.classYear}</div>${a.suspicious ? '<div class="suspicious-badge" style="margin-top:0.5rem;">⚠️ Under Review</div>' : ''}</div>`).join('');
+        grid.innerHTML = filtered.map(a => {
+            const verificationScore = calculateVerificationScore(a);
+            return `<div class="athlete-card" data-id="${a.id}" style="padding:0.75rem;">
+                <div class="athlete-name">${a.name}</div>
+                <div class="athlete-school">${a.school}</div>
+                <div>🏀 ${a.vertical?.value || '?'}"  Class of ${a.classYear}</div>
+                <div style="font-size:0.65rem; margin-top:0.25rem;">🔒 Verification: ${verificationScore}%</div>
+                ${a.suspicious ? '<div class="suspicious-badge" style="margin-top:0.5rem;">⚠️ Under Review</div>' : ''}
+            </div>`;
+        }).join('');
         document.querySelectorAll('#recruitingBoardList .athlete-card').forEach(card => card.addEventListener('click', () => showAthleteDetail(parseInt(card.dataset.id))));
     }
 
@@ -1466,8 +1574,8 @@
     function exportToCSV() {
         const wl = athletes.filter(a => currentUser.watchlist.includes(a.id) && !a.flagged);
         if (!wl.length) { showToast('Watchlist empty', 'error'); return; }
-        let csv = 'Name,School,Position,Vertical (in),Trust Score,Views,Status\n';
-        wl.forEach(a => csv += `"${a.name}","${a.school}",${a.position},${a.vertical?.value || 'N/A'},${a.trustScore || 'Pending'},${a.views},${a.vertical?.status || 'pending'}\n`);
+        let csv = 'Name,School,Position,Vertical (in),Verification Score,Trust Score,Views,Status\n';
+        wl.forEach(a => csv += `"${a.name}","${a.school}",${a.position},${a.vertical?.value || 'N/A'},${calculateVerificationScore(a)}%,${a.trustScore || 'Pending'},${a.views},${a.vertical?.status || 'pending'}\n`);
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -1489,10 +1597,26 @@
         const inWatchlist = currentUser.watchlist.includes(athlete.id);
         const stockAvatar = generateStockAvatar(athlete.name, athlete.position);
         const needVert = athlete.vertical?.status === 'pending' ? (3 - (athlete.vertical.verifications || 0)) : 0;
+        const verificationScore = calculateVerificationScore(athlete);
+        const scoreColor = getVerificationScoreColor(verificationScore);
+        
+        let scoreBreakdown = `
+            <div style="margin-top:0.5rem; font-size:0.7rem;">
+                <div>🔬 AI Confidence: ${athlete.vertical?.confidence || 0}% (${Math.round((athlete.vertical?.confidence || 0) * 0.4)}/40 pts)</div>
+                <div>👥 Community Verifications: ${athlete.vertical?.verifications || 0}/3 (${Math.min(35, (athlete.vertical?.verifications || 0) * 11.7)}/35 pts)</div>
+                <div>⭐ Verifier Diversity: ${new Set(athlete.confirmations || []).size} unique (${Math.min(15, new Set(athlete.confirmations || []).size * 5)}/15 pts)</div>
+                <div>🔍 Audit Status: ${athlete.auditPassed ? '✅ Passed (+10 pts)' : '⏳ Pending'}</div>
+            </div>
+        `;
+        
         document.getElementById('detailContent').innerHTML = `
             <img src="${stockAvatar}" style="width:100%; border-radius:16px; margin-bottom:1rem;">
             <h2>${athlete.name}</h2>
             <p style="color:var(--gray-light);">${athlete.school} · ${athlete.position} · #${athlete.jerseyNum}</p>
+            <div style="text-align:center; margin:0.5rem 0;">
+                <span style="background:${scoreColor}20; color:${scoreColor}; padding:0.3rem 1rem; border-radius:30px; font-weight:bold;">🔒 Verification Score: ${verificationScore}%</span>
+            </div>
+            ${scoreBreakdown}
             ${athlete.suspicious ? '<div class="alert-warning" style="margin-bottom:1rem;">⚠️ This athlete is under review for verification integrity. The verified badge has been temporarily suspended.</div>' : ''}
             <div style="background:rgba(0,0,0,0.3); border-radius:12px; padding:1rem; margin:1rem 0;">
                 <div>🏀 Vertical Leap: <strong>${athlete.vertical?.value || '?'}"</strong> AI: ${athlete.vertical?.confidence || 0}% ${athlete.vertical?.status === 'verified' ? '✅' : `⏳ (${athlete.vertical?.verifications || 0}/3)`}</div>
@@ -1502,7 +1626,9 @@
                 ${(!athlete.vertical?.status === 'verified' && needVert > 0 && !athlete.suspicious) ? `<div class="progress-container" style="margin-top:0.5rem;"><div class="progress-bar" style="width: ${((3-needVert)/3)*100}%;"></div></div><div style="font-size:0.7rem;">Needs ${needVert} more confirmations for Verified badge</div>` : ''}
             </div>
             <button class="btn-outline" id="shareBadgeBtn" style="width:100%; margin-top:1rem;">🏅 Share Verified Badge</button>
-            ${athlete.hasClip ? `<button class="btn-outline" id="watchClipBtn" style="width:100%; margin-top:0.5rem;">🎬 Watch Highlight Clip</button>` : ''}`;
+            ${athlete.hasClip ? `<button class="btn-outline" id="watchClipBtn" style="width:100%; margin-top:0.5rem;">🎬 Watch Highlight Clip</button>` : ''}
+            ${currentUser.trustScore >= 90 ? `<button class="btn-outline" id="auditBtn" style="width:100%; margin-top:0.5rem;">🔍 Run Manual Audit</button>` : ''}
+        `;
         
         const showConfirm = (!currentUser.confirmedAthleteIds.includes(athlete.id) && athlete.vertical?.status !== 'verified' && !athlete.suspicious);
         document.getElementById('confirmBtn').style.display = showConfirm ? 'block' : 'none';
@@ -1514,9 +1640,35 @@
         document.getElementById('shareBadgeBtn')?.addEventListener('click', () => showEmbedModal(athlete));
         document.getElementById('watchClipBtn')?.addEventListener('click', () => playHighlight(athlete.id));
         document.getElementById('flagBtn')?.addEventListener('click', flagAthlete);
+        document.getElementById('auditBtn')?.addEventListener('click', () => runAudit(athlete.id));
+        
         showModal('detailModal');
         saveData();
         updateStats();
+    }
+
+    async function runAudit(athleteId) {
+        if (!currentDetailAthlete) return;
+        
+        showToast('Running audit...', 'info');
+        
+        // Simulate audit (90% pass rate for demo)
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        const auditPassed = Math.random() < 0.9;
+        
+        if (auditPassed) {
+            currentDetailAthlete.auditPassed = true;
+            showToast(`✅ Audit passed! ${currentDetailAthlete.name} remains verified.`, 'success');
+        } else {
+            currentDetailAthlete.vertical.status = 'pending';
+            currentDetailAthlete.trustScore = Math.max(0, currentDetailAthlete.trustScore - 20);
+            currentDetailAthlete.suspicious = true;
+            showToast(`❌ Audit failed! ${currentDetailAthlete.name} has been unverified.`, 'error');
+        }
+        
+        saveData();
+        renderAll();
+        showAthleteDetail(currentDetailAthlete.id);
     }
 
     function flagAthlete() {
@@ -1556,35 +1708,46 @@
         currentUser.confirmedAthleteIds.push(currentDetailAthlete.id);
         currentUser.confirmationsMade++;
         
-        let trustGain = 2;
+        // Get verifier weight based on tier
+        const stats = getVerifierStats();
+        const myStats = stats[currentUser.name] || { total: currentUser.confirmationsMade, verifiedAthletes: 0 };
+        const tier = getVerifierTier(myStats.total, myStats.verifiedAthletes);
+        const weight = tier.weight;
+        
+        let trustGain = Math.round(2 * weight);
         currentUser.trustScore = Math.min(100, currentUser.trustScore + trustGain);
         currentUser.streak++;
         
         if (currentDetailAthlete.vertical?.status === 'pending') {
-            currentDetailAthlete.vertical.verifications = (currentDetailAthlete.vertical.verifications || 0) + 1;
+            // Weighted verification count
+            const weightedIncrease = weight;
+            const currentWeighted = (currentDetailAthlete.vertical.verifications || 0);
+            currentDetailAthlete.vertical.verifications = currentWeighted + weightedIncrease;
             
             if (currentDetailAthlete.vertical.verifications >= 3) {
                 currentDetailAthlete.vertical.status = 'verified';
                 currentDetailAthlete.trustScore = Math.max(currentDetailAthlete.trustScore, 85);
+                currentDetailAthlete.verifiedAt = new Date().toISOString();
                 showToast(`🎉 ${currentDetailAthlete.name} is now VERIFIED!`, 'success');
                 
-                if (currentDetailAthlete.vertical.verifications <= 3) {
-                    const bonusTrust = 3;
+                // Bonus for early verifiers (first to reach weighted 3)
+                if (currentWeighted < 3 && currentDetailAthlete.vertical.verifications >= 3) {
+                    const bonusTrust = Math.round(3 * weight);
                     currentUser.trustScore = Math.min(100, currentUser.trustScore + bonusTrust);
-                    showToast(`🏆 Early bird bonus! +${bonusTrust} trust for spotting talent early`, 'success');
+                    showToast(`🏆 Early bird bonus! +${bonusTrust} trust for spotting talent early (${weight}x weight)`, 'success');
                 }
             }
         }
         
         if (!currentDetailAthlete.confirmations) currentDetailAthlete.confirmations = [];
-        currentDetailAthlete.confirmations.push(currentUser.name);
+        currentDetailAthlete.confirmations.push(`${currentUser.name} (${tier.name})`);
         
         recordVerification(currentDetailAthlete.id);
         
         saveData();
         renderAll();
         showAthleteDetail(currentDetailAthlete.id);
-        showToast(`✓ Verified ${currentDetailAthlete.name}! +${trustGain} trust. Streak: ${currentUser.streak}`, 'success');
+        showToast(`✓ Verified ${currentDetailAthlete.name}! +${trustGain} trust (${weight}x weight). Streak: ${currentUser.streak}`, 'success');
     }
 
     function undoConfirmation() {
@@ -1603,7 +1766,8 @@
             }
         }
         
-        const confirmIdx = currentDetailAthlete.confirmations.indexOf(currentUser.name);
+        // Remove verifier name with tier
+        const confirmIdx = currentDetailAthlete.confirmations.findIndex(c => c.startsWith(currentUser.name));
         if (confirmIdx !== -1) currentDetailAthlete.confirmations.splice(confirmIdx, 1);
         saveData();
         renderAll();
@@ -1661,7 +1825,8 @@
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
     function showEmbedModal(athlete) {
-        const code = `<a href="https://vantage.app/athlete/${athlete.id}"><img src="https://vantage.app/badge/${athlete.id}" alt="VANTAGE Verified Vertical: ${athlete.vertical?.value || '?'}\""></a>`;
+        const score = calculateVerificationScore(athlete);
+        const code = `<a href="https://vantage.app/athlete/${athlete.id}"><img src="https://vantage.app/badge/${athlete.id}" alt="VANTAGE Verified Vertical: ${athlete.vertical?.value || '?'}\" | Verification Score: ${score}%"></a>`;
         document.getElementById('embedCode').innerText = code;
         showModal('embedModal');
     }
@@ -1768,12 +1933,13 @@
                     verifications: 0 
                 },
                 trustScore: data.vertical_needs_confirmations === 0 ? Math.floor(Math.random() * 30) + 70 : 0,
-                confirmations: [], views: 0
+                confirmations: [], views: 0,
+                auditPassed: data.vertical_needs_confirmations === 0
             };
             athletes.push(newAthlete);
             generateDemoVideo(newId);
             
-            document.getElementById('submitResult').innerHTML = `<div class="alert-success">✅ AI Analysis Complete!<br>🏀 Vertical: ${data.vertical_inches}" (${data.vertical_confidence}% confidence)</div>`;
+            document.getElementById('submitResult').innerHTML = `<div class="alert-success">✅ AI Analysis Complete!<br>🏀 Vertical: ${data.vertical_inches}" (${data.vertical_confidence}% confidence)<br>🔒 Initial Verification Score: ${Math.round(data.vertical_confidence * 0.4)}%</div>`;
             document.getElementById('videoUrl').value = '';
             document.getElementById('athleteName').value = '';
             document.getElementById('athleteSchool').value = '';
