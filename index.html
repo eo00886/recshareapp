@@ -189,6 +189,7 @@
 
         .toast-success { border-left-color: var(--success-green); }
         .toast-error { border-left-color: var(--error-red); }
+        .toast-warning { border-left-color: var(--primary-gold); }
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateX(-50%) translateY(20px); }
@@ -292,6 +293,9 @@
             position: relative;
         }
         .athlete-card:active { transform: scale(0.98); }
+        .athlete-card.suspicious {
+            border-left: 3px solid var(--primary-gold);
+        }
 
         .card-actions {
             position: absolute;
@@ -416,6 +420,7 @@
 
         .verified-badge { background: linear-gradient(135deg, var(--success-green), #059669); font-size: 0.6rem; padding: 0.2rem 0.5rem; border-radius: 20px; display: inline-block; margin-top: 0.5rem; }
         .pending-badge { background: rgba(245, 158, 11, 0.2); color: var(--primary-gold); font-size: 0.6rem; padding: 0.2rem 0.5rem; border-radius: 20px; display: inline-block; }
+        .suspicious-badge { background: rgba(239, 68, 68, 0.2); color: var(--error-red); font-size: 0.6rem; padding: 0.2rem 0.5rem; border-radius: 20px; display: inline-block; margin-top: 0.5rem; }
         .trust-score { font-size: 0.65rem; color: var(--primary-purple); margin-top: 0.5rem; display: flex; align-items: center; gap: 0.25rem; }
         .verification-count { font-size: 0.6rem; color: var(--gray-light); margin-top: 0.25rem; }
 
@@ -583,6 +588,7 @@
 
         .alert-success { background: rgba(16, 185, 129, 0.15); border: 0.5px solid var(--success-green); padding: 0.75rem; border-radius: 12px; color: var(--success-green); margin-top: 1rem; }
         .alert-error { background: rgba(239, 68, 68, 0.15); border: 0.5px solid var(--error-red); padding: 0.75rem; border-radius: 12px; color: #f87171; margin-top: 1rem; }
+        .alert-warning { background: rgba(245, 158, 11, 0.15); border: 0.5px solid var(--primary-gold); padding: 0.75rem; border-radius: 12px; color: var(--primary-gold); margin-top: 1rem; }
 
         .video-input-tabs {
             display: flex;
@@ -684,7 +690,7 @@
 
 <div class="container" id="app">
     <!-- ============================================ -->
-    <!-- CHECKPOINT 6: DISCOVER PAGE - VERTICAL ONLY  -->
+    <!-- CHECKPOINT 6: DISCOVER PAGE                  -->
     <!-- ============================================ -->
     <div id="discoverPage" class="page active">
         <div class="page-header"><h1>Verified Vertical Leap</h1><p>AI-measured vertical · Community verified · Prove your bounce</p></div>
@@ -711,7 +717,7 @@
     </div>
 
     <!-- ============================================ -->
-    <!-- CHECKPOINT 7: SUBMIT PAGE - VERTICAL ONLY    -->
+    <!-- CHECKPOINT 7: SUBMIT PAGE                    -->
     <!-- ============================================ -->
     <div id="submitPage" class="page">
         <div class="page-header"><h1>Get Verified</h1><p>Upload your vertical leap video for AI analysis</p></div>
@@ -756,7 +762,7 @@
 
     <!-- ============================================ -->
     <!-- CHECKPOINT 8: SCOUT PORTAL PAGE              -->
-    <!-- ============================================ -->
+    /* ============================================ */
     <div id="scoutPage" class="page">
         <div class="page-header"><h1>Scout Portal</h1><p>Find athletes by verified vertical leap</p></div>
         <div class="mode-toggle" id="scoutModeToggle">
@@ -809,8 +815,8 @@
     </div>
 
     <!-- ============================================ -->
-    <!-- CHECKPOINT 10: HOW IT WORKS & PRICING        -->
-    <!-- ============================================ -->
+    /* CHECKPOINT 10: HOW IT WORKS & PRICING         */
+    /* ============================================ */
     <div id="howitworksPage" class="page">
         <div class="page-header"><h1>How VANTAGE Works</h1><p>AI-powered vertical leap verification</p></div>
         <div class="card">
@@ -825,10 +831,15 @@
             <h3>⭐ Trust Score System</h3>
             <div class="trust-rules">
                 <div class="rule-card"><span class="rule-positive">+2 points</span><br>Confirming accurate metric</div>
-                <div class="rule-card"><span class="rule-positive">+1 point</span><br>Correctly challenging</div>
+                <div class="rule-card"><span class="rule-positive">+3 points</span><br>Early verification of future star</div>
                 <div class="rule-card"><span class="rule-negative">-5 points</span><br>Falsely confirming</div>
-                <div class="rule-card"><span class="rule-negative">-3 points</span><br>Falsely challenging</div>
+                <div class="rule-card"><span class="rule-negative">-10 points</span><br>Collusion detection</div>
+                <div class="rule-card"><span class="rule-positive">+5 points</span><br>Correctly challenging fraud</div>
             </div>
+        </div>
+        <div class="card">
+            <h3>🛡️ Integrity Guarantee</h3>
+            <p style="font-size:0.85rem; color:var(--gray-light);">Multiple layers of fraud detection: 3-verification minimum, trust score decay, verification cooldowns, and random audits. Verified athletes represent genuine talent.</p>
         </div>
     </div>
 
@@ -836,14 +847,14 @@
         <div class="page-header"><h1>Simple Pricing</h1><p>Free for athletes · $500/year for scouts</p></div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
             <div class="card" style="text-align:center;"><h3>Athlete</h3><p style="font-size:2.5rem; font-weight:700;">$0</p><p style="color:var(--gray-light);">Forever free</p><div style="margin-top:1rem; text-align:left;"><div>✓ Unlimited verifications</div><div>✓ Public verified profile</div><div>✓ Instagram embed badge</div></div><button class="btn-primary" style="margin-top:1rem; background:linear-gradient(135deg,#10b981,#059669);" onclick="showPage('submit')">Get Started</button></div>
-            <div class="card" style="text-align:center; border-color:var(--primary-blue);"><div style="background:var(--primary-blue); display:inline-block; padding:0.2rem 0.75rem; border-radius:20px; font-size:0.7rem; margin-bottom:0.5rem;">MOST POPULAR</div><h3>Scout Pro</h3><p style="font-size:2.5rem; font-weight:700;">$500</p><p style="color:var(--gray-light);">Per year</p><div style="margin-top:1rem; text-align:left;"><div>✓ Full athlete database</div><div>✓ Advanced filters</div><div>✓ Save & compare athletes</div><div>✓ Export to CSV</div></div><button class="btn-primary" style="margin-top:1rem;" onclick="showToast('Demo: Stripe integration', 'info')">Subscribe</button></div>
+            <div class="card" style="text-align:center; border-color:var(--primary-blue);"><div style="background:var(--primary-blue); display:inline-block; padding:0.2rem 0.75rem; border-radius:20px; font-size:0.7rem; margin-bottom:0.5rem;">MOST POPULAR</div><h3>Scout Pro</h3><p style="font-size:2.5rem; font-weight:700;">$500</p><p style="color:var(--gray-light);">Per year</p><div style="margin-top:1rem; text-align:left;"><div>✓ Full athlete database</div><div>✓ Advanced filters</div><div>✓ Save & compare athletes</div><div>✓ Export to CSV</div><div>✓ Fraud detection alerts</div></div><button class="btn-primary" style="margin-top:1rem;" onclick="showToast('Demo: Stripe integration', 'info')">Subscribe</button></div>
         </div>
     </div>
 </div>
 
 <!-- ============================================ -->
-<!-- CHECKPOINT 11: MODALS                        -->
-<!-- ============================================ -->
+/* CHECKPOINT 11: MODALS                         */
+/* ============================================ */
 <div id="loginModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('loginModal')">&times;</span><h2>Sign In</h2><input type="email" class="form-input" id="loginEmail" placeholder="Email"><input type="password" class="form-input" id="loginPassword" placeholder="Password"><button class="btn-primary" id="doLoginBtn">Sign In</button><p style="margin-top:1rem; font-size:0.75rem;">Demo: Any email works</p></div></div>
 
 <div id="detailModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('detailModal')">&times;</span><div id="detailContent"></div><div class="button-group" id="actionButtons">
@@ -860,20 +871,20 @@
 
 <script>
     // ============================================ */
-    // CHECKPOINT 12: ATHLETE DATA (VERTICAL ONLY) */
-    // ============================================ */
+    /* CHECKPOINT 12: ATHLETE DATA                 */
+    /* ============================================ */
     const BACKEND_URL = 'https://vantage-backend-production-6d44.up.railway.app';
     
     let athletes = [
-        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", jerseyNum: "23", classYear: 2025, flagged: false, hasClip: true, vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, trustScore: 94, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"], views: 342 },
-        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", jerseyNum: "11", classYear: 2025, flagged: false, hasClip: true, vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, trustScore: 91, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"], views: 189 },
-        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", jerseyNum: "7", classYear: 2026, flagged: false, hasClip: true, vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, trustScore: 96, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson", "Mike Ross", "Lisa Wong"], views: 567 },
-        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", jerseyNum: "34", classYear: 2026, flagged: false, hasClip: false, vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, trustScore: 0, confirmations: ["Coach Miller"], views: 45 },
-        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", jerseyNum: "5", classYear: 2025, flagged: false, hasClip: false, vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, trustScore: 0, confirmations: [], views: 34 },
-        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", jerseyNum: "1", classYear: 2026, flagged: false, hasClip: false, vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, trustScore: 0, confirmations: [], views: 28 }
+        { id: 1, name: "Marcus Thompson", school: "Westlake High", position: "SG", jerseyNum: "23", classYear: 2025, flagged: false, suspicious: false, hasClip: true, vertical: { value: 42, status: "verified", confidence: 96, verifications: 5 }, trustScore: 94, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson"], views: 342 },
+        { id: 2, name: "Jaylen Carter", school: "Mater Dei", position: "PG", jerseyNum: "11", classYear: 2025, flagged: false, suspicious: false, hasClip: true, vertical: { value: 38, status: "verified", confidence: 94, verifications: 4 }, trustScore: 91, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson"], views: 189 },
+        { id: 3, name: "Elijah Williams", school: "IMG Academy", position: "SF", jerseyNum: "7", classYear: 2026, flagged: false, suspicious: false, hasClip: true, vertical: { value: 44, status: "verified", confidence: 98, verifications: 7 }, trustScore: 96, confirmations: ["Coach Miller", "Sarah Chen", "David Kim", "James Wilson", "Coach Thompson", "Mike Ross", "Lisa Wong"], views: 567 },
+        { id: 4, name: "Tyler Brooks", school: "Montverde Academy", position: "PF", jerseyNum: "34", classYear: 2026, flagged: false, suspicious: false, hasClip: false, vertical: { value: 35, status: "pending", confidence: 78, verifications: 1 }, trustScore: 0, confirmations: ["Coach Miller"], views: 45 },
+        { id: 5, name: "Jordan Lee", school: "Sierra Canyon", position: "SG", jerseyNum: "5", classYear: 2025, flagged: false, suspicious: false, hasClip: false, vertical: { value: 40, status: "pending", confidence: 72, verifications: 1 }, trustScore: 0, confirmations: [], views: 34 },
+        { id: 6, name: "Malik Henderson", school: "Oak Hill Academy", position: "PG", jerseyNum: "1", classYear: 2026, flagged: false, suspicious: false, hasClip: false, vertical: { value: 37, status: "pending", confidence: 68, verifications: 0 }, trustScore: 0, confirmations: [], views: 28 }
     ];
 
-    let currentUser = { name: "Demo User", trustScore: 85, email: null, confirmationsMade: 0, streak: 3, watchlist: [1, 3], confirmedAthleteIds: [], challengedAthleteIds: [] };
+    let currentUser = { id: "scout_001", name: "Demo Scout", trustScore: 85, email: null, confirmationsMade: 3, streak: 3, watchlist: [1, 3], confirmedAthleteIds: [1], challengedAthleteIds: [] };
     let currentFilter = "all";
     let currentSort = "default";
     let currentSearch = "";
@@ -884,6 +895,11 @@
     let mediaRecorder = null;
     let recordedChunks = [];
 
+    // Anti-collusion tracking
+    let lastConfirmTime = 0;
+    let confirmCountToday = 0;
+    let confirmHistory = {};
+
     // Sample videos that work
     const SAMPLE_VIDEOS = [
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
@@ -892,8 +908,8 @@
     ];
 
     // ============================================ */
-    // CHECKPOINT 13: VIDEO FUNCTIONS               */
-    // ============================================ */
+    /* CHECKPOINT 13: VIDEO FUNCTIONS               */
+    /* ============================================ */
     function generateDemoVideo(athleteId) {
         const videoIndex = athleteId % SAMPLE_VIDEOS.length;
         videoUrls[athleteId] = SAMPLE_VIDEOS[videoIndex];
@@ -930,6 +946,7 @@
             <div class="metric-badge">🏀 ${athlete.name}</div>
             <div class="metric-badge">Vertical: ${athlete.vertical?.value || '?'}"</div>
             <div class="trust-badge">⭐ Trust: ${athlete.trustScore || 'Pending'}</div>
+            ${athlete.suspicious ? '<div class="metric-badge" style="background:#EF4444;">⚠️ Under Review</div>' : ''}
         `;
         
         showModal('videoPlayerModal');
@@ -946,8 +963,8 @@
     }
 
     // ============================================ */
-    // CHECKPOINT 14: TAB FUNCTIONS                 */
-    // ============================================ */
+    /* CHECKPOINT 14: TAB FUNCTIONS                 */
+    /* ============================================ */
     function initVideoTabs() {
         const tabs = document.querySelectorAll('#videoTabs .tab-btn');
         const urlTab = document.getElementById('urlTab');
@@ -990,8 +1007,8 @@
     }
 
     // ============================================ */
-    // CHECKPOINT 15: SCOUT MODE FUNCTIONS          */
-    // ============================================ */
+    /* CHECKPOINT 15: SCOUT MODE FUNCTIONS          */
+    /* ============================================ */
     function initScoutModes() {
         const watchlistDiv = document.getElementById('watchlistMode');
         const compareDiv = document.getElementById('compareMode');
@@ -1027,8 +1044,8 @@
     }
 
     // ============================================ */
-    // CHECKPOINT 16: HELPER FUNCTIONS              */
-    // ============================================ */
+    /* CHECKPOINT 16: HELPER FUNCTIONS              */
+    /* ============================================ */
     function showToast(message, type = 'info') {
         const existing = document.querySelector('.toast');
         if (existing) existing.remove();
@@ -1037,6 +1054,44 @@
         toast.innerHTML = message;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
+    }
+
+    // Anti-collusion: Check if user can verify
+    function canVerify(athleteId) {
+        const now = Date.now();
+        
+        // Cooldown: Can't verify more than once per minute
+        if (now - lastConfirmTime < 60000) {
+            showToast('Please wait before verifying another athlete', 'warning');
+            return false;
+        }
+        
+        // Daily limit: Max 10 verifications per day
+        const today = new Date().toDateString();
+        if (confirmHistory[today] && confirmHistory[today] >= 10) {
+            showToast('Daily verification limit reached. Come back tomorrow!', 'warning');
+            return false;
+        }
+        
+        // Trust check: Need minimum trust to verify others
+        if (currentUser.trustScore < 50) {
+            showToast('Your trust score is too low to verify others. Build trust by getting your own jumps verified first.', 'warning');
+            return false;
+        }
+        
+        // Can't verify same athlete twice
+        if (currentUser.confirmedAthleteIds.includes(athleteId)) {
+            showToast('You have already verified this athlete', 'error');
+            return false;
+        }
+        
+        return true;
+    }
+
+    function recordVerification(athleteId) {
+        lastConfirmTime = Date.now();
+        const today = new Date().toDateString();
+        confirmHistory[today] = (confirmHistory[today] || 0) + 1;
     }
 
     function generateStockAvatar(athleteName, position = 'SG') {
@@ -1067,6 +1122,7 @@
         localStorage.setItem('vantage_athletes', JSON.stringify(athletes));
         localStorage.setItem('vantage_user', JSON.stringify(currentUser));
         localStorage.setItem('vantage_compare', JSON.stringify(compareSelectedIds));
+        localStorage.setItem('vantage_confirm_history', JSON.stringify(confirmHistory));
     }
 
     function loadData() {
@@ -1074,6 +1130,8 @@
         if (saved) { const loaded = JSON.parse(saved); if (loaded && loaded.length > 0) athletes = loaded; }
         const savedUser = localStorage.getItem('vantage_user');
         if (savedUser) Object.assign(currentUser, JSON.parse(savedUser));
+        const savedHistory = localStorage.getItem('vantage_confirm_history');
+        if (savedHistory) confirmHistory = JSON.parse(savedHistory);
         if (!currentUser.confirmedAthleteIds) currentUser.confirmedAthleteIds = [];
         if (!currentUser.challengedAthleteIds) currentUser.challengedAthleteIds = [];
         if (!currentUser.watchlist) currentUser.watchlist = [1, 3];
@@ -1083,8 +1141,8 @@
     }
 
     // ============================================ */
-    // CHECKPOINT 17: STATS & FILTERING             */
-    // ============================================ */
+    /* CHECKPOINT 17: STATS & FILTERING             */
+    /* ============================================ */
     function updateStats() {
         const active = athletes.filter(a => !a.flagged).length;
         document.getElementById('statTotal').innerText = active;
@@ -1120,8 +1178,8 @@
     }
 
     // ============================================ */
-    // CHECKPOINT 18: TOGGLE FUNCTIONS              */
-    // ============================================ */
+    /* CHECKPOINT 18: TOGGLE FUNCTIONS              */
+    /* ============================================ */
     function toggleWatchlist(id, event) {
         if (event) event.stopPropagation();
         const idx = currentUser.watchlist.indexOf(id);
@@ -1154,8 +1212,8 @@
     }
 
     // ============================================ */
-    // CHECKPOINT 19: RENDER FUNCTIONS              */
-    // ============================================ */
+    /* CHECKPOINT 19: RENDER FUNCTIONS              */
+    /* ============================================ */
     function renderAthleteGrid() {
         const grid = document.getElementById('athleteGrid');
         if (!grid) return;
@@ -1165,7 +1223,8 @@
             const inWatchlist = currentUser.watchlist.includes(a.id);
             const inCompare = compareSelectedIds.includes(a.id);
             const stockAvatar = generateStockAvatar(a.name, a.position);
-            return `<div class="athlete-card" data-id="${a.id}">
+            const suspiciousClass = a.suspicious ? 'suspicious' : '';
+            return `<div class="athlete-card ${suspiciousClass}" data-id="${a.id}">
                 <div class="card-actions"><div class="action-icon ${inWatchlist ? 'watchlist-active' : ''}" data-watchlist="${a.id}">${inWatchlist ? '⭐' : '☆'}</div></div>
                 <div class="compare-checkbox ${inCompare ? 'selected' : ''}" data-compare="${a.id}"><span>${inCompare ? '✓' : ''}</span></div>
                 <div class="athlete-avatar"><img src="${stockAvatar}" style="width:100%; height:100%; object-fit:cover;">${a.hasClip ? `<div class="play-icon-overlay" data-play="${a.id}">▶</div>` : ''}<div class="jersey-number">${a.jerseyNum}</div></div>
@@ -1175,7 +1234,7 @@
                     <div class="metrics-container">
                         <div class="metric-item"><div class="metric-value">${a.vertical?.value || '?'}"</div><div class="metric-label">Vertical ${a.vertical?.status === 'verified' ? '✓' : '⏳'}</div></div>
                     </div>
-                    ${a.vertical?.status === 'verified' ? '<span class="verified-badge">✓ Verified</span>' : '<span class="pending-badge">⏳ Pending</span>'}
+                    ${a.suspicious ? '<span class="suspicious-badge">⚠️ Under Review</span>' : (a.vertical?.status === 'verified' ? '<span class="verified-badge">✓ Verified</span>' : '<span class="pending-badge">⏳ Pending</span>')}
                     <div class="verification-count">👁️ ${a.views} views</div>
                     ${a.trustScore > 0 ? `<div class="trust-score">⭐ Trust: ${a.trustScore}</div>` : ''}
                 </div>
@@ -1199,7 +1258,7 @@
         if (!grid) return;
         const wl = athletes.filter(a => currentUser.watchlist.includes(a.id) && !a.flagged);
         if (!wl.length) { grid.innerHTML = '<div class="empty-state">Watchlist empty<br>⭐ Tap star on any athlete</div>'; return; }
-        grid.innerHTML = wl.map(a => `<div class="athlete-card" data-id="${a.id}" style="padding:0.75rem;"><div class="athlete-name">${a.name}</div><div class="athlete-school">${a.school}</div><div>🏀 ${a.vertical?.value || '?'}"  ⭐ ${a.trustScore || 'Pending'}</div></div>`).join('');
+        grid.innerHTML = wl.map(a => `<div class="athlete-card" data-id="${a.id}" style="padding:0.75rem;"><div class="athlete-name">${a.name}</div><div class="athlete-school">${a.school}</div><div>🏀 ${a.vertical?.value || '?'}"  ⭐ ${a.trustScore || 'Pending'}</div>${a.suspicious ? '<div class="suspicious-badge" style="margin-top:0.5rem;">⚠️ Under Review</div>' : ''}</div>`).join('');
         document.querySelectorAll('#watchlistGrid .athlete-card').forEach(card => card.addEventListener('click', () => showAthleteDetail(parseInt(card.dataset.id))));
     }
 
@@ -1208,7 +1267,7 @@
         if (!list) return;
         const compare = athletes.filter(a => compareSelectedIds.includes(a.id) && !a.flagged);
         if (!compare.length) { list.innerHTML = '<div class="empty-state">Select athletes to compare using checkboxes on Discover page</div>'; return; }
-        list.innerHTML = compare.map(a => `<div class="comparison-card"><strong>${a.name}</strong><div>🏀 Vertical: <strong>${a.vertical?.value || '?'}"</strong></div><div>⭐ Trust: ${a.trustScore || 0}</div><div>👁️ ${a.views} views</div><button class="btn-outline" onclick="showAthleteDetail(${a.id})">View Profile</button></div>`).join('');
+        list.innerHTML = compare.map(a => `<div class="comparison-card"><strong>${a.name}</strong><div>🏀 Vertical: <strong>${a.vertical?.value || '?'}"</strong></div><div>⭐ Trust: ${a.trustScore || 0}</div><div>👁️ ${a.views} views</div>${a.suspicious ? '<div class="suspicious-badge" style="margin-top:0.5rem;">⚠️ Under Review</div>' : ''}<button class="btn-outline" onclick="showAthleteDetail(${a.id})">View Profile</button></div>`).join('');
     }
 
     function renderRecruitingBoard() {
@@ -1217,7 +1276,7 @@
         const year = document.getElementById('classYear')?.value || '2025';
         const filtered = athletes.filter(a => !a.flagged && a.classYear == year);
         if (!filtered.length) { grid.innerHTML = '<div class="empty-state">No athletes in this class year</div>'; return; }
-        grid.innerHTML = filtered.map(a => `<div class="athlete-card" data-id="${a.id}" style="padding:0.75rem;"><div class="athlete-name">${a.name}</div><div class="athlete-school">${a.school}</div><div>🏀 ${a.vertical?.value || '?'}"  Class of ${a.classYear}</div></div>`).join('');
+        grid.innerHTML = filtered.map(a => `<div class="athlete-card" data-id="${a.id}" style="padding:0.75rem;"><div class="athlete-name">${a.name}</div><div class="athlete-school">${a.school}</div><div>🏀 ${a.vertical?.value || '?'}"  Class of ${a.classYear}</div>${a.suspicious ? '<div class="suspicious-badge" style="margin-top:0.5rem;">⚠️ Under Review</div>' : ''}</div>`).join('');
         document.querySelectorAll('#recruitingBoardList .athlete-card').forEach(card => card.addEventListener('click', () => showAthleteDetail(parseInt(card.dataset.id))));
     }
 
@@ -1232,8 +1291,8 @@
     function exportToCSV() {
         const wl = athletes.filter(a => currentUser.watchlist.includes(a.id) && !a.flagged);
         if (!wl.length) { showToast('Watchlist empty', 'error'); return; }
-        let csv = 'Name,School,Position,Vertical (in),Trust Score,Views\n';
-        wl.forEach(a => csv += `"${a.name}","${a.school}",${a.position},${a.vertical?.value || 'N/A'},${a.trustScore || 'Pending'},${a.views}\n`);
+        let csv = 'Name,School,Position,Vertical (in),Trust Score,Views,Status\n';
+        wl.forEach(a => csv += `"${a.name}","${a.school}",${a.position},${a.vertical?.value || 'N/A'},${a.trustScore || 'Pending'},${a.views},${a.vertical?.status || 'pending'}\n`);
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -1245,8 +1304,8 @@
     }
 
     // ============================================ */
-    // CHECKPOINT 20: DETAIL MODAL & VERIFICATION   */
-    // ============================================ */
+    /* CHECKPOINT 20: DETAIL MODAL & VERIFICATION   */
+    /* ============================================ */
     function showAthleteDetail(id) {
         const athlete = athletes.find(a => a.id === id);
         if (!athlete || athlete.flagged) return;
@@ -1259,16 +1318,20 @@
             <img src="${stockAvatar}" style="width:100%; border-radius:16px; margin-bottom:1rem;">
             <h2>${athlete.name}</h2>
             <p style="color:var(--gray-light);">${athlete.school} · ${athlete.position} · #${athlete.jerseyNum}</p>
+            ${athlete.suspicious ? '<div class="alert-warning" style="margin-bottom:1rem;">⚠️ This athlete is under review for verification integrity. The verified badge has been temporarily suspended.</div>' : ''}
             <div style="background:rgba(0,0,0,0.3); border-radius:12px; padding:1rem; margin:1rem 0;">
                 <div>🏀 Vertical Leap: <strong>${athlete.vertical?.value || '?'}"</strong> AI: ${athlete.vertical?.confidence || 0}% ${athlete.vertical?.status === 'verified' ? '✅' : `⏳ (${athlete.vertical?.verifications || 0}/3)`}</div>
                 <div>⭐ Trust Score: ${athlete.trustScore || 'Pending'}</div>
                 <div>👁️ ${athlete.views} views</div>
                 <div>🔒 Verified by ${athlete.confirmations.length} community members</div>
-                ${(!athlete.vertical?.status === 'verified' && needVert > 0) ? `<div class="progress-container" style="margin-top:0.5rem;"><div class="progress-bar" style="width: ${((3-needVert)/3)*100}%;"></div></div><div style="font-size:0.7rem;">Needs ${needVert} more confirmations for Verified badge</div>` : ''}
+                ${(!athlete.vertical?.status === 'verified' && needVert > 0 && !athlete.suspicious) ? `<div class="progress-container" style="margin-top:0.5rem;"><div class="progress-bar" style="width: ${((3-needVert)/3)*100}%;"></div></div><div style="font-size:0.7rem;">Needs ${needVert} more confirmations for Verified badge</div>` : ''}
             </div>
             <button class="btn-outline" id="shareBadgeBtn" style="width:100%; margin-top:1rem;">🏅 Share Verified Badge</button>
             ${athlete.hasClip ? `<button class="btn-outline" id="watchClipBtn" style="width:100%; margin-top:0.5rem;">🎬 Watch Highlight Clip</button>` : ''}`;
-        document.getElementById('confirmBtn').style.display = (!currentUser.confirmedAthleteIds.includes(athlete.id) && athlete.vertical?.status !== 'verified') ? 'block' : 'none';
+        
+        // Show confirm button only if athlete is not suspicious and not already verified
+        const showConfirm = (!currentUser.confirmedAthleteIds.includes(athlete.id) && athlete.vertical?.status !== 'verified' && !athlete.suspicious);
+        document.getElementById('confirmBtn').style.display = showConfirm ? 'block' : 'none';
         document.getElementById('undoConfirmBtn').style.display = currentUser.confirmedAthleteIds.includes(athlete.id) ? 'block' : 'none';
         document.getElementById('challengeBtn').style.display = (!currentUser.challengedAthleteIds?.includes(athlete.id) && athlete.vertical?.status !== 'verified') ? 'block' : 'none';
         document.getElementById('flagBtn').style.display = 'block';
@@ -1285,12 +1348,13 @@
     function flagAthlete() {
         if (!currentDetailAthlete || currentDetailAthlete.flagged) return;
         currentDetailAthlete.flagged = true;
+        currentDetailAthlete.suspicious = true;
         currentUser.watchlist = currentUser.watchlist.filter(i => i !== currentDetailAthlete.id);
         compareSelectedIds = compareSelectedIds.filter(i => i !== currentDetailAthlete.id);
         saveData();
         renderAll();
         closeModal('detailModal');
-        showToast(`🚩 ${currentDetailAthlete.name} flagged for review`, 'warning');
+        showToast(`🚩 ${currentDetailAthlete.name} has been flagged for review. Thank you for protecting the community.`, 'warning');
     }
 
     function toggleWatchlistFromDetail() {
@@ -1302,25 +1366,58 @@
 
     function confirmVerification() {
         if (!currentDetailAthlete) return;
-        if (currentUser.confirmedAthleteIds.includes(currentDetailAthlete.id)) { showToast('Already confirmed', 'error'); return; }
+        
+        // Anti-collusion checks
+        if (!canVerify(currentDetailAthlete.id)) return;
+        
+        if (currentDetailAthlete.vertical?.status === 'verified') {
+            showToast('This athlete is already verified', 'error');
+            return;
+        }
+        
+        if (currentDetailAthlete.suspicious) {
+            showToast('This athlete is under review and cannot be verified', 'error');
+            return;
+        }
+        
         currentUser.confirmedAthleteIds.push(currentDetailAthlete.id);
         currentUser.confirmationsMade++;
-        currentUser.trustScore = Math.min(100, currentUser.trustScore + 2);
+        
+        // Trust adjustment: +2 for confirmation
+        let trustGain = 2;
+        currentUser.trustScore = Math.min(100, currentUser.trustScore + trustGain);
         currentUser.streak++;
+        
+        // Update athlete verification count
         if (currentDetailAthlete.vertical?.status === 'pending') {
             currentDetailAthlete.vertical.verifications = (currentDetailAthlete.vertical.verifications || 0) + 1;
+            
+            // Check if athlete becomes verified (3 verifications)
             if (currentDetailAthlete.vertical.verifications >= 3) {
                 currentDetailAthlete.vertical.status = 'verified';
-                currentDetailAthlete.trustScore = Math.floor(Math.random() * 30) + 70;
+                // Athlete gets base trust score
+                currentDetailAthlete.trustScore = Math.max(currentDetailAthlete.trustScore, 85);
                 showToast(`🎉 ${currentDetailAthlete.name} is now VERIFIED!`, 'success');
+                
+                // Bonus trust for scouts who verified early (first 3 verifiers)
+                if (currentDetailAthlete.vertical.verifications <= 3) {
+                    const bonusTrust = 3;
+                    currentUser.trustScore = Math.min(100, currentUser.trustScore + bonusTrust);
+                    showToast(`🏆 Early bird bonus! +${bonusTrust} trust for spotting talent early`, 'success');
+                }
             }
         }
+        
         if (!currentDetailAthlete.confirmations) currentDetailAthlete.confirmations = [];
         currentDetailAthlete.confirmations.push(currentUser.name);
+        
+        // Record this verification for anti-collusion
+        recordVerification(currentDetailAthlete.id);
+        
         saveData();
         renderAll();
         showAthleteDetail(currentDetailAthlete.id);
-        showToast(`✓ Verified! +2 trust. Streak: ${currentUser.streak}`, 'success');
+        showToast(`✓ Verified ${currentDetailAthlete.name}! +${trustGain} trust. Streak: ${currentUser.streak}`, 'success');
     }
 
     function undoConfirmation() {
@@ -1330,6 +1427,7 @@
         currentUser.confirmedAthleteIds.splice(idx, 1);
         currentUser.confirmationsMade = Math.max(0, currentUser.confirmationsMade - 1);
         currentUser.trustScore = Math.max(0, currentUser.trustScore - 2);
+        
         if (currentDetailAthlete.vertical && currentDetailAthlete.vertical.verifications > 0) {
             currentDetailAthlete.vertical.verifications--;
             if (currentDetailAthlete.vertical.verifications < 3) {
@@ -1337,6 +1435,7 @@
                 currentDetailAthlete.trustScore = 0;
             }
         }
+        
         const confirmIdx = currentDetailAthlete.confirmations.indexOf(currentUser.name);
         if (confirmIdx !== -1) currentDetailAthlete.confirmations.splice(confirmIdx, 1);
         saveData();
@@ -1351,15 +1450,25 @@
         if (currentUser.challengedAthleteIds?.includes(currentDetailAthlete.id)) { showToast('Already challenged', 'error'); return; }
         if (!currentUser.challengedAthleteIds) currentUser.challengedAthleteIds = [];
         currentUser.challengedAthleteIds.push(currentDetailAthlete.id);
+        
+        // Flag athlete for review
+        currentDetailAthlete.suspicious = true;
+        
         if (!currentDetailAthlete.challenges) currentDetailAthlete.challenges = [];
         currentDetailAthlete.challenges.push({ by: currentUser.name, at: new Date().toISOString() });
+        
+        // Trust reward for correctly challenging
+        currentUser.trustScore = Math.min(100, currentUser.trustScore + 5);
+        
         saveData();
-        showToast(`⚠ Challenge submitted for ${currentDetailAthlete.name}`, 'warning');
+        renderAll();
+        showToast(`⚠️ Challenge submitted for ${currentDetailAthlete.name}. +5 trust for protecting the community.`, 'warning');
+        closeModal('detailModal');
     }
 
     // ============================================ */
-    // CHECKPOINT 21: UI NAVIGATION                 */
-    // ============================================ */
+    /* CHECKPOINT 21: UI NAVIGATION                 */
+    /* ============================================ */
     function showPage(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(pageId + 'Page').classList.add('active');
@@ -1407,8 +1516,8 @@
     }
 
     // ============================================ */
-    // CHECKPOINT 22: UPLOAD HANDLERS               */
-    // ============================================ */
+    /* CHECKPOINT 22: UPLOAD HANDLERS               */
+    /* ============================================ */
     const uploadArea = document.getElementById('uploadArea');
     const videoFile = document.getElementById('videoFile');
     
@@ -1486,7 +1595,7 @@
             const newAthlete = {
                 id: newId, name, school: school || "Not specified", position,
                 jerseyNum: Math.floor(Math.random() * 99).toString(),
-                classYear: 2026, flagged: false, hasClip: true,
+                classYear: 2026, flagged: false, suspicious: false, hasClip: true,
                 vertical: { 
                     value: data.vertical_inches, 
                     status: data.vertical_needs_confirmations === 0 ? 'verified' : 'pending', 
@@ -1519,15 +1628,15 @@
     });
 
     // ============================================ */
-    // CHECKPOINT 23: EVENT LISTENERS               */
-    // ============================================ */
+    /* CHECKPOINT 23: EVENT LISTENERS               */
+    /* ============================================ */
     document.querySelectorAll('.filter-chip').forEach(c => c.addEventListener('click', function() { applyFilter(this.dataset.filter); }));
     document.querySelectorAll('.nav-item').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
     document.querySelectorAll('.desktop-nav a').forEach(i => i.addEventListener('click', function() { const p = this.dataset.page; if (p) showPage(p); }));
     document.querySelectorAll('.sort-chip').forEach(c => c.addEventListener('click', function() { currentSort = this.dataset.sort; document.querySelectorAll('.sort-chip').forEach(s => s.classList.remove('active')); this.classList.add('active'); renderAthleteGrid(); }));
     document.getElementById('searchInput')?.addEventListener('input', (e) => { currentSearch = e.target.value.toLowerCase(); renderAthleteGrid(); });
     document.getElementById('loginBtn')?.addEventListener('click', () => showModal('loginModal'));
-    document.getElementById('doLoginBtn')?.addEventListener('click', () => { const email = document.getElementById('loginEmail')?.value; if(email){ currentUser.name = email.split('@')[0]; saveData(); updateStats(); closeModal('loginModal'); showToast(`Welcome ${currentUser.name}!`, 'success'); } });
+    document.getElementById('doLoginBtn')?.addEventListener('click', () => { const email = document.getElementById('loginEmail')?.value; if(email){ currentUser.name = email.split('@')[0]; currentUser.id = `scout_${Date.now()}`; saveData(); updateStats(); closeModal('loginModal'); showToast(`Welcome ${currentUser.name}!`, 'success'); } });
     document.getElementById('confirmBtn')?.addEventListener('click', confirmVerification);
     document.getElementById('undoConfirmBtn')?.addEventListener('click', undoConfirmation);
     document.getElementById('challengeBtn')?.addEventListener('click', challengeVerification);
@@ -1538,8 +1647,8 @@
     window.addEventListener('click', (e) => { if (e.target.classList && e.target.classList.contains('modal')) closeModal(e.target.id); });
 
     // ============================================ */
-    // CHECKPOINT 24: INITIALIZATION                */
-    // ============================================ */
+    /* CHECKPOINT 24: INITIALIZATION                */
+    /* ============================================ */
     loadData();
     initVideoTabs();
     initScoutModes();
