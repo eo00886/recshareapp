@@ -30,6 +30,10 @@
             --gray-light: #9CA3AF;
             --glass-bg: rgba(18, 18, 24, 0.8);
             --glass-border: rgba(59, 130, 246, 0.15);
+            --platinum: #E5E4E2;
+            --gold: #FFD700;
+            --silver: #C0C0C0;
+            --bronze: #CD7F32;
         }
 
         .navbar {
@@ -38,7 +42,7 @@
             border-bottom: 0.5px solid var(--glass-border);
             position: sticky;
             top: 0;
-            z-index:100;
+            z-index: 100;
             padding: 0.75rem 1.25rem;
         }
 
@@ -625,6 +629,13 @@
         .rule-positive { color: var(--success-green); }
         .rule-negative { color: var(--error-red); }
 
+        /* Verifier Tier Badges */
+        .tier-platinum { background: linear-gradient(135deg, #E5E4E2, #B8B6B4); color: #1a1a1a; }
+        .tier-gold { background: linear-gradient(135deg, #FFD700, #DAA520); color: #1a1a1a; }
+        .tier-silver { background: linear-gradient(135deg, #C0C0C0, #A8A8A8); color: #1a1a1a; }
+        .tier-bronze { background: linear-gradient(135deg, #CD7F32, #B87333); color: #1a1a1a; }
+        .tier-rookie { background: rgba(156, 163, 175, 0.2); color: var(--gray-light); }
+
         @media (min-width: 768px) {
             .bottom-nav { display: none; }
             .desktop-nav { display: flex; }
@@ -791,12 +802,36 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- LEADERBOARD PAGE                           -->
+    <!-- LEADERBOARD PAGE - UPDATED WITH VERIFIERS  -->
     <!-- ========================================== -->
     <div id="leaderboardPage" class="page">
         <div class="page-header"><h1>Trust Leaderboard</h1><p>Top verifiers earn scout access</p></div>
-        <div class="card" id="leaderboardList"></div>
-        <div class="card"><h3>Your Stats</h3><div>Confirmations: <strong id="userConfirmCount">0</strong></div><div>Streak: <strong id="userStreak">0</strong> days</div><div>Trust: <strong id="userTrustDisplay">85</strong></div><div class="progress-container"><div class="progress-bar" id="trustProgress" style="width:85%"></div></div></div>
+        
+        <!-- Top Verified Athletes -->
+        <div class="card">
+            <h3>🏆 Top Verified Athletes</h3>
+            <div id="leaderboardList"></div>
+        </div>
+        
+        <!-- NEW: Top Verifiers Leaderboard -->
+        <div class="card">
+            <h3>⭐ Top Verifiers</h3>
+            <p style="font-size:0.7rem; color:var(--gray-light); margin-bottom:0.75rem;">Scouts who find talent early earn higher status</p>
+            <div id="verifierLeaderboard"></div>
+        </div>
+        
+        <!-- Your Stats with Verifier Tier -->
+        <div class="card">
+            <h3>📊 Your Scout Profile</h3>
+            <div id="verifierStatus"></div>
+            <div style="margin-top:1rem; padding-top:0.75rem; border-top:0.5px solid rgba(59,130,246,0.15);">
+                <div>Confirmations: <strong id="userConfirmCount">0</strong></div>
+                <div>Current Streak: <strong id="userStreak">0</strong> days</div>
+                <div>Trust Score: <strong id="userTrustDisplay">85</strong></div>
+                <div class="progress-container" style="margin-top:0.5rem;"><div class="progress-bar" id="trustProgress" style="width:85%"></div></div>
+                <div id="streakBadge" style="margin-top:0.5rem;"></div>
+            </div>
+        </div>
     </div>
 
     <!-- ========================================== -->
@@ -813,13 +848,22 @@
             </div>
         </div>
         <div class="card">
-            <h3>⭐ Trust Score System</h3>
+            <h3>⭐ Trust Score & Verifier Tiers</h3>
             <div class="trust-rules">
                 <div class="rule-card"><span class="rule-positive">+2 points</span><br>Confirming accurate metric</div>
                 <div class="rule-card"><span class="rule-positive">+3 points</span><br>Early verification of future star</div>
                 <div class="rule-card"><span class="rule-negative">-5 points</span><br>Falsely confirming</div>
                 <div class="rule-card"><span class="rule-negative">-10 points</span><br>Collusion detection</div>
                 <div class="rule-card"><span class="rule-positive">+5 points</span><br>Correctly challenging fraud</div>
+            </div>
+            <div style="margin-top:1rem;">
+                <p style="font-size:0.8rem;"><strong>Verifier Tiers:</strong></p>
+                <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.5rem;">
+                    <span style="background:linear-gradient(135deg,#E5E4E2,#B8B6B4); color:#1a1a1a; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">🏅 Platinum (50+ verifications, 10+ verified athletes)</span>
+                    <span style="background:linear-gradient(135deg,#FFD700,#DAA520); color:#1a1a1a; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">🥇 Gold (25+ verifications, 5+ verified athletes)</span>
+                    <span style="background:linear-gradient(135deg,#C0C0C0,#A8A8A8); color:#1a1a1a; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">🥈 Silver (10+ verifications, 2+ verified athletes)</span>
+                    <span style="background:linear-gradient(135deg,#CD7F32,#B87333); color:#1a1a1a; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">🥉 Bronze (3+ verifications, 1+ verified athlete)</span>
+                </div>
             </div>
         </div>
         <div class="card">
@@ -1124,6 +1168,148 @@
     }
 
     // ==========================================
+    // VERIFIER STATISTICS & LEADERBOARD (NEW)
+    // ==========================================
+    function getVerifierStats() {
+        const stats = {};
+        
+        athletes.forEach(athlete => {
+            athlete.confirmations.forEach((verifier, index) => {
+                if (!stats[verifier]) {
+                    stats[verifier] = {
+                        total: 0,
+                        earlyVerifications: 0,
+                        verifiedAthletes: 0
+                    };
+                }
+                stats[verifier].total++;
+                
+                if (athlete.vertical?.status === 'verified' && index < 3) {
+                    stats[verifier].earlyVerifications++;
+                    stats[verifier].verifiedAthletes++;
+                } else if (athlete.vertical?.status === 'verified') {
+                    stats[verifier].verifiedAthletes++;
+                }
+            });
+        });
+        
+        return stats;
+    }
+
+    function getVerifierTier(totalVerifications, verifiedAthletes) {
+        if (totalVerifications >= 50 && verifiedAthletes >= 10) {
+            return { name: '🏅 Platinum Verifier', color: 'var(--platinum)', class: 'tier-platinum', icon: '🏅', nextMilestone: null };
+        }
+        if (totalVerifications >= 25 && verifiedAthletes >= 5) {
+            return { name: '🥇 Gold Verifier', color: 'var(--gold)', class: 'tier-gold', icon: '🥇', nextMilestone: { verifications: 50, athletes: 10 } };
+        }
+        if (totalVerifications >= 10 && verifiedAthletes >= 2) {
+            return { name: '🥈 Silver Verifier', color: 'var(--silver)', class: 'tier-silver', icon: '🥈', nextMilestone: { verifications: 25, athletes: 5 } };
+        }
+        if (totalVerifications >= 3 && verifiedAthletes >= 1) {
+            return { name: '🥉 Bronze Verifier', color: 'var(--bronze)', class: 'tier-bronze', icon: '🥉', nextMilestone: { verifications: 10, athletes: 2 } };
+        }
+        return { name: '🔰 Rookie Verifier', color: 'var(--gray-light)', class: 'tier-rookie', icon: '🔰', nextMilestone: { verifications: 3, athletes: 1 } };
+    }
+
+    function getStreakBadge(streakDays) {
+        if (streakDays >= 30) return { text: '🔥 30-Day Legend', emoji: '🔥' };
+        if (streakDays >= 14) return { text: '⚡ 2-Week Warrior', emoji: '⚡' };
+        if (streakDays >= 7) return { text: '⭐ Weekly Verifier', emoji: '⭐' };
+        if (streakDays >= 3) return { text: '🌱 Growing Streak', emoji: '🌱' };
+        return null;
+    }
+
+    function updateVerifierLeaderboard() {
+        const stats = getVerifierStats();
+        const sorted = Object.entries(stats)
+            .sort((a, b) => {
+                const scoreA = (a[1].verifiedAthletes * 10) + a[1].total;
+                const scoreB = (b[1].verifiedAthletes * 10) + b[1].total;
+                return scoreB - scoreA;
+            })
+            .slice(0, 10);
+        
+        if (sorted.length === 0) {
+            document.getElementById('verifierLeaderboard').innerHTML = '<div class="empty-state">No verifiers yet. Be the first!</div>';
+            return;
+        }
+        
+        const html = sorted.map(([name, data], i) => {
+            const tier = getVerifierTier(data.total, data.verifiedAthletes);
+            return `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:0.75rem; border-bottom:0.5px solid rgba(59,130,246,0.15);">
+                    <div style="display:flex; align-items:center; gap:0.75rem;">
+                        <span style="font-weight:bold; width:30px;">${i+1}.</span>
+                        <div>
+                            <span style="color:var(--primary-blue); font-weight:500;">${name}</span>
+                            <div style="margin-top:0.25rem;">
+                                <span class="${tier.class}" style="font-size:0.65rem; padding:0.15rem 0.5rem; border-radius:20px;">${tier.icon} ${tier.name}</span>
+                                ${data.earlyVerifications > 0 ? `<span style="background:var(--primary-gold); color:#000; font-size:0.6rem; padding:0.15rem 0.5rem; border-radius:20px; margin-left:0.5rem;">🏅 Early Scout x${data.earlyVerifications}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div>✅ ${data.total} verifications</div>
+                        <div style="font-size:0.7rem; color:var(--success-green);">⭐ ${data.verifiedAthletes} verified athletes</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        document.getElementById('verifierLeaderboard').innerHTML = html;
+    }
+
+    function updateVerifierStatus() {
+        const stats = getVerifierStats();
+        const myStats = stats[currentUser.name] || { total: 0, earlyVerifications: 0, verifiedAthletes: 0 };
+        const tier = getVerifierTier(myStats.total, myStats.verifiedAthletes);
+        const streakBadge = getStreakBadge(currentUser.streak);
+        
+        let nextMilestoneText = '';
+        if (tier.nextMilestone) {
+            const verifNeeded = Math.max(0, tier.nextMilestone.verifications - myStats.total);
+            const athletesNeeded = Math.max(0, tier.nextMilestone.athletes - myStats.verifiedAthletes);
+            nextMilestoneText = `<div style="margin-top:0.75rem; font-size:0.7rem; color:var(--gray-light);">
+                📊 ${verifNeeded > 0 ? `${verifNeeded} more verifications` : ''}${verifNeeded > 0 && athletesNeeded > 0 ? ' and ' : ''}${athletesNeeded > 0 ? `${athletesNeeded} more verified athletes` : ''} to reach next tier
+            </div>`;
+        } else if (myStats.total >= 50) {
+            nextMilestoneText = `<div style="margin-top:0.75rem; font-size:0.7rem; color:var(--success-green);">🏆 You've reached the highest verifier tier! Elite status unlocked.</div>`;
+        }
+        
+        document.getElementById('verifierStatus').innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div style="display:inline-block; padding:0.25rem 0.75rem; border-radius:20px; font-weight:bold; ${tier.class ? `class="${tier.class}"` : `style="background:${tier.color}20; color:${tier.color};"`}">
+                        ${tier.icon} ${tier.name}
+                    </div>
+                    ${streakBadge ? `<div style="margin-top:0.5rem;"><span style="background:rgba(59,130,246,0.2); padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">${streakBadge.emoji} ${streakBadge.text}</span></div>` : ''}
+                </div>
+                <div style="background:${tier.color}20; padding:0.5rem 1rem; border-radius:50px; text-align:center;">
+                    <div style="font-size:1.5rem;">${tier.icon}</div>
+                    <div style="font-size:0.6rem;">${tier.name.split(' ')[1] || 'Verifier'}</div>
+                </div>
+            </div>
+            <div style="margin-top:0.75rem; display:flex; justify-content:space-between;">
+                <div><span style="color:var(--gray-light);">Total Verifications:</span><br><strong>✅ ${myStats.total}</strong></div>
+                <div><span style="color:var(--gray-light);">Verified Athletes Found:</span><br><strong>⭐ ${myStats.verifiedAthletes}</strong></div>
+                <div><span style="color:var(--gray-light);">Early Talent Spotted:</span><br><strong>🏅 ${myStats.earlyVerifications}</strong></div>
+            </div>
+            ${nextMilestoneText}
+        `;
+        
+        // Update streak badge in stats section
+        const streakBadgeEl = document.getElementById('streakBadge');
+        if (streakBadgeEl) {
+            if (streakBadge) {
+                streakBadgeEl.innerHTML = `<span style="background:rgba(59,130,246,0.2); padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem;">${streakBadge.emoji} ${streakBadge.text}</span>`;
+            } else {
+                streakBadgeEl.innerHTML = '';
+            }
+        }
+    }
+
+    // ==========================================
     // STATS & FILTERING
     // ==========================================
     function updateStats() {
@@ -1140,8 +1326,14 @@
         document.getElementById('userStreak').innerText = currentUser.streak;
         document.getElementById('userTrustDisplay').innerText = currentUser.trustScore;
         document.getElementById('trustProgress').style.width = currentUser.trustScore + '%';
+        
         const top = [...athletes].filter(a => a.trustScore > 0).sort((a,b) => b.trustScore - a.trustScore).slice(0,5);
-        document.getElementById('leaderboardList').innerHTML = top.length ? top.map((a,i) => `<div style="padding:0.75rem; border-bottom:0.5px solid rgba(59,130,246,0.15); display:flex; justify-content:space-between;"><span><strong>${i+1}.</strong> ${a.name}</span><span>⭐ ${a.trustScore}</span><span>🏀 ${a.vertical?.value || '?'}"</span></div>`).join('') : '<div class="empty-state">No verifiers yet</div>';
+        document.getElementById('leaderboardList').innerHTML = top.length ? top.map((a,i) => `<div style="padding:0.75rem; border-bottom:0.5px solid rgba(59,130,246,0.15); display:flex; justify-content:space-between;"><span><strong>${i+1}.</strong> ${a.name}</span><span>⭐ ${a.trustScore}</span><span>🏀 ${a.vertical?.value || '?'}"</span></div>`).join('') : '<div class="empty-state">No verified athletes yet</div>';
+        
+        // Update verifier leaderboard and status
+        updateVerifierLeaderboard();
+        updateVerifierStatus();
+        
         saveData();
     }
 
